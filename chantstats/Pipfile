@@ -9,6 +9,9 @@ name = "pypi"
 [dev-packages]
 versioneer = "*"
 pre-commit = "*"
+chantstats = {editable = true, path = "."}
+pytest = "*"
+pytest-cov = "*"
 
 [requires]
 python_version = "3.7"
