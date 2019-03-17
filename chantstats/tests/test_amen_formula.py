@@ -12,3 +12,4 @@ def test_amen_formula():
     # assert piece8.has_amen_formula == False
     assert piece12.has_amen_formula == False
     assert piece14.has_amen_formula == True
+    assert piece45.has_amen_formula == True

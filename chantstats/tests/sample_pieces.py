@@ -19,3 +19,4 @@ piece7 = PlainchantSequencePiece(os.path.join(chants_dir, "07_Splendor_patris.xm
 #piece8 = PlainchantSequencePiece(os.path.join(chants_dir, "08_In_excelsis_canitur.xml"))  # monomodal frame (without amen formula)
 piece12 = PlainchantSequencePiece(os.path.join(chants_dir, "12_Fulgens_preclara.xml"))  # heavy polymodal frame 1 (no amen formula)
 piece14 = PlainchantSequencePiece(os.path.join(chants_dir, "14_Zima_uetus.xml"))        # light polymodal frame 1 (with amen formula)
+piece45 = PlainchantSequencePiece(os.path.join(chants_dir, "45_Aue_maria_gratia_plena.xml"))  # light polymodal frame 2 (with amen formula)

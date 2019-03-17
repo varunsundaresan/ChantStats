@@ -10,10 +10,10 @@ class FrameType(str, Enum):
     """
 
     MONOMODAL_FRAME = "monomodal_frame"
-    HEAVY_POLYMODAL_FRAME_1 = "heavy_polymodal_frame"
-    HEAVY_POLYMODAL_FRAME_2 = "heavy_polymodal_frame"
-    LIGHT_POLYMODAL_FRAME_1 = "light_polymodal_frame"
-    LIGHT_POLYMODAL_FRAME_2 = "light_polymodal_frame"
+    HEAVY_POLYMODAL_FRAME_1 = "heavy_polymodal_frame_1"
+    HEAVY_POLYMODAL_FRAME_2 = "heavy_polymodal_frame_2"
+    LIGHT_POLYMODAL_FRAME_1 = "light_polymodal_frame_1"
+    LIGHT_POLYMODAL_FRAME_2 = "light_polymodal_frame_2"
 
 
 class PlainchantSequencePiece:
@@ -72,10 +72,12 @@ class PlainchantSequencePiece:
             if not self.has_amen_formula:
                 return FrameType.HEAVY_POLYMODAL_FRAME_1
             else:
-                if self.first_phrase_final == self.antepenultimate_phrase_final:
+                if self.first_phrase_final == self.penultimate_phrase_final:
                     return FrameType.LIGHT_POLYMODAL_FRAME_1
+                elif self.first_phrase_final == self.antepenultimate_phrase_final:
+                    return FrameType.LIGHT_POLYMODAL_FRAME_2
                 else:
-                    raise NotImplementedError("Frame type cannot be calculated yet.")
+                    return FrameType.HEAVY_POLYMODAL_FRAME_2
 
 
 class PlainchantSequencePhrase:
