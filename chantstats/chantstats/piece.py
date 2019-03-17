@@ -3,6 +3,8 @@ import os
 import re
 from enum import Enum
 
+from .pitch_class_freqs import PCFreqs
+
 
 class FrameType(str, Enum):
     """
@@ -52,6 +54,13 @@ class PlainchantSequencePiece:
         return f"<Piece '{self.filename_short}'>"
 
     @property
+    def pc_freqs(self):
+        raise NotImplementedError(
+            "This should probably not be implemented directly because we will want to "
+            "filter pieces in different ways before calculating the PC frequencies!"
+        )
+
+    @property
     def measures(self):
         for measure in self.tenor.getElementsByClass("Measure"):
             yield measure
@@ -93,6 +102,7 @@ class PlainchantSequencePhrase:
         self.notes = self.measure_stream.notes
         self.pitch_classes = [n.name for n in self.notes]
         self.phrase_final = self.pitch_classes[-1]
+        self.pc_freqs = PCFreqs(self.pitch_classes)
 
     def __repr__(self):
         return f"<Phrase {self.phrase_number} of piece {self.piece}>"
