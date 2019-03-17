@@ -7,6 +7,7 @@ name = "pypi"
 "music21" = "*"
 
 [dev-packages]
+versioneer = "*"
 
 [requires]
 python_version = "3.7"
