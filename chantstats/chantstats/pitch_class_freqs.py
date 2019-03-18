@@ -1,5 +1,6 @@
 from collections import Counter
 import pandas as pd
+import textwrap
 
 __all__ = ["PCFreqs"]
 
@@ -42,6 +43,10 @@ class BaseFreqs(metaclass=BaseFreqsMeta):
     def __add__(self, other):
         assert isinstance(other, self.__class__)
         return self.__class__(self.abs_freqs + other.abs_freqs)
+
+    def __repr__(self):
+        freqs_indented = textwrap.indent(str(self.abs_freqs), prefix="   ")
+        return f"<{self.__class__.__name__}:\n\n{freqs_indented}\n>"
 
     @property
     def rel_freqs(self):
