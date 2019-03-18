@@ -112,19 +112,16 @@ class PlainchantSequencePhrase:
         self.pitch_classes = [n.name for n in self.notes]
         self.phrase_final = self.pitch_classes[-1]
         self.pc_freqs = PCFreqs(self.pitch_classes)
+        self.time_signature = self.piece.stream.flat.getElementAtOrBefore(
+            self.measure_stream.getOffsetInHierarchy(self.piece.stream), [music21.meter.TimeSignature]
+        ).ratioString
 
     def __repr__(self):
         return f"<Phrase {self.phrase_number} of piece {self.piece}>"
 
     @property
     def is_amen_formula(self):
-        try:
-            has_5_4_time_signature = "5/4" == self.measure_stream.timeSignature.ratioString
-        except AttributeError:  # pragma: no cover
-            raise NotImplementedError(
-                "TODO: some phrases do not have a time signature themselves. "
-                "In this case we need to extract it from a previous measure."
-            )
+        has_5_4_time_signature = "5/4" == self.time_signature
 
         lyric_searcher = music21.search.lyrics.LyricSearcher()
         regex_amen = re.compile("amen", re.IGNORECASE)
