@@ -55,6 +55,7 @@ class PlainchantSequencePiece:
         self.has_amen_formula = self.phrases[-1].is_amen_formula
         self.frame_type = self._calculate_frame_type()
         self.has_heavy_polymodal_frame = has_heavy_polymodal_frame(self)
+        self.main_final = self.first_phrase_final if not self.has_heavy_polymodal_frame else None
 
     def __repr__(self):
         return f"<Piece '{self.filename_short}'>"
@@ -93,13 +94,6 @@ class PlainchantSequencePiece:
                     return FrameType.LIGHT_POLYMODAL_FRAME_2
                 else:
                     return FrameType.HEAVY_POLYMODAL_FRAME_2
-
-    @property
-    def main_final(self):
-        if self.has_heavy_polymodal_frame:
-            raise UndefinedMainFinal(f"Main final undefined for piece with heavy polymodal frame: {self}")
-        else:
-            return self.first_phrase_final
 
     @property
     def non_modulatory_phrases(self):
