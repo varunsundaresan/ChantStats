@@ -9,6 +9,7 @@ def test_non_modulatory_phrases():
     assert len(piece2.non_modulatory_phrases) == 14
     assert len(piece5.non_modulatory_phrases) == 13
     assert len(piece7.non_modulatory_phrases) == 19
+    assert len(piece8.non_modulatory_phrases) == 14
     assert len(piece14.non_modulatory_phrases) == 26
     assert len(piece45.non_modulatory_phrases) == 20
 

@@ -10,6 +10,7 @@ def test_main_final():
     assert "D" == piece2.main_final
     assert "C" == piece5.main_final
     assert "D" == piece7.main_final
+    assert "D" == piece8.main_final
     assert "G" == piece14.main_final
     assert "C" == piece45.main_final
 
