@@ -29,6 +29,6 @@ setup(
     ],
     packages=find_packages(),
     install_requires=["music21", "pandas"],
-    extras_require={"dev": [], "test": ["pytest"]},
+    extras_require={"dev": [], "test": ["pytest", "pytest-cov"]},
     cmdclass=versioneer.get_cmdclass(),
 )
