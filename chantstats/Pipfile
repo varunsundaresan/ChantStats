@@ -13,6 +13,7 @@ pre-commit = "*"
 chantstats = {editable = true, path = "."}
 pytest = "*"
 pytest-cov = "*"
+ipdb = "*"
 
 [requires]
 python_version = "3.7"
