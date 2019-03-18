@@ -1,0 +1,2 @@
+class UndefinedMainFinal(Exception):
+    pass

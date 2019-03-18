@@ -3,6 +3,7 @@ import os
 import re
 from enum import Enum
 
+from .exceptions import UndefinedMainFinal
 from .pitch_class_freqs import PCFreqs
 
 
@@ -16,6 +17,10 @@ class FrameType(str, Enum):
     HEAVY_POLYMODAL_FRAME_2 = "heavy_polymodal_frame_2"
     LIGHT_POLYMODAL_FRAME_1 = "light_polymodal_frame_1"
     LIGHT_POLYMODAL_FRAME_2 = "light_polymodal_frame_2"
+
+
+def has_heavy_polymodal_frame(piece):
+    return piece.frame_type in [FrameType.HEAVY_POLYMODAL_FRAME_1, FrameType.HEAVY_POLYMODAL_FRAME_2]
 
 
 class PlainchantSequencePiece:
@@ -49,6 +54,8 @@ class PlainchantSequencePiece:
         self.antepenultimate_phrase_final = self.phrase_finals[-3]
         self.has_amen_formula = self.phrases[-1].is_amen_formula
         self.frame_type = self._calculate_frame_type()
+        self.has_heavy_polymodal_frame = has_heavy_polymodal_frame(self)
+        # self.main_final = self._calculate_main_final()
 
     def __repr__(self):
         return f"<Piece '{self.filename_short}'>"
@@ -87,6 +94,13 @@ class PlainchantSequencePiece:
                     return FrameType.LIGHT_POLYMODAL_FRAME_2
                 else:
                     return FrameType.HEAVY_POLYMODAL_FRAME_2
+
+    @property
+    def main_final(self):
+        if self.has_heavy_polymodal_frame:
+            raise UndefinedMainFinal(f"Main final undefined for piece with heavey polymomdal frame: {self}")
+        else:
+            return self.first_phrase_final
 
 
 class PlainchantSequencePhrase:
