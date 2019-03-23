@@ -171,7 +171,7 @@ class PhraseCollection:
         return sum([p.pc_freqs for p in self.phrases], PCFreqs.zero_freqs)
 
 
-def load_plainchant_sequence_pieces(input_dir, *, pattern="*.xml"):
+def load_plainchant_sequence_pieces(input_dir, *, pattern="*.xml", exclude_heavy_polymodal_frame_pieces=False):
     """
     Load plainchant sequence pieces from MusicXML files in a given input directory.
 
@@ -180,8 +180,11 @@ def load_plainchant_sequence_pieces(input_dir, *, pattern="*.xml"):
     input_dir : str
         Input directory in which to look for MusicXML files.
     pattern : str, optional
-        Filename pattern; this can be used to filter the files to be loaded to a subset
-        (for example during testing).
+        Filename pattern; this can be used to filter the files
+        to be loaded to a subset (for example during testing).
+    exclude_heavy_polymodal_frame_pieces : bool
+        If True, exclude pieces which have heavy polymodal frame
+        (and as a result don't have a well-defined main final).
 
     Returns
     -------
@@ -192,7 +195,11 @@ def load_plainchant_sequence_pieces(input_dir, *, pattern="*.xml"):
     logger.debug(f"Loading pieces... ")
     tic = time()
     pieces = [PlainchantSequencePiece(f) for f in filenames]
+    if exclude_heavy_polymodal_frame_pieces:
+        pieces = [p for p in pieces if not p.has_heavy_polymodal_frame]
     toc = time()
-    logger.debug("Done.")
+    logger.debug(
+        f"Done. Loaded {len(pieces)} pieces{' without heavy polymodal frames' if exclude_heavy_polymodal_frame_pieces else ''}."
+    )
     logger.debug(f"Loading pieces took {toc-tic:.2f} seconds.")
     return pieces
