@@ -6,6 +6,8 @@ name = "pypi"
 [packages]
 "music21" = "*"
 pandas = "*"
+scipy = "*"
+tqdm = "*"
 
 [dev-packages]
 versioneer = "*"
