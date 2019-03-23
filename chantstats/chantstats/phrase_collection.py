@@ -17,6 +17,7 @@ class PhraseCollection:
                 "support for pieces that are not of type PlainchantSequencePiece."
             )
         self.phrases = phrases
+        self.num_phrases = len(self.phrases)
 
     @property
     def pc_freqs(self):
