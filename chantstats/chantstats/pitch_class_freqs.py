@@ -5,14 +5,6 @@ import textwrap
 __all__ = ["PCFreqs"]
 
 
-class classproperty:
-    def __init__(self, f):
-        self.f = f
-
-    def __get__(self, obj, owner):
-        return self.f(owner)
-
-
 class BaseFreqsMeta(type):
 
     # Note: the only purpose of this metaclass is to ensure that the `BaseFreqs`
