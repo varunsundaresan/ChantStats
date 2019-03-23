@@ -1,6 +1,6 @@
 import os
 from chantstats import load_plainchant_sequence_pieces
-from chantstats.piece import PlainchantSequencePiece
+from chantstats.plainchant_sequence_piece import PlainchantSequencePiece
 
 try:
     chants_dir = os.environ["CHANTS_DIR"]

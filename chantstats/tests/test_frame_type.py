@@ -1,5 +1,5 @@
 from .sample_pieces import *
-from chantstats.piece import FrameType
+from chantstats.plainchant_sequence_piece import FrameType
 
 
 def test_frame_type():

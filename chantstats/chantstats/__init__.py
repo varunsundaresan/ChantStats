@@ -1,6 +1,6 @@
 from .dendrogram import plot_dendrogram
 from .logging import logger
-from .piece import load_plainchant_sequence_pieces
+from .plainchant_sequence_piece import load_plainchant_sequence_pieces
 from .phrase_collection import PhraseCollection
 
 __all__ = ["load_plainchant_sequence_pieces", "logger", "chantstats_logger", "plot_dendrogram"]
