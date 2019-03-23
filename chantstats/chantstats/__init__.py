@@ -1,7 +1,8 @@
+from .dendrogram import plot_dendrogram
 from .logging import logger
 from .piece import load_plainchant_sequence_pieces, PhraseCollection
 
-__all__ = ["PhraseCollection", "load_plainchant_sequence_pieces", "logger", "chantstats_logger"]
+__all__ = ["PhraseCollection", "load_plainchant_sequence_pieces", "logger", "chantstats_logger", "plot_dendrogram"]
 
 chantstats_logger = logger  # alias for convenience
 
