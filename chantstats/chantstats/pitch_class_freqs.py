@@ -57,10 +57,6 @@ class BaseFreqs(metaclass=BaseFreqsMeta):
     def rel_freqs(self):
         return (self.abs_freqs / self.abs_freqs.sum()) * 100
 
-    # @property
-    # def zero_freqs(self):
-    #     return self.__class__.zero_freqs
-
 
 class PCFreqs(BaseFreqs):
     """
