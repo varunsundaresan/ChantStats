@@ -14,6 +14,11 @@ class classproperty:
 
 
 class BaseFreqsMeta(type):
+
+    # Note: the only purpose of this metaclass is to ensure that the `BaseFreqs`
+    # class has a class attribute called `zero_freqs` which can be used as the
+    # "zero frequencies value" when calculating sums of frequencies using sum().
+
     @property
     def zero_freqs(cls):
         # initialise the class with an empty list to obtain a "zero frequencies" object
