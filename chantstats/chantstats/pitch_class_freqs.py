@@ -64,7 +64,3 @@ class PCFreqs(BaseFreqs):
     """
 
     ALLOWED_VALUES = ["A", "B-", "B", "C", "D", "E", "F", "G"]
-
-
-def calculate_pc_freqs_for_collection_of_phrases(phrases):
-    return sum([p.pc_freqs for p in phrases], PCFreqs.zero_freqs)
