@@ -43,7 +43,7 @@ class PlainchantSequencePiece:
             raise TypeError(f"Cannot load piece from object of type: '{type(stream_or_filename)}'")
 
         self.name = re.sub(
-            "\.xml$", "", re.sub("_", " ", self.filename_short)
+            r"\.xml$", "", re.sub("_", " ", self.filename_short)
         )  # remove .xml suffix; replace underscores with spaces
 
         num_parts = len(self.stream.parts)
