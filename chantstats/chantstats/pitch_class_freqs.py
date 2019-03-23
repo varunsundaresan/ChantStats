@@ -34,7 +34,7 @@ class BaseFreqs(metaclass=BaseFreqsMeta):
         elif isinstance(list_or_freqs, list):
             pitch_classes = list_or_freqs
             self.abs_freqs = pd.Series(Counter(pitch_classes), index=self.ALLOWED_VALUES).fillna(0, downcast="infer")
-        else:
+        else:  # pragma: no cover
             raise ValueError(f"Cannot instantiate {self.__class__.__name__} from object: {list_or_freqs}")
 
     def __add__(self, other):
