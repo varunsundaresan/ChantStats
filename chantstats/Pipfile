@@ -8,6 +8,7 @@ name = "pypi"
 pandas = "*"
 scipy = "*"
 tqdm = "*"
+matplotlib = "*"
 
 [dev-packages]
 versioneer = "*"

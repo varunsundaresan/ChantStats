@@ -28,7 +28,7 @@ setup(
         "Programming Language :: Python :: 3.6",
     ],
     packages=find_packages(),
-    install_requires=["music21", "pandas"],
+    install_requires=["matplotlib", "music21", "pandas", "scipy"],
     extras_require={"dev": [], "test": ["pytest", "pytest-cov"]},
     cmdclass=versioneer.get_cmdclass(),
 )
