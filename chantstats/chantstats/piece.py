@@ -35,11 +35,11 @@ class PlainchantSequencePiece:
             self.stream = music21.converter.parse(stream_or_filename)
             self.filename_full = os.path.abspath(stream_or_filename)
             self.filename_short = os.path.basename(stream_or_filename)
-        elif isinstance(stream_or_filename, music21.stream.Stream):
-            self.stream = stream_or_filename
-            self.filename_full = ""
-            self.filename_short = ""
-        else:
+        # elif isinstance(stream_or_filename, music21.stream.Stream):
+        #     self.stream = stream_or_filename
+        #     self.filename_full = ""
+        #     self.filename_short = ""
+        else:  # pragma: no cover
             raise TypeError(f"Cannot load piece from object of type: '{type(stream_or_filename)}'")
 
         self.name = re.sub(
@@ -47,7 +47,7 @@ class PlainchantSequencePiece:
         )  # remove .xml suffix; replace underscores with spaces
 
         num_parts = len(self.stream.parts)
-        if num_parts != 1:
+        if num_parts != 1:  # pragma: no cover
             raise ValueError(f"Piece must have exactly one tenor part. Found {num_parts} parts.")
 
         self.tenor = self.stream.parts[0]
@@ -69,7 +69,7 @@ class PlainchantSequencePiece:
         return f"<Piece '{self.filename_short}'>"
 
     @property
-    def pc_freqs(self):
+    def pc_freqs(self):  # pragma: no cover
         raise NotImplementedError(
             "The .pc_freqs attribute is not supported directly because different analyses "
             "require different pre-processing of pieces (such as omitting modulatory phrases). "
@@ -85,7 +85,7 @@ class PlainchantSequencePiece:
     def _calculate_frame_type(self):
         if self.first_phrase_final == self.last_phrase_final:
             # sanity check to ensure that amen formulas don't behave weirdly
-            if self.has_amen_formula and self.first_phrase_final != self.penultimate_phrase_final:
+            if self.has_amen_formula and self.first_phrase_final != self.penultimate_phrase_final:  # pragma: no cover
                 raise RuntimeError(
                     f"Piece seems to have a monomodal frame because the first and last phrase-final are the same. "
                     f"However, the last phrase is an amen formula and the penultimate phrase-final is different. "
@@ -157,7 +157,7 @@ class PhraseCollection:
     """
 
     def __init__(self, phrases):
-        if not all([isinstance(p, PlainchantSequencePhrase) for p in phrases]):
+        if not all([isinstance(p, PlainchantSequencePhrase) for p in phrases]):  # pragma: no cover
             raise NotImplementedError(
                 "TODO: This class should be agnostic of the type of input phrases it accepts. "
                 "This warning only exists to ensure that this really is the case once we add "
