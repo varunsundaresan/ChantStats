@@ -1,5 +1,7 @@
 from .logging import logger
-from .piece import load_plainchant_sequence_pieces
+from .piece import load_plainchant_sequence_pieces, PhraseCollection
+
+__all__ = ["PhraseCollection", "load_plainchant_sequence_pieces", "logger", "chantstats_logger"]
 
 chantstats_logger = logger  # alias for convenience
 
