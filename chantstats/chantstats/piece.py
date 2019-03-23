@@ -121,6 +121,10 @@ class PlainchantSequencePhrase:
 
     @property
     def is_amen_formula(self):
+        """
+        Return True if the piece has an amen formula as the last phrase, where
+        an amen formula is characterised by a 5/4 measure and the lyrics "Amen".
+        """
         has_5_4_time_signature = "5/4" == self.time_signature
 
         lyric_searcher = music21.search.lyrics.LyricSearcher()
