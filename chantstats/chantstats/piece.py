@@ -2,8 +2,11 @@ import music21
 import os
 import re
 from enum import Enum
+from glob import glob
+from time import time
 
 from .exceptions import UndefinedMainFinal
+from .logging import logger
 from .pitch_class_freqs import PCFreqs
 
 
@@ -141,3 +144,30 @@ class PlainchantSequencePhrase:
             )
 
         return has_5_4_time_signature and has_amen_lyrics
+
+
+def load_plainchant_sequence_pieces(input_dir, *, pattern="*.xml"):
+    """
+    Load plainchant sequence pieces from MusicXML files in a given input directory.
+
+    Parameters
+    ----------
+    input_dir : str
+        Input directory in which to look for MusicXML files.
+    pattern : str, optional
+        Filename pattern; this can be used to filter the files to be loaded to a subset
+        (for example during testing).
+
+    Returns
+    -------
+    list of PlainchantSequencePiece
+    """
+    filenames = sorted(glob(os.path.join(input_dir, pattern)))
+    logger.debug(f"Found {len(filenames)} pieces matching the pattern '{pattern}'.")
+    logger.debug(f"Loading pieces... ")
+    tic = time()
+    pieces = [PlainchantSequencePiece(f) for f in filenames]
+    toc = time()
+    logger.debug("Done.")
+    logger.debug(f"Loading pieces took {toc-tic:.2f} seconds.")
+    return pieces

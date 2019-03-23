@@ -1,4 +1,5 @@
 from .logging import logger
+from .piece import load_plainchant_sequence_pieces
 
 chantstats_logger = logger  # alias for convenience
 
