@@ -33,6 +33,23 @@ def calculate_distribution_distance(freqs1, freqs2):
     return 1 - p_value
 
 
+class DendrogramError(Exception):
+    """
+    Indicates an error in the dendrogram calculation.
+    """
+
+
+def calculate_linkage_matrix_in_python_format(df_freq_distributions):
+    if len(df_freq_distributions) <= 1:
+        raise DendrogramError("Cannot produce dendrogram for a single item (nothing to cluster).")
+    Z = linkage(
+        pdist(df_freq_distributions.values, metric=calculate_distribution_distance),
+        method="complete",
+        optimal_ordering=True,
+    )
+    return Z
+
+
 def plot_dendrogram(df_freq_distributions, *, p_threshold=0.15, figsize=(16, 5), leaf_font_size=10):
     """
     Plot a dendrogram
@@ -57,7 +74,7 @@ def plot_dendrogram(df_freq_distributions, *, p_threshold=0.15, figsize=(16, 5),
         Matplotlib figure containing the dendrogram plot.
     """
     assert isinstance(df_freq_distributions, pd.DataFrame)
-    Z = linkage(pdist(df_freq_distributions.values, metric=calculate_distribution_distance), method="complete")
+    Z = calculate_linkage_matrix_in_python_format(df_freq_distributions)
     labels = df_freq_distributions.index
     fig, ax = plt.subplots(figsize=figsize)
     ax.set_title("Hierarchical Clustering Dendrogram")
