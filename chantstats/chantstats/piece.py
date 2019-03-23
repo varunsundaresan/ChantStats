@@ -5,7 +5,6 @@ from enum import Enum
 from glob import glob
 from time import time
 
-from .exceptions import UndefinedMainFinal
 from .logging import logger
 from .pitch_class_freqs import PCFreqs
 

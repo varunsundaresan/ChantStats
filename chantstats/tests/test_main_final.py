@@ -1,8 +1,4 @@
-import pytest
 from .sample_pieces import *
-
-from .context import chantstats
-from chantstats.exceptions import UndefinedMainFinal
 
 
 def test_main_final():
