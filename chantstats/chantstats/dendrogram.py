@@ -8,15 +8,28 @@ from scipy.spatial.distance import pdist
 __all__ = ["plot_dendrogram"]
 
 
-def calculate_distribution_distance(freqs1, freqs2):
+def calculate_chi_square_p_value(A):
     """
-    Calulate the "distance" between two frequency distributions.
-    This is (1-p), where p is the p-value of the chi-square calculation.
+    Calulate the p-value of the Pearson chi-square test when applied
+    to the rows of the matrix A (interpreted as individual observations)
+
+    Note: any values where both freqs1 and freqs2 are zero are discarded
+    before calculating the chi-square value.
     """
-    A = np.array([freqs1, freqs2])
     nonzero_columns = np.where(A.any(axis=0))[0]
     A_nonzero_columns = A[:, nonzero_columns]
     _, p_value, _, _ = scipy.stats.chi2_contingency(A_nonzero_columns)
+    return p_value
+
+
+def calculate_distribution_distance(freqs1, freqs2):
+    """
+    Calulate the "distance" between two frequency distributions.
+    This is (1-p), where p is the p-value of the chi-square calculation
+    returned by the function `calculate_chi_square_p_value`.
+    """
+    A = np.array([freqs1, freqs2])
+    p_value = calculate_chi_square_p_value(A)
     return 1 - p_value
 
 
