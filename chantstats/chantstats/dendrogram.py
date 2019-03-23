@@ -39,18 +39,20 @@ class DendrogramError(Exception):
     """
 
 
-def calculate_linkage_matrix_in_python_format(df_freq_distributions):
+def calculate_linkage_matrix_in_python_format(df_freq_distributions, *, optimal_ordering=True):
     if len(df_freq_distributions) <= 1:
         raise DendrogramError("Cannot produce dendrogram for a single item (nothing to cluster).")
     Z = linkage(
         pdist(df_freq_distributions.values, metric=calculate_distribution_distance),
         method="complete",
-        optimal_ordering=True,
+        optimal_ordering=optimal_ordering,
     )
     return Z
 
 
-def plot_dendrogram(df_freq_distributions, *, p_threshold=0.15, figsize=(16, 5), leaf_font_size=10):
+def plot_dendrogram(
+    df_freq_distributions, *, p_threshold=0.15, figsize=(16, 5), leaf_font_size=10, optimal_ordering=True
+):
     """
     Plot a dendrogram
 
@@ -67,6 +69,11 @@ def plot_dendrogram(df_freq_distributions, *, p_threshold=0.15, figsize=(16, 5),
         Size of the output figure (in inches). Same as matplotlib figsize.
     leaf_font_size : int
         Font size to use for the labels of leaf notes.
+    optimal_ordering : bool
+        If True, the linkage matrix will be reordered so that the distance between successive leaves
+        is minimal. This results in a more intuitive tree structure when the data are visualized.
+        Note that this algorithm can be slow, particularly on large datasets. See the function
+        `scipy.cluster.hierarchy.linkage` for details.
 
     Returns
     -------
@@ -74,7 +81,7 @@ def plot_dendrogram(df_freq_distributions, *, p_threshold=0.15, figsize=(16, 5),
         Matplotlib figure containing the dendrogram plot.
     """
     assert isinstance(df_freq_distributions, pd.DataFrame)
-    Z = calculate_linkage_matrix_in_python_format(df_freq_distributions)
+    Z = calculate_linkage_matrix_in_python_format(df_freq_distributions, optimal_ordering=optimal_ordering)
     labels = df_freq_distributions.index
     fig, ax = plt.subplots(figsize=figsize)
     ax.set_title("Hierarchical Clustering Dendrogram")
