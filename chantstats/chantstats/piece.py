@@ -68,8 +68,10 @@ class PlainchantSequencePiece:
     @property
     def pc_freqs(self):
         raise NotImplementedError(
-            "This should probably not be implemented directly because we will want to "
-            "filter pieces in different ways before calculating the PC frequencies!"
+            "The .pc_freqs attribute is not supported directly because different analyses "
+            "require different pre-processing of pieces (such as omitting modulatory phrases). "
+            "Therefore this pre-processing should be done first and only then should the "
+            "PC frequencies be calculated."
         )
 
     @property
