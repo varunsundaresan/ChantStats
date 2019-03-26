@@ -102,3 +102,121 @@ def plot_dendrogram(
     fig.tight_layout()
     plt.close(fig)
     return fig
+
+
+class DendrogramNode:
+    def __init__(self, *, descr, index, p_coeff, y_pos, payload, children):
+        self.index = index
+        self.p_coeff = p_coeff
+        self.y_pos = y_pos
+        self.payload = payload
+        self.children = children
+        self.parent = None
+
+        self.is_leaf = self.children == []
+        self.num_leaves = 1 if self.is_leaf else sum([c.num_leaves for c in self.children])
+        self.num_descendants = sum([c.num_descendants for c in self.children]) + 1
+        self.descr = descr or "Cluster with {} leaves".format(self.num_leaves)
+
+        if payload is not None:
+            assert isinstance(payload, pd.Series)
+            self.payload = payload  # TODO: if payload==None, set this to the averaged distribution of all leaves
+        else:
+            # Set payload to the average of the leaf payloads
+            leaf_payloads = [c.payload for c in self.leaves]
+            zero_payload = pd.Series(0, index=leaf_payloads[0].index)
+            self.payload = sum(leaf_payloads, zero_payload) / len(leaf_payloads)
+
+        self.df = pd.DataFrame([n.payload for n in self.leaves])
+
+    def __repr__(self):
+        if self.is_leaf:
+            descr_descendants = "leaf node"
+        else:
+            descr_descendants = (
+                f"{self.num_descendants} descendants, "
+                f"{self.num_leaves} leaves, "
+                f"immediate children: {[c.index for c in self.children]}"
+            )
+        return f"<DendrogramNode: '{self.descr}', idx: {self.index} ({descr_descendants})>"
+
+    @property
+    def descendants(self):
+        yield self
+        for c in self.children:
+            yield from c.descendants
+
+    @property
+    def leaves(self):
+        for n in self.descendants:
+            if n.is_leaf:
+                yield n
+
+    @property
+    def left_child(self):
+        try:
+            return self.children[0]
+        except IndexError:
+            raise DendrogramError("Leaf node does not have any children.")
+
+    @property
+    def right_child(self):
+        try:
+            return self.children[1]
+        except IndexError:
+            raise DendrogramError("Leaf node does not have any children.")
+
+    def get_max_nodes_below_cutoff(self, p_cutoff, *, exclude_leaf_nodes=True):
+        if p_cutoff >= 1.0:
+            raise ValueError("The value of p_cutoff must be less than 1.0")
+
+        max_nodes = [n for n in self.descendants if n.p_coeff <= p_cutoff and n.parent.p_coeff > p_cutoff]
+        if exclude_leaf_nodes:
+            max_nodes = [n for n in max_nodes if not n.is_leaf]
+        return max_nodes
+
+
+def make_dendrogram_tree(df):
+    """
+    Create a dendrogram tree from frequency distributions.
+
+    Parameters
+    ----------
+    df : pandas.DataFrame
+        The input data frame. Must contain one row per distribution.
+
+    Returns
+    -------
+    DendrogramNode
+        The root node of the dendrogram.
+    """
+    ZZZ = calculate_linkage_matrix_in_python_format(df)
+
+    # set idx to the index of the root node (= the one with the largest number of descendants)
+    root_node_idx = int(ZZZ[:, 3].argmax())
+
+    N = len(df)
+    return make_dendrogram_subtree(df, root_node_idx + N, ZZZ, N)
+
+
+def make_dendrogram_subtree(df, idx, ZZZ, N):
+
+    if idx < N:
+        # leaf node
+        result = DendrogramNode(
+            descr=str(df.index[idx]), index=idx, p_coeff=0, y_pos=100.0, payload=df.iloc[idx], children=[]
+        )
+    else:
+        i = int(ZZZ[idx - N, 0])
+        j = int(ZZZ[idx - N, 1])
+        p_coeff = ZZZ[idx - N, 2]
+        left_child = make_dendrogram_subtree(df, i, ZZZ, N)
+        right_child = make_dendrogram_subtree(df, j, ZZZ, N)
+        children = [left_child, right_child]
+        result = DendrogramNode(
+            descr=None, index=idx, p_coeff=p_coeff, y_pos=(100 * (1 - p_coeff)), payload=None, children=children
+        )
+        left_child.parent = result
+        right_child.parent = result
+
+    return result
