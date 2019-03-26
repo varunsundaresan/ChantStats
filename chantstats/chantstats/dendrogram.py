@@ -1,9 +1,12 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+import os
 import scipy.stats
 from scipy.cluster.hierarchy import dendrogram, linkage
 from scipy.spatial.distance import pdist
+
+from .logging import logger
 
 __all__ = ["plot_dendrogram"]
 
@@ -220,3 +223,51 @@ def make_dendrogram_subtree(df, idx, ZZZ, N):
         right_child.parent = result
 
     return result
+
+
+def plot_bar_chart_for_dendrogram_node_payload(node, figsize=(8, 4)):
+    """
+    Plot a bar chart based on the payload of the given dendrogram node.
+
+    Parameters
+    ----------
+    node : DendrogramNode
+        The dendrogram node of which to plot the payload.
+    figsize : (float, float), optional
+        Width and height of the resulting figure in inches.
+
+    Returns
+    -------
+    matplotlib.figure.Figure
+    """
+    assert isinstance(node, DendrogramNode)
+    fig, ax = plt.subplots(figsize=figsize)
+    node.payload.plot.bar(ax=ax)
+    chants = node.df.index
+    title = f"DendrogramNode with {len(list(node.leaves))} leaves (index: {node.index})"
+    ax.set_title(title)
+    plt.close(fig)
+    return fig
+
+
+def export_max_nodes_below_cutoff(tree, *, output_dir, p_cutoff, fmt="pdf"):
+    """
+    Given a dendrogram tree, find the "maximal" nodes whose p-value
+    is below `p_cutoff` and export a bar chart for each of these nodes'
+    distributions in the directory `output_dir`.
+    """
+    assert isinstance(tree, DendrogramNode)
+
+    supported_output_formats = ["pdf", "png"]
+    if fmt not in supported_output_formats:
+        raise ValueError(f"Unsupported output format: '{fmt}'. Supported formats are: {supported_output_formats}")
+
+    logger.debug(f"Exporting bar charts to directory: '{output_dir}'")
+    os.makedirs(output_dir, exist_ok=True)
+    nodes = tree.get_max_nodes_below_cutoff(p_cutoff=p_cutoff)
+    for node in nodes:
+        fig = plot_bar_chart_for_dendrogram_node_payload(node)
+        outfilename = f"bar_chart_for_dendrogram_node_{node.index:03d}.{fmt}"
+        logger.debug(f"Saving bar chart to file: '{outfilename}'")
+        output_path = os.path.join(output_dir, outfilename)
+        fig.savefig(output_path)
