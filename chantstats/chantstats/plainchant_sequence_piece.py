@@ -3,6 +3,7 @@ import os
 import re
 from enum import Enum
 from glob import glob
+from music21.interval import Interval
 from time import time
 from tqdm import tqdm
 
@@ -20,6 +21,16 @@ class FrameType(str, Enum):
     HEAVY_POLYMODAL_FRAME_2 = "heavy_polymodal_frame_2"
     LIGHT_POLYMODAL_FRAME_1 = "light_polymodal_frame_1"
     LIGHT_POLYMODAL_FRAME_2 = "light_polymodal_frame_2"
+
+
+class AmbitusType(str, Enum):
+    """
+    Possible ambitus types for pieces.
+    """
+
+    AUTHENTIC = "authentic"
+    PLAGAL = "plagal"
+    UNDEFINED = "undefined"
 
 
 def has_heavy_polymodal_frame(piece):
@@ -55,7 +66,10 @@ class PlainchantSequencePiece:
         self.phrases = [PlainchantSequencePhrase(m, piece=self) for m in self.measures]
         self.num_phrases = len(self.phrases)
         self.phrase_finals = [p.phrase_final for p in self.phrases]
+        self.phrase_final_notes = [p.phrase_final_note for p in self.phrases]
         self.first_phrase_final = self.phrase_finals[0]
+        self.note_of_first_phrase_final = self.phrase_final_notes[0]
+        self.lowest_note = min([p.lowest_note for p in self.phrases])
         self.last_phrase_final = self.phrase_finals[-1]
         self.penultimate_phrase_final = self.phrase_finals[-2]
         self.antepenultimate_phrase_final = self.phrase_finals[-3]
@@ -63,8 +77,10 @@ class PlainchantSequencePiece:
         self.frame_type = self._calculate_frame_type()
         self.has_heavy_polymodal_frame = has_heavy_polymodal_frame(self)
         self.main_final = self.first_phrase_final if not self.has_heavy_polymodal_frame else None
+        self.note_of_main_final = self.note_of_first_phrase_final if not self.has_heavy_polymodal_frame else None
         # Note that non_modulatory_phrases will be empty if main_final is None
         self.non_modulatory_phrases = [p for p in self.phrases if p.phrase_final == self.main_final]
+        self.ambitus = self._calculate_ambitus()
 
     def __repr__(self):
         return f"<Piece '{self.filename_short}'>"
@@ -105,6 +121,23 @@ class PlainchantSequencePiece:
                     return FrameType.LIGHT_POLYMODAL_FRAME_2
                 else:
                     return FrameType.HEAVY_POLYMODAL_FRAME_2
+
+    def _calculate_ambitus(self):
+        if self.main_final is None:
+            return AmbitusType.UNDEFINED
+
+        interval = Interval(self.note_of_main_final, self.lowest_note)
+        if 0 >= interval.semitones >= -4:
+            return AmbitusType.AUTHENTIC
+        elif -5 >= interval.semitones > -12:
+            return AmbitusType.PLAGAL
+        else:
+            raise Exception(  # pragma: no cover
+                "Check the logic in the ambitus calculation! "
+                "We expect the lowest note to be less than an octave "
+                "below the main final. The chant being analysed was: "
+                "'{}'".format(self.prettyname)
+            )
 
 
 def load_plainchant_sequence_pieces(input_dir, *, pattern="*.xml", exclude_heavy_polymodal_frame_pieces=False):

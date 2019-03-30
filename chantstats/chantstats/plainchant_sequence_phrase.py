@@ -15,8 +15,10 @@ class PlainchantSequencePhrase:
         self.measure_stream = measure_stream
         self.phrase_number = self.measure_stream.number
         self.notes = self.measure_stream.notes
+        self.lowest_note = min(self.notes)
         self.pitch_classes = [n.name for n in self.notes]
         self.phrase_final = self.pitch_classes[-1]
+        self.phrase_final_note = self.notes[-1]
         self.pc_freqs = PCFreqs(self.pitch_classes)
         self.time_signature = self.piece.stream.flat.getElementAtOrBefore(
             self.measure_stream.getOffsetInHierarchy(self.piece.stream), [music21.meter.TimeSignature]
