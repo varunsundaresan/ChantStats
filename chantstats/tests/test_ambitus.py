@@ -10,9 +10,9 @@ def test_ambitus():
     assert "plagal" == piece5.ambitus
     assert "authentic" == piece7.ambitus
     assert "authentic" == piece8.ambitus
-    assert (
-        "plagal" == piece14.ambitus
-    )  # TODO: the amen formula is a lot lower than the rest of the piece; discuss with AVY
+    assert "plagal" == piece14.ambitus  # TODO: the amen formula is a lot lower than the rest of the piece;
+    # discuss with AVY whether this should affect ambitus calculation for light polymodal pieces in case the
+    # piece without the amen formula would be considered authentic but with the amen formula is plagal.
     assert "plagal" == piece45.ambitus
 
 
