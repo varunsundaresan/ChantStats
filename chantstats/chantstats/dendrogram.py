@@ -177,6 +177,18 @@ class DendrogramNode:
             max_nodes = [n for n in max_nodes if not n.is_leaf]
         return max_nodes
 
+    def make_barplot(self, ylim=None):
+        ax = self.payload.plot.bar()
+        ax.set_ylim(ylim)
+        plt.close(ax.figure)
+        return ax.figure
+
+    def export_barplot(self, output_dir, *, fmt="png", ylim=None):
+        outfilename = os.path.join(output_dir, f"barplot_node_{self.index:02d}.{fmt}")
+        logger.info(f"Exporting bar plot for dendrogram node {self.index} to file '{outfilename}'")
+        fig = self.make_barplot(ylim=ylim)
+        fig.savefig(outfilename)
+
 
 def make_dendrogram_tree(df):
     """
