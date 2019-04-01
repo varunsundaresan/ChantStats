@@ -145,15 +145,14 @@ class DendrogramNode:
 
     @property
     def descendants(self):
-        yield self
+        res = [self]
         for c in self.children:
-            yield from c.descendants
+            res += c.descendants
+        return res
 
     @property
     def leaves(self):
-        for n in self.descendants:
-            if n.is_leaf:
-                yield n
+        return [n for n in self.descendants if n.is_leaf]
 
     @property
     def left_child(self):
