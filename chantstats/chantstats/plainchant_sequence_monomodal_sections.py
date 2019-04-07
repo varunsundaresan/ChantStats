@@ -2,16 +2,20 @@ from itertools import groupby
 from operator import itemgetter
 
 from .pitch_class_freqs import PCFreqs
+from .plainchant_sequence_piece import PlainchantSequencePiece
 
 __all__ = ["MonomodalSection", "extract_monomodal_sections"]
 
 
 class MonomodalSection:
     """
-    Represents a stretch of consecutive phrases with the same phrase-final in a given piece.
+    Represents a section of consecutive phrases in a given piece with the same phrase-final.
     """
 
     def __init__(self, piece, idx_start, idx_end):
+        if not isinstance(piece, PlainchantSequencePiece):
+            raise TypeError("Monomodal sections are only defined for plainchant sequence pieces.")
+
         self.piece = piece
         self.idx_start = idx_start
         self.idx_end = idx_end
@@ -20,7 +24,7 @@ class MonomodalSection:
         if len(set(p.phrase_final for p in self.phrases)) != 1:
             error_msg = (
                 f"Non-unique phrase final: {set(p.phrase_final for p in self.phrases)}"
-                f"(stretch: {self.idx_start}-{self.idx_end})"
+                f"(section: {self.idx_start}-{self.idx_end})"
             )
             raise ValueError(error_msg)
         self.phrase_final = self.phrases[0].phrase_final
@@ -43,7 +47,7 @@ class MonomodalSection:
         return sum([p.pc_freqs for p in self.phrases], PCFreqs.zero_freqs)
 
 
-class PhraseStretchInfo:
+class MonomodalSectionInfo:
     def __init__(self, phrase_final, length, idx_start, idx_end):
         self.phrase_final = phrase_final
         self.length = length
@@ -56,26 +60,26 @@ class PhraseStretchInfo:
 
 def get_groups_with_length_and_indices(items):
     grps = [(x, list(grp)) for x, grp in groupby(enumerate(items, start=1), key=itemgetter(1))]
-    grps = [PhraseStretchInfo(x, len(grp), grp[0][0], grp[-1][0]) for x, grp in grps]
+    grps = [MonomodalSectionInfo(x, len(grp), grp[0][0], grp[-1][0]) for x, grp in grps]
     return grps
 
 
 def extract_monomodal_sections(piece, *, min_length=3):
     """
-    Extract stretches of consecutive phrases with the same phrase-final.
+    Extract monomodal sections (= sections of consecutive phrases with the same phrase-final).
 
     Parameters
     ----------
     piece : PlainchantSequencePiece
-        The piece from which to extract phrase stretches.
+        The piece from which to extract monomodal sections.
     min_length : int
-        Minimum length for phrase stretches to be included in the result
-        (any phrase stretches with fewer phrases are discarded).
+        Minimum length for a section to be included in the result
+        (any phrase sections with fewer phrases are discarded).
 
     Returns
     -------
     list of MonomodalSection
     """
     grps = get_groups_with_length_and_indices(piece.phrase_finals)
-    phrase_stretches = [MonomodalSection(piece, g.idx_start, g.idx_end) for g in grps]
-    return [x for x in phrase_stretches if len(x) >= min_length]
+    phrase_sections = [MonomodalSection(piece, g.idx_start, g.idx_end) for g in grps]
+    return [x for x in phrase_sections if len(x) >= min_length]
