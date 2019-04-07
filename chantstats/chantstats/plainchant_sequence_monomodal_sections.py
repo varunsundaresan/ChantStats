@@ -24,13 +24,13 @@ class MonomodalSection:
                 f"(section: {self.idx_start}-{self.idx_end})"
             )
             raise ValueError(error_msg)
-        self.phrase_final = self.phrases[0].phrase_final
-        self.descr = f"s{self.piece.number:02d}.{self.phrase_final}.mm_{self.idx_start:02d}_{self.idx_end:02d}"
+        self.final = self.phrases[0].phrase_final
+        self.descr = f"s{self.piece.number:02d}.{self.final}.mm_{self.idx_start:02d}_{self.idx_end:02d}"
 
     def __repr__(self):
         s = (
             f"<MonomodalSection: '{self.piece.filename_short}', "
-            f"phrase-final '{self.phrase_final}', "
+            f"phrase-final '{self.final}', "
             f"phrases {self.idx_start}-{self.idx_end} "
             f"(length {len(self)})>"
         )
