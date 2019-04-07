@@ -3,10 +3,10 @@ from operator import itemgetter
 
 from .pitch_class_freqs import PCFreqs
 
-__all__ = ["PhraseStretch", "extract_phrase_stretches"]
+__all__ = ["MonomodalSection", "extract_phrase_stretches"]
 
 
-class PhraseStretch:
+class MonomodalSection:
     """
     Represents a stretch of consecutive phrases with the same phrase-final in a given piece.
     """
@@ -28,7 +28,7 @@ class PhraseStretch:
 
     def __repr__(self):
         s = (
-            f"<PhraseStretch: '{self.piece.filename_short}', "
+            f"<MonomodalSection: '{self.piece.filename_short}', "
             f"phrase-final '{self.phrase_final}', "
             f"phrases {self.idx_start}-{self.idx_end} "
             f"(length {len(self)})>"
@@ -74,8 +74,8 @@ def extract_phrase_stretches(piece, *, min_length=3):
 
     Returns
     -------
-    list of PhraseStretch
+    list of MonomodalSection
     """
     grps = get_groups_with_length_and_indices(piece.phrase_finals)
-    phrase_stretches = [PhraseStretch(piece, g.idx_start, g.idx_end) for g in grps]
+    phrase_stretches = [MonomodalSection(piece, g.idx_start, g.idx_end) for g in grps]
     return [x for x in phrase_stretches if len(x) >= min_length]
