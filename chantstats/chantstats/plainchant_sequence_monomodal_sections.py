@@ -2,7 +2,6 @@ from itertools import groupby
 from operator import itemgetter
 
 from .pitch_class_freqs import PCFreqs
-from .plainchant_sequence_piece import PlainchantSequencePiece
 
 __all__ = ["MonomodalSection", "extract_monomodal_sections"]
 
@@ -13,9 +12,7 @@ class MonomodalSection:
     """
 
     def __init__(self, piece, idx_start, idx_end):
-        if not isinstance(piece, PlainchantSequencePiece):
-            raise TypeError("Monomodal sections are only defined for plainchant sequence pieces.")
-
+        assert piece.__class__.__name__ == "PlainchantSequencePiece"
         self.piece = piece
         self.idx_start = idx_start
         self.idx_end = idx_end
@@ -55,7 +52,7 @@ class MonomodalSectionInfo:
         self.idx_end = idx_end
 
     def __repr__(self):
-        return f"<PhraseGroupInfo: '{self.phrase_final}', length={self.length} ({self.idx_start}-{self.idx_end})>"
+        return f"<MonomodalSectionInfo: '{self.phrase_final}', length={self.length} ({self.idx_start}-{self.idx_end})>"
 
 
 def get_groups_with_length_and_indices(items):

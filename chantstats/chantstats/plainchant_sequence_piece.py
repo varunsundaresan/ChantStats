@@ -9,6 +9,7 @@ from tqdm import tqdm
 
 from .logging import logger
 from .plainchant_sequence_phrase import PlainchantSequencePhrase
+from .plainchant_sequence_monomodal_sections import extract_monomodal_sections
 
 
 class FrameType(str, Enum):
@@ -139,6 +140,24 @@ class PlainchantSequencePiece:
                 "below the main final. The chant being analysed was: "
                 "'{}'".format(self.prettyname)
             )
+
+    def get_monomodal_sections(self, *, min_length=3):
+        """
+        Extract monomodal sections (= sections of consecutive phrases with the same phrase-final).
+
+        Parameters
+        ----------
+        piece : PlainchantSequencePiece
+            The piece from which to extract monomodal sections.
+        min_length : int
+            Minimum length for a section to be included in the result
+            (any phrase sections with fewer phrases are discarded).
+
+        Returns
+        -------
+        list of MonomodalSection
+        """
+        return extract_monomodal_sections(self, min_length=min_length)
 
 
 def load_plainchant_sequence_pieces(input_dir, *, pattern="*.xml", exclude_heavy_polymodal_frame_pieces=False):
