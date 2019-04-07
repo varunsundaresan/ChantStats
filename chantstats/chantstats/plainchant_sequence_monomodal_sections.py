@@ -3,7 +3,7 @@ from operator import itemgetter
 
 from .pitch_class_freqs import PCFreqs
 
-__all__ = ["MonomodalSection", "extract_phrase_stretches"]
+__all__ = ["MonomodalSection", "extract_monomodal_sections"]
 
 
 class MonomodalSection:
@@ -60,7 +60,7 @@ def get_groups_with_length_and_indices(items):
     return grps
 
 
-def extract_phrase_stretches(piece, *, min_length=3):
+def extract_monomodal_sections(piece, *, min_length=3):
     """
     Extract stretches of consecutive phrases with the same phrase-final.
 
