@@ -79,6 +79,7 @@ class PlainchantSequencePiece:
         self.frame_type = self._calculate_frame_type()
         self.has_heavy_polymodal_frame = has_heavy_polymodal_frame(self)
         self.main_final = self.first_phrase_final if not self.has_heavy_polymodal_frame else None
+        self.final = self.main_final  # alias for consistency with other analysis items (e.g.phrases)
         self.note_of_main_final = self.note_of_first_phrase_final if not self.has_heavy_polymodal_frame else None
         # Note that non_modulatory_phrases will be empty if main_final is None
         self.non_modulatory_phrases = [p for p in self.phrases if p.phrase_final == self.main_final]
