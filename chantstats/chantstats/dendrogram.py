@@ -189,6 +189,28 @@ class DendrogramNode:
         fig = self.make_barplot(ylim=ylim)
         fig.savefig(outfilename)
 
+    def get_leaf(self, descr):
+        """
+        Return the leaf whose description matches `descr`.
+        """
+        matches = [x for x in self.leaves if x.descr == descr]
+        if matches == []:
+            raise RuntimeError(f"Did not find any leaves matching '{descr}'")
+        if len(matches) > 1:
+            raise RuntimeError(f"Found multiple matching leaves: {matches}")
+        return matches[0]
+
+    def find_common_ancestor(self, descr1, descr2):
+        leaf1 = self.get_leaf(descr1) if not isinstance(descr1, DendrogramNode) else descr1
+        leaf2 = self.get_leaf(descr2) if not isinstance(descr2, DendrogramNode) else descr2
+        cur_node = leaf1
+        while cur_node is not None:
+            if leaf2 in cur_node.leaves:
+                return cur_node
+            else:
+                cur_node = cur_node.parent
+        raise RuntimeError("This should not be possible")
+
 
 def make_dendrogram_tree(df):
     """
