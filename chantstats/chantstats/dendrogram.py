@@ -172,7 +172,9 @@ class DendrogramNode:
         if p_cutoff >= 1.0:
             raise ValueError("The value of p_cutoff must be less than 1.0")
 
-        max_nodes = [n for n in self.descendants if n.p_coeff <= p_cutoff and n.parent.p_coeff > p_cutoff]
+        max_nodes = [
+            n for n in self.descendants if n.p_coeff <= p_cutoff and (n.parent is None or n.parent.p_coeff > p_cutoff)
+        ]
         if exclude_leaf_nodes:
             max_nodes = [n for n in max_nodes if not n.is_leaf]
         return max_nodes
