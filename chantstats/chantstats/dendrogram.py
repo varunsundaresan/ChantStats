@@ -192,6 +192,26 @@ class DendrogramNode:
         fig = self.make_barplot(ylim=ylim)
         fig.savefig(outfilename)
 
+    def plot_dendrogram(self, *, p_threshold=0.15, figsize=(16, 5), leaf_font_size=10, optimal_ordering=True):
+        return plot_dendrogram(
+            self.df,
+            p_threshold=p_threshold,
+            figsize=figsize,
+            leaf_font_size=leaf_font_size,
+            optimal_ordering=optimal_ordering,
+        )
+
+    def export_dendrogram(
+        self, output_dir, *, fmt="png", figsize=(16, 5), p_threshold=0.15, leaf_font_size=10, optimal_ordering=True
+    ):
+        os.makedirs(output_dir, exist_ok=True)
+        outfilename = os.path.join(output_dir, f"dendrogram.{fmt}")
+        logger.info(f"Exporting dendrogram to file '{outfilename}'")
+        fig = self.plot_dendrogram(
+            p_threshold=p_threshold, figsize=figsize, leaf_font_size=leaf_font_size, optimal_ordering=optimal_ordering
+        )
+        fig.savefig(outfilename)
+
     def get_leaf(self, descr):
         """
         Return the leaf whose description matches `descr`.
