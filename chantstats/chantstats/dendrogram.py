@@ -188,7 +188,7 @@ class DendrogramNode:
     def export_barplot(self, output_dir, *, fmt="png", ylim=None):
         os.makedirs(output_dir, exist_ok=True)
         outfilename = os.path.join(output_dir, f"barplot_node_{self.index:02d}.{fmt}")
-        logger.info(f"Exporting bar plot for dendrogram node {self.index} to file '{outfilename}'")
+        logger.debug(f"Exporting bar plot for dendrogram node {self.index} to file '{outfilename}'")
         fig = self.make_barplot(ylim=ylim)
         fig.savefig(outfilename)
 
@@ -206,7 +206,7 @@ class DendrogramNode:
     ):
         os.makedirs(output_dir, exist_ok=True)
         outfilename = os.path.join(output_dir, f"dendrogram.{fmt}")
-        logger.info(f"Exporting dendrogram to file '{outfilename}'")
+        logger.debug(f"Exporting dendrogram to file '{outfilename}'")
         fig = self.plot_dendrogram(
             p_threshold=p_threshold, figsize=figsize, leaf_font_size=leaf_font_size, optimal_ordering=optimal_ordering
         )
