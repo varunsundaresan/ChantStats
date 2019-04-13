@@ -58,7 +58,7 @@ class PlainchantSequencePiece:
         self.name = re.sub(
             r"\.xml$", "", re.sub("_", " ", self.filename_short)
         )  # remove .xml suffix; replace underscores with spaces
-        self.number = int(re.match("^([0-9]+)_.*\.xml", self.filename_short).group(1))
+        self.number = int(re.match(r"^([0-9]+)_.*\.xml", self.filename_short).group(1))
 
         num_parts = len(self.stream.parts)
         if num_parts != 1:  # pragma: no cover
