@@ -9,11 +9,12 @@ pandas = "*"
 scipy = "*"
 tqdm = "*"
 matplotlib = "*"
+palettable = "*"
 
 [dev-packages]
 versioneer = "*"
 pre-commit = "*"
-chantstats = {editable = true, path = "."}
+chantstats = {editable = true,path = "."}
 pytest = "*"
 pytest-cov = "*"
 ipdb = "*"
