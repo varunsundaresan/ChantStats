@@ -75,6 +75,17 @@ class ModeType(EnumWithDescription):
     AUTHENTIC_MODES = ("authentic_modes", "authentic modes")
     PLAGAL_MODES = ("plagal_modes", "plagal modes")
 
+    def get_description(self, final):
+        # TODO: check that final is a valid pitch class
+        if self.value == "by_final":
+            return f"{final}-final"
+        elif self.value == "authentic_modes":
+            return f"{final}-authentic"
+        elif self.value == "plagal_modes":
+            return f"{final}-plagal"
+        else:
+            raise RuntimeError(f"Unexpected value: {self.value!r}")
+
 
 class FullAnalysisSpec:
     def __init__(self, *, repertoire_and_genre, analysis, unit, mode):
@@ -84,6 +95,12 @@ class FullAnalysisSpec:
         self.mode = ModeType(mode)
 
         self.analysis_func = self.analysis.analysis_func
+
+    def get_description(self, final):
+        # TODO: assert that `final` is a valid pitch class
+        return (
+            f"{self.analysis.description}, {self.repertoire_and_genre.description}, {self.mode.get_description(final)}"
+        )
 
     def __repr__(self):
         return (
