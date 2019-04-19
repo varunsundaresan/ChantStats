@@ -3,7 +3,7 @@ from abc import ABCMeta
 from enum import Enum
 
 from .dendrogram2 import Dendrogram
-from .modal_category import ModalCategory
+from .modal_category import ModalCategory, GroupingByModalCategory
 
 __all__ = ["FullAnalysisSpec"]
 
@@ -78,7 +78,7 @@ class ModeType(EnumWithDescription):
     AUTHENTIC_MODES = ("authentic_modes", "authentic modes")
     PLAGAL_MODES = ("plagal_modes", "plagal modes")
 
-    def get_description(self, final):
+    def get_description(self, *, final):
         # TODO: check that final is a valid pitch class
         if self.value == "by_final":
             return f"{final}-final"
@@ -86,6 +86,17 @@ class ModeType(EnumWithDescription):
             return f"{final}-authentic"
         elif self.value == "plagal_modes":
             return f"{final}-plagal"
+        else:
+            raise RuntimeError(f"Unexpected value: {self.value!r}")
+
+    def get_subfolder(self, *, final):
+        # TODO: check that final is a valid pitch class
+        if self.value == "by_final":
+            return f"{final}_final"
+        elif self.value == "authentic_modes":
+            return f"{final}_authentic"
+        elif self.value == "plagal_modes":
+            return f"{final}_plagal"
         else:
             raise RuntimeError(f"Unexpected value: {self.value!r}")
 
@@ -99,11 +110,9 @@ class FullAnalysisSpec:
 
         self.analysis_func = self.analysis.analysis_func
 
-    def get_description(self, final):
+    def get_description(self, *, final):
         # TODO: assert that `final` is a valid pitch class
-        return (
-            f"{self.analysis.description}, {self.repertoire_and_genre.description}, {self.mode.get_description(final)}"
-        )
+        return f"{self.analysis.description}, {self.repertoire_and_genre.description}, {self.mode.get_description(final=final)}"
 
     def __repr__(self):
         return (
@@ -115,7 +124,7 @@ class FullAnalysisSpec:
             ">"
         )
 
-    def output_path(self, *, root_dir):
+    def output_path(self, *, root_dir, final):
         return os.path.join(
             root_dir,
             self.repertoire_and_genre.path_stub_1,
@@ -123,26 +132,28 @@ class FullAnalysisSpec:
             self.repertoire_and_genre.path_stub_2,
             self.unit.value,
             self.mode.value,
+            self.mode.get_subfolder(final=final),
         )
 
     def export_results(self, *, output_root_dir, group, p_cutoff):
         assert isinstance(group, ModalCategory)
-        output_dir = self.output_path(root_dir=output_root_dir)
+        final = group.key  # TODO: ensure that the key is always a final!!
+
+        output_dir = self.output_path(root_dir=output_root_dir, final=final)
         df = group.make_results_dataframe(analysis_func=self.analysis_func)
         dendrogram = Dendrogram(df, p_threshold=p_cutoff)
         if not os.path.exists(output_dir):
             print(f"Creating output dir: {output_dir}")
             os.makedirs(output_dir, exist_ok=True)
 
-        final = group.key
         output_filename = os.path.join(output_dir, "dendrogram.png")
-        title = f"Dendrogram: {self.get_description(final)}"
+        title = f"Dendrogram: {self.get_description(final=final)}"
         fig = dendrogram.plot_dendrogram(title=title)
         fig.savefig(output_filename)
         print(f"Saved dendrogram plot: '{output_filename}'")
 
         output_filename = os.path.join(output_dir, "stacked_bar_chart.png")
-        title = self.get_description(final)
+        title = self.get_description(final=final)
         fig = dendrogram.plot_stacked_bar_charts(title=title)
         fig.savefig(output_filename)
         print(f"Saved stacked bar chart: '{output_filename}'")
