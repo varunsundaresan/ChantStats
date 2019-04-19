@@ -90,11 +90,20 @@ class Dendrogram:
         )
 
     def plot_dendrogram(
-        self, *, ax=None, figsize=(20, 4), leaf_font_size=10, annotate_nodes_below_cutoff=True, link_color_palette=None
+        self,
+        *,
+        ax=None,
+        title=None,
+        figsize=(20, 4),
+        leaf_font_size=10,
+        annotate_nodes_below_cutoff=True,
+        link_color_palette=None,
     ):
         if ax is None:
             fig, ax = plt.subplots(figsize=figsize)
             plt.close(fig)
+        else:
+            fig = ax.figure
 
         link_color_palette = link_color_palette or palettable.tableau.Tableau_10.hex_colors
         set_link_color_palette(link_color_palette)
@@ -115,12 +124,17 @@ class Dendrogram:
                 ax.annotate(n.id, xy=(n.xpos, n.ypos), xycoords="data", xytext=(4, 4), textcoords="offset points")
                 ax.scatter(n.xpos, n.ypos, zorder=2, color="gray")
 
+        if title:
+            ax.set_title(title)
+
         return fig
 
-    def plot_stacked_bar_charts(self, *, ax=None, figsize=(20, 4)):
+    def plot_stacked_bar_charts(self, *, ax=None, title=None, figsize=(20, 4)):
         if ax is None:
             fig, ax = plt.subplots(figsize=figsize)
             plt.close(fig)
+        else:
+            fig = ax.figure
 
         num_clusters = len(self.nodes_below_cutoff)
         for i, n in enumerate(self.nodes_below_cutoff):
@@ -129,4 +143,6 @@ class Dendrogram:
             )
         ax.set_xticks(list(range(num_clusters + 1)))
         ax.set_xticklabels([f"Cluster {n.id}:\n{n.num_leaves} leaves" for n in self.nodes_below_cutoff])
-        return ax
+        if title:
+            ax.set_title(title)
+        return fig
