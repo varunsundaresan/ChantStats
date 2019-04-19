@@ -115,7 +115,7 @@ class Dendrogram:
                 ax.annotate(n.id, xy=(n.xpos, n.ypos), xycoords="data", xytext=(4, 4), textcoords="offset points")
                 ax.scatter(n.xpos, n.ypos, zorder=2, color="gray")
 
-        return ax
+        return fig
 
     def plot_stacked_bar_charts(self, *, ax=None, figsize=(20, 4)):
         if ax is None:
