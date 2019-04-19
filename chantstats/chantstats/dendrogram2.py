@@ -130,7 +130,9 @@ class Dendrogram:
             fig.tight_layout()
         return fig
 
-    def plot_stacked_bar_charts(self, *, ax=None, title=None, figsize=(20, 4), use_tight_layout=True):
+    def plot_stacked_bar_charts(
+        self, *, ax=None, title=None, figsize=(20, 4), use_tight_layout=True, sort_freqs_ascending=False
+    ):
         if ax is None:
             fig, ax = plt.subplots(figsize=figsize)
             plt.close(fig)
@@ -140,7 +142,7 @@ class Dendrogram:
         num_clusters = len(self.nodes_below_cutoff)
         for i, n in enumerate(self.nodes_below_cutoff):
             plot_stacked_bar_chart_for_relative_frequencies(
-                n.distribution, xpos=i, ax=ax, width=0.6, sort_freqs_ascending=False
+                n.distribution, xpos=i, ax=ax, width=0.6, sort_freqs_ascending=sort_freqs_ascending
             )
         ax.set_xticks(list(range(num_clusters + 1)))
         ax.set_xticklabels([f"Cluster {n.id}:\n{n.num_leaves} leaves" for n in self.nodes_below_cutoff])
