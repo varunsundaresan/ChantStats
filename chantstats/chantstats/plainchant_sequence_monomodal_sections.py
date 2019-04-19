@@ -1,6 +1,7 @@
 from itertools import groupby
 from operator import itemgetter
 
+from .ambitus import get_ambitus
 from .pitch_class_freqs import PCFreqs
 
 __all__ = ["MonomodalSection", "extract_monomodal_sections"]
@@ -25,7 +26,11 @@ class MonomodalSection:
             )
             raise ValueError(error_msg)
         self.final = self.phrases[0].phrase_final
+        assert all([p.final == self.final for p in self.phrases])  # sanity check
         self.descr = f"s{self.piece.number:02d}.{self.final}.mm_{self.idx_start:02d}_{self.idx_end:02d}"
+        self.note_of_final = self.phrases[0].notes[-1]
+        self.lowest_note = min([p.lowest_note for p in self.phrases])
+        self.ambitus = get_ambitus(note_of_final=self.note_of_final, lowest_note=self.lowest_note)
 
     def __repr__(self):
         s = (

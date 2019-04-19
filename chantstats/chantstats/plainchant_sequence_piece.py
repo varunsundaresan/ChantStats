@@ -7,6 +7,7 @@ from music21.interval import Interval
 from time import time
 from tqdm import tqdm
 
+from .ambitus import get_ambitus
 from .logging import logger
 from .plainchant_sequence_phrase import PlainchantSequencePhrase
 from .plainchant_sequence_monomodal_sections import extract_monomodal_sections
@@ -22,16 +23,6 @@ class FrameType(str, Enum):
     HEAVY_POLYMODAL_FRAME_2 = "heavy_polymodal_frame_2"
     LIGHT_POLYMODAL_FRAME_1 = "light_polymodal_frame_1"
     LIGHT_POLYMODAL_FRAME_2 = "light_polymodal_frame_2"
-
-
-class AmbitusType(str, Enum):
-    """
-    Possible ambitus types for pieces.
-    """
-
-    AUTHENTIC = "authentic"
-    PLAGAL = "plagal"
-    UNDEFINED = "undefined"
 
 
 def has_heavy_polymodal_frame(piece):
@@ -81,9 +72,10 @@ class PlainchantSequencePiece:
         self.main_final = self.first_phrase_final if not self.has_heavy_polymodal_frame else None
         self.final = self.main_final  # alias for consistency with other analysis items (e.g.phrases)
         self.note_of_main_final = self.note_of_first_phrase_final if not self.has_heavy_polymodal_frame else None
+        self.note_of_final = self.note_of_main_final  # alias for consistency with other analysis items (e.g. phrases)
         # Note that non_modulatory_phrases will be empty if main_final is None
         self.non_modulatory_phrases = [p for p in self.phrases if p.phrase_final == self.main_final]
-        self.ambitus = self._calculate_ambitus()
+        self.ambitus = get_ambitus(note_of_final=self.note_of_main_final, lowest_note=self.lowest_note)
 
     def __repr__(self):
         return f"<Piece '{self.filename_short}'>"
@@ -124,23 +116,6 @@ class PlainchantSequencePiece:
                     return FrameType.LIGHT_POLYMODAL_FRAME_2
                 else:
                     return FrameType.HEAVY_POLYMODAL_FRAME_2
-
-    def _calculate_ambitus(self):
-        if self.main_final is None:
-            return AmbitusType.UNDEFINED
-
-        interval = Interval(self.note_of_main_final, self.lowest_note)
-        if 0 >= interval.semitones >= -4:
-            return AmbitusType.AUTHENTIC
-        elif -5 >= interval.semitones > -12:
-            return AmbitusType.PLAGAL
-        else:
-            raise Exception(  # pragma: no cover
-                "Check the logic in the ambitus calculation! "
-                "We expect the lowest note to be less than an octave "
-                "below the main final. The chant being analysed was: "
-                "'{}'".format(self.prettyname)
-            )
 
     def get_monomodal_sections(self, *, min_length=3):
         """

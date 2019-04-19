@@ -1,5 +1,5 @@
 from .context import chantstats
-from chantstats.plainchant_sequence_piece import AmbitusType
+from chantstats.ambitus import AmbitusType
 
 from .sample_pieces import *
 
@@ -21,3 +21,11 @@ def test_ambitus_is_None_for_heavy_polymodal_frame_pieces():
     assert "undefined" == piece4.ambitus
     assert "undefined" == piece6.ambitus
     assert "undefined" == piece12.ambitus
+
+
+def test_ambitus_of_monomodal_sections():
+    assert "authentic" == piece1.get_monomodal_sections()[0].ambitus
+    assert "plagal" == piece2.get_monomodal_sections()[0].ambitus
+    assert "authentic" == piece4.get_monomodal_sections()[0].ambitus
+    assert "plagal" == piece4.get_monomodal_sections()[1].ambitus
+    assert "plagal" == piece5.get_monomodal_sections()[0].ambitus

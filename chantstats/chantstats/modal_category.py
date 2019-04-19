@@ -4,9 +4,9 @@ import shutil
 from collections import defaultdict
 from enum import Enum
 
+from .ambitus import AmbitusType
 from .dendrogram import make_dendrogram_tree
 from .logging import logger
-from .plainchant_sequence_piece import AmbitusType
 
 __all__ = ["GroupingByModalCategory"]
 
