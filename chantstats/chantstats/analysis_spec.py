@@ -2,6 +2,9 @@ import os
 from abc import ABCMeta
 from enum import Enum
 
+from .dendrogram2 import Dendrogram
+from .modal_category import ModalCategory
+
 __all__ = ["FullAnalysisSpec"]
 
 
@@ -121,3 +124,25 @@ class FullAnalysisSpec:
             self.unit.value,
             self.mode.value,
         )
+
+    def export_results(self, *, output_root_dir, group, p_cutoff):
+        assert isinstance(group, ModalCategory)
+        output_dir = self.output_path(root_dir=output_root_dir)
+        df = group.make_results_dataframe(analysis_func=self.analysis_func)
+        dendrogram = Dendrogram(df, p_threshold=p_cutoff)
+        if not os.path.exists(output_dir):
+            print(f"Creating output dir: {output_dir}")
+            os.makedirs(output_dir, exist_ok=True)
+
+        final = group.key
+        output_filename = os.path.join(output_dir, "dendrogram.png")
+        title = f"Dendrogram: {self.get_description(final)}"
+        fig = dendrogram.plot_dendrogram(title=title)
+        fig.savefig(output_filename)
+        print(f"Saved dendrogram plot: '{output_filename}'")
+
+        output_filename = os.path.join(output_dir, "stacked_bar_chart.png")
+        title = self.get_description(final)
+        fig = dendrogram.plot_stacked_bar_charts(title=title)
+        fig.savefig(output_filename)
+        print(f"Saved stacked bar chart: '{output_filename}'")
