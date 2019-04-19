@@ -64,8 +64,8 @@ class Dendrogram:
         self.R = dendrogram(self.L, no_plot=True)
         root_node, all_cluster_nodes = to_tree(self.L, rd=True)
         self.leaf_ids = root_node.pre_order(lambda x: x.id)
-        self.root_node = DendrogramNode(df, root_node, all_leaf_ids=self.leaf_ids)
         self.all_cluster_nodes = [DendrogramNode(df, cn, all_leaf_ids=self.leaf_ids) for cn in all_cluster_nodes]
+        self.root_node = [n for n in self.all_cluster_nodes if n.cluster_node is root_node][0]  # TODO: simplify this
 
         # Retroactively assign left/right children to each DendrogramNode
         for n in self.all_cluster_nodes:
