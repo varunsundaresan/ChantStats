@@ -98,6 +98,7 @@ class Dendrogram:
         leaf_font_size=10,
         annotate_nodes_below_cutoff=True,
         link_color_palette=None,
+        use_tight_layout=True,
     ):
         if ax is None:
             fig, ax = plt.subplots(figsize=figsize)
@@ -123,13 +124,13 @@ class Dendrogram:
             for i, n in enumerate(self.nodes_below_cutoff):
                 ax.annotate(n.id, xy=(n.xpos, n.ypos), xycoords="data", xytext=(4, 4), textcoords="offset points")
                 ax.scatter(n.xpos, n.ypos, zorder=2, color="gray")
-
         if title:
             ax.set_title(title)
-
+        if use_tight_layout:
+            fig.tight_layout()
         return fig
 
-    def plot_stacked_bar_charts(self, *, ax=None, title=None, figsize=(20, 4)):
+    def plot_stacked_bar_charts(self, *, ax=None, title=None, figsize=(20, 4), use_tight_layout=True):
         if ax is None:
             fig, ax = plt.subplots(figsize=figsize)
             plt.close(fig)
@@ -145,4 +146,6 @@ class Dendrogram:
         ax.set_xticklabels([f"Cluster {n.id}:\n{n.num_leaves} leaves" for n in self.nodes_below_cutoff])
         if title:
             ax.set_title(title)
+        if use_tight_layout:
+            fig.tight_layout()
         return fig
