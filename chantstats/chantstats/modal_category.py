@@ -60,24 +60,23 @@ class ModalCategory:
         return pd.DataFrame({x.descr: analysis_func(x) for x in self.items}).T
 
     def export_results(self, *, output_root_dir, analysis_spec, p_cutoff, sort_freqs_ascending=False, overwrite=False):
-        if os.path.exists(output_root_dir):
-            if not overwrite:
-                logger.warning(
-                    f"Output directory exists. Use `overwrite=True` to delete its contents before exporting results: '{output_root_dir}'"
-                )
-                return
-            else:
-                logger.warning(
-                    f"Deleting contents of existing output directory (because overwrite=True): '{output_root_dir}'"
-                )
-                shutil.rmtree(output_root_dir)
-
         logger.info(f"Exporting results for {self}")
 
         final = self.key  # TODO: ensure that the key is always a final!!
         assert isinstance(final, str)
 
         output_dir = analysis_spec.output_path(root_dir=output_root_dir, final=final)
+        if os.path.exists(output_dir):
+            if not overwrite:
+                logger.warning(
+                    f"Output directory exists. Use `overwrite=True` to delete its contents before exporting results: '{output_dir}'"
+                )
+                return
+            else:
+                logger.warning(
+                    f"Deleting contents of existing output directory (because overwrite=True): '{output_dir}'"
+                )
+                shutil.rmtree(output_dir)
         if not os.path.exists(output_dir):
             logger.debug(f"Creating output dir: {output_dir}")
             os.makedirs(output_dir, exist_ok=True)
@@ -117,17 +116,24 @@ class GroupingByModalCategory:
     def __repr__(self):
         return f"<Grouping by '{self.grouped_by}': {len(self.groups)} groups ({len(self.items)} items)>"
 
-    def export_results(self, *, analysis_func, output_dir, fmt="png", p_cutoff=0.15, overwrite=False):
-        if os.path.exists(output_dir):
-            logger.info(f"Output directory exists: '{output_dir}'")
-            if overwrite:
-                logger.debug("Deleting its contents and re-exporting results because overwrite=True.")
-                shutil.rmtree(output_dir)
-            else:
-                logger.info(
-                    f"Not exporting results (use `overwrite=True` to delete its contents and re-export the results)."
+    def export_results(self, *, analysis_spec, output_root_dir, p_cutoff, overwrite=False, sort_freqs_ascending=False):
+        if os.path.exists(output_root_dir):
+            if not overwrite:
+                logger.warning(
+                    f"Output directory exists. Use `overwrite=True` to delete its contents before exporting results: '{output_root_dir}'"
                 )
                 return
+            else:
+                logger.warning(
+                    f"Deleting contents of existing output directory (because overwrite=True): '{output_root_dir}'"
+                )
+                shutil.rmtree(output_root_dir)
 
-        for grp in self.groups.values():
-            grp.export_results(analysis_func=analysis_func, output_dir=output_dir, fmt=fmt, p_cutoff=p_cutoff)
+        logger.info(f"Exporting results for {self}")
+        for group in self.groups.values():
+            group.export_results(
+                analysis_spec=analysis_spec,
+                output_root_dir=output_root_dir,
+                p_cutoff=p_cutoff,
+                sort_freqs_ascending=sort_freqs_ascending,
+            )

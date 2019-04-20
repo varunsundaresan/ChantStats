@@ -137,48 +137,8 @@ class FullAnalysisSpec:
             self.mode.get_subfolder(final=final),
         )
 
-    def export_results_for_group(self, *, output_root_dir, group, p_cutoff, sort_freqs_ascending=False):
-        assert isinstance(group, ModalCategory)
-        logger.info(f"Exporting results for {group}")
-
-        final = group.key  # TODO: ensure that the key is always a final!!
-        assert isinstance(final, str)
-
-        output_dir = self.output_path(root_dir=output_root_dir, final=final)
-        df = group.make_results_dataframe(analysis_func=self.analysis_func)
-        dendrogram = Dendrogram(df, p_threshold=p_cutoff)
-        if not os.path.exists(output_dir):
-            logger.debug(f"Creating output dir: {output_dir}")
-            os.makedirs(output_dir, exist_ok=True)
-
-        output_filename = os.path.join(output_dir, "dendrogram.png")
-        title = f"Dendrogram: {self.get_description(final=final)} (p_cutoff={p_cutoff})"
-        fig = dendrogram.plot_dendrogram(title=title)
-        fig.savefig(output_filename)
-        logger.debug(f"Saved dendrogram plot: '{output_filename}'")
-
-        output_filename = os.path.join(output_dir, "stacked_bar_chart.png")
-        title = f"{self.get_description(final=final)} (p_cutoff={p_cutoff})"
-        fig = dendrogram.plot_stacked_bar_charts(title=title, sort_freqs_ascending=sort_freqs_ascending)
-        fig.savefig(output_filename)
-        logger.debug(f"Saved stacked bar chart: '{output_filename}'")
-
     def export_results(self, *, output_root_dir, grouping, p_cutoff, overwrite=False, sort_freqs_ascending=False):
-        if os.path.exists(output_root_dir):
-            if overwrite:
-                logger.warning(f"Removing output root dir and all its subfolders: '{output_root_dir}'")
-                shutil.rmtree(output_root_dir)
-            else:
-                logger.warning(
-                    f"Output root dir exists (use `overwrite=True` to remove and re-export results): '{output_root_dir}'"
-                )
-                return
-
-        assert isinstance(grouping, GroupingByModalCategory)
-        for group in grouping.groups.values():
-            self.export_results_for_group(
-                group=group,
-                output_root_dir=output_root_dir,
-                p_cutoff=p_cutoff,
-                sort_freqs_ascending=sort_freqs_ascending,
-            )
+        raise DeprecationWarning(
+            "This method has been moved to the class GroupingByModalCategory. "
+            "You should call grouping.export_results(analysis_spec=..., ...)."
+        )
