@@ -64,8 +64,12 @@ def test_results_folder_structure(tmpdir, diff_reporter):
     )
     group_by = "final"
     grouping = GroupingByModalCategory(monomodal_sections, group_by=group_by)
-    analysis_spec.export_results(
-        output_root_dir=output_root_dir, grouping=grouping, p_cutoff=0.7, overwrite=True, sort_freqs_ascending=False
+    grouping.export_results(
+        output_root_dir=output_root_dir,
+        analysis_spec=analysis_spec,
+        p_cutoff=0.7,
+        overwrite=True,
+        sort_freqs_ascending=False,
     )
     output_folder_structure = list_directory_tree(output_root_dir)
     verify(output_folder_structure, diff_reporter)
