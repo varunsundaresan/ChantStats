@@ -23,7 +23,7 @@ class EnumWithDescription(str, Enum):
         Returns
         -------
         str
-            Long form description of this state suitable for use in plot titles etc.
+            Long form description of this enum suitable for use in plot titles etc.
         """
         return self._description
 
