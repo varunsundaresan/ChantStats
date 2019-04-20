@@ -19,6 +19,7 @@ pytest = "*"
 pytest-cov = "*"
 ipdb = "*"
 sh = "*"
+approvaltests = "*"
 
 [requires]
 python_version = "3.7"

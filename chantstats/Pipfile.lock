@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "31c6b21893124643063b444b1bc5baac2e53b89594f79081f1d69ad493531ba3"
+            "sha256": "fbf76109e9f6dbda560cb9c85b1b29d0c58be3f34388c4d72585f52c3d0ed54a"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -223,6 +223,13 @@
             ],
             "markers": "sys_platform == 'darwin'",
             "version": "==0.1.0"
+        },
+        "approvaltests": {
+            "hashes": [
+                "sha256:15c18543f68dcdb124295b9fc0135096f86a9d973381ff5936e40a4457c02038"
+            ],
+            "index": "pypi",
+            "version": "==0.2.4"
         },
         "aspy.yaml": {
             "hashes": [
@@ -563,6 +570,12 @@
                 "sha256:9b6323ef4ab914af344ba97510e966d64ba91055d6b9afa6b30799340e89cc03"
             ],
             "version": "==2.4.0"
+        },
+        "pyperclip": {
+            "hashes": [
+                "sha256:a3cb6df5d8f1557ca8fc514d94fabf50dc5a97042c90e5ba4f3611864fed3fc5"
+            ],
+            "version": "==1.5.27"
         },
         "pytest": {
             "hashes": [
