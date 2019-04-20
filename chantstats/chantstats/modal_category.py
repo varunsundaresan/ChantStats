@@ -5,7 +5,7 @@ from collections import defaultdict
 from enum import Enum
 
 from .ambitus import AmbitusType
-from .dendrogram import make_dendrogram_tree
+from .dendrogram2 import Dendrogram
 from .logging import logger
 
 __all__ = ["GroupingByModalCategory"]
@@ -59,15 +59,43 @@ class ModalCategory:
     def make_results_dataframe(self, *, analysis_func):
         return pd.DataFrame({x.descr: analysis_func(x) for x in self.items}).T
 
-    def export_results(self, *, analysis_func, output_dir, fmt="png", p_cutoff=0.15):
-        cur_output_dir = os.path.join(output_dir, self.output_path_stub)
-        # logger.debug(f"Exporting results for key={grp.key!r} to directory: '{cur_output_dir}'")
-        logger.debug(f"Current output dir (for key={self.key!r}): '{cur_output_dir}'")
-        df = self.make_results_dataframe(analysis_func=analysis_func)
-        tree = make_dendrogram_tree(df)
-        tree.export_dendrogram(cur_output_dir, fmt=fmt)
-        for node in tree.get_max_nodes_below_cutoff(p_cutoff=p_cutoff):
-            node.export_barplot(cur_output_dir, fmt=fmt)
+    def export_results(self, *, output_root_dir, analysis_spec, p_cutoff, sort_freqs_ascending=False, overwrite=False):
+        if os.path.exists(output_root_dir):
+            if not overwrite:
+                logger.warning(
+                    f"Output directory exists. Use `overwrite=True` to delete its contents before exporting results: '{output_root_dir}'"
+                )
+                return
+            else:
+                logger.warning(
+                    f"Deleting contents of existing output directory (because overwrite=True): '{output_root_dir}'"
+                )
+                shutil.rmtree(output_root_dir)
+
+        logger.info(f"Exporting results for {self}")
+
+        final = self.key  # TODO: ensure that the key is always a final!!
+        assert isinstance(final, str)
+
+        output_dir = analysis_spec.output_path(root_dir=output_root_dir, final=final)
+        if not os.path.exists(output_dir):
+            logger.debug(f"Creating output dir: {output_dir}")
+            os.makedirs(output_dir, exist_ok=True)
+
+        df = self.make_results_dataframe(analysis_func=analysis_spec.analysis_func)
+        dendrogram = Dendrogram(df, p_threshold=p_cutoff)
+
+        output_filename = os.path.join(output_dir, "dendrogram.png")
+        title = f"Dendrogram: {analysis_spec.get_description(final=final)} (p_cutoff={p_cutoff})"
+        fig = dendrogram.plot_dendrogram(title=title)
+        fig.savefig(output_filename)
+        logger.debug(f"Saved dendrogram plot: '{output_filename}'")
+
+        output_filename = os.path.join(output_dir, "stacked_bar_chart.png")
+        title = f"{analysis_spec.get_description(final=final)} (p_cutoff={p_cutoff})"
+        fig = dendrogram.plot_stacked_bar_charts(title=title, sort_freqs_ascending=sort_freqs_ascending)
+        fig.savefig(output_filename)
+        logger.debug(f"Saved stacked bar chart: '{output_filename}'")
 
 
 class GroupingByModalCategory:
