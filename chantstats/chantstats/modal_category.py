@@ -34,6 +34,16 @@ class ModalCategoryType(str, Enum):
         else:
             raise NotImplementedError(f"Unexpected grouping type: {self}")
 
+    def get_descr(self, key):
+        if self == "final":
+            return os.path.join(f"{key}_final")
+        elif self == "final_and_ambitus":
+            final = key[0]
+            ambitus = AmbitusType(key[1])
+            return os.path.join(f"{final}_{ambitus}")
+        else:
+            raise NotImplementedError(f"Unexpected grouping type: {self}")
+
 
 class ModalCategory:
     def __init__(self, items, modal_category_type, key):
@@ -41,6 +51,7 @@ class ModalCategory:
         self.modal_category_type = ModalCategoryType(modal_category_type)
         self.key = key
         self.output_path_stub = self.modal_category_type.get_output_path_stub(self.key)
+        self.descr = self.modal_category_type.get_descr(self.key)
 
     def __repr__(self):
         return f"<ModalCategory with {self.modal_category_type.value}={self.key}, {len(self.items)} items>"
