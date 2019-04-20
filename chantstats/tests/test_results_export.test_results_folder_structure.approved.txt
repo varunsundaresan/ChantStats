@@ -1,0 +1,26 @@
+.
+└── chant
+    └── pc_freqs
+        └── sequences
+            └── pcs
+                └── authentic_modes
+                    ├── A_authentic
+                    │   ├── dendrogram.png
+                    │   └── stacked_bar_chart.png
+                    ├── B_authentic
+                    │   ├── dendrogram.png
+                    │   └── stacked_bar_chart.png
+                    ├── C_authentic
+                    │   ├── dendrogram.png
+                    │   └── stacked_bar_chart.png
+                    ├── D_authentic
+                    │   ├── dendrogram.png
+                    │   └── stacked_bar_chart.png
+                    ├── E_authentic
+                    │   ├── dendrogram.png
+                    │   └── stacked_bar_chart.png
+                    └── G_authentic
+                        ├── dendrogram.png
+                        └── stacked_bar_chart.png
+
+11 directories, 12 files

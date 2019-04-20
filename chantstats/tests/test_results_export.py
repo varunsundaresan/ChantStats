@@ -1,5 +1,6 @@
 import os
 import pytest
+from approvaltests.approvals import verify
 
 from .context import chantstats
 from chantstats import load_plainchant_sequence_pieces, FullAnalysisSpec, GroupingByModalCategory
@@ -51,10 +52,12 @@ def test_output_path(repertoire_and_genre, analysis, unit, mode, final, output_p
 
 
 @pytest.mark.slow
-def test_results_folder_structure(tmpdir):
+def test_results_folder_structure(tmpdir, diff_reporter):
     output_root_dir = str(tmpdir)
     print(f"[DDD] output_root_dir={output_root_dir}")
-    pieces = load_plainchant_sequence_pieces(chants_dir, pattern="*.xml", exclude_heavy_polymodal_frame_pieces=False)
+    pieces = load_plainchant_sequence_pieces(
+        chants_dir, pattern="BN_lat_1112_Sequence_*.xml", exclude_heavy_polymodal_frame_pieces=False
+    )
     monomodal_sections = sum([p.get_monomodal_sections(min_length=3) for p in pieces], [])
     analysis_spec = FullAnalysisSpec(
         repertoire_and_genre="plainchant_sequences", analysis="pc_freqs", unit="pcs", mode="authentic_modes"
@@ -65,7 +68,4 @@ def test_results_folder_structure(tmpdir):
         output_root_dir=output_root_dir, grouping=grouping, p_cutoff=0.7, overwrite=True, sort_freqs_ascending=False
     )
     output_folder_structure = list_directory_tree(output_root_dir)
-    print("============================================================")
-    print(output_folder_structure)
-    print("============================================================")
-    assert output_folder_structure == ""
+    verify(output_folder_structure, diff_reporter)
