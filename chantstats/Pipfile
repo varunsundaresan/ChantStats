@@ -18,6 +18,7 @@ chantstats = {editable = true,path = "."}
 pytest = "*"
 pytest-cov = "*"
 ipdb = "*"
+sh = "*"
 
 [requires]
 python_version = "3.7"

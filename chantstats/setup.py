@@ -29,6 +29,6 @@ setup(
     ],
     packages=find_packages(),
     install_requires=["matplotlib", "music21", "pandas", "scipy", "tqdm", "palettable"],
-    extras_require={"dev": [], "test": ["pytest", "pytest-cov"]},
+    extras_require={"dev": [], "test": ["pytest", "pytest-cov", "sh"]},
     cmdclass=versioneer.get_cmdclass(),
 )
