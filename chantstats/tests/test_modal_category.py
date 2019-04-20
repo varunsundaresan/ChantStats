@@ -30,8 +30,7 @@ def test_modal_category_output_path_stub():
     assert mc.descr == "B_plagal"
 
 
-# TODO: the setup for this test should be factored out!
-def test_export_results(dummy_grouping, tmpdir):
+def test_export_results_for_modal_category(dummy_grouping, tmpdir):
     output_root_dir = str(tmpdir)
     print(f"[DDD] dummy_grouping: {dummy_grouping}")
     grp = dummy_grouping.groups["D"]
@@ -53,6 +52,40 @@ def test_export_results(dummy_grouping, tmpdir):
                                 └── stacked_bar_chart.png
 
         6 directories, 2 files
+        """
+    )
+    assert expected_dir_tree == dir_tree
+
+
+def test_export_results_for_grouping_by_modal_category(dummy_grouping, tmpdir):
+    output_root_dir = str(tmpdir)
+    print(f"[DDD] dummy_grouping: {dummy_grouping}")
+    analysis_spec = FullAnalysisSpec(
+        repertoire_and_genre="plainchant_sequences", analysis="pc_freqs", unit="pcs", mode="authentic_modes"
+    )
+    dummy_grouping.export_results(
+        analysis_spec=analysis_spec, output_root_dir=output_root_dir, p_cutoff=0.7, overwrite=True
+    )
+    dir_tree = list_directory_tree(output_root_dir)
+    expected_dir_tree = textwrap.dedent(
+        """\
+        .
+        └── chant
+            └── pc_freqs
+                └── sequences
+                    └── pcs
+                        └── authentic_modes
+                            ├── C_authentic
+                            │   ├── dendrogram.png
+                            │   └── stacked_bar_chart.png
+                            ├── D_authentic
+                            │   ├── dendrogram.png
+                            │   └── stacked_bar_chart.png
+                            └── G_authentic
+                                ├── dendrogram.png
+                                └── stacked_bar_chart.png
+
+        8 directories, 6 files
         """
     )
     assert expected_dir_tree == dir_tree
