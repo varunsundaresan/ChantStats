@@ -1,1 +1,6 @@
+*.egg-info
+.coverage
+__pycache__
+pip-wheel-metadata
 playground/
+*.received.txt
