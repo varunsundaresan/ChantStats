@@ -73,6 +73,7 @@ class GroupingByModalCategory:
         for item in self.items:
             grps[self.grouping_func(item)].append(item)
         self.groups = {key: ModalCategory(items, self.grouped_by, key) for key, items in grps.items()}
+        self.keys = list(sorted(self.groups.keys()))
 
     def __repr__(self):
         return f"<Grouping by '{self.grouped_by}': {len(self.groups)} groups ({len(self.items)} items)>"
