@@ -30,10 +30,10 @@ def test_modal_category_output_path_stub():
     assert mc.descr == "B-plagal"
 
 
-def test_export_results_for_modal_category(dummy_grouping, tmpdir):
+def test_export_results_for_modal_category(dummy_grouping_by_final, tmpdir):
     output_root_dir = str(tmpdir)
-    print(f"[DDD] dummy_grouping: {dummy_grouping}")
-    grp = dummy_grouping.groups["D"]
+    print(f"[DDD] dummy_grouping_by_final: {dummy_grouping_by_final}")
+    grp = dummy_grouping_by_final.groups["D"]
     analysis_spec = FullAnalysisSpec(repertoire_and_genre="plainchant_sequences", analysis="pc_freqs", unit="pcs")
     grp.export_dendrogram_and_stacked_bar_chart(
         analysis_spec=analysis_spec, output_root_dir=output_root_dir, p_cutoff=0.7, overwrite=True
@@ -57,11 +57,11 @@ def test_export_results_for_modal_category(dummy_grouping, tmpdir):
     assert expected_dir_tree == dir_tree
 
 
-def test_export_results_for_grouping_by_modal_category(dummy_grouping, tmpdir):
+def test_export_results_for_grouping_by_modal_category(dummy_grouping_by_final, tmpdir):
     output_root_dir = str(tmpdir)
-    print(f"[DDD] dummy_grouping: {dummy_grouping}")
+    print(f"[DDD] dummy_grouping_by_final: {dummy_grouping_by_final}")
     analysis_spec = FullAnalysisSpec(repertoire_and_genre="plainchant_sequences", analysis="pc_freqs", unit="pcs")
-    dummy_grouping.export_results(
+    dummy_grouping_by_final.export_results(
         analysis_spec=analysis_spec, output_root_dir=output_root_dir, p_cutoff=0.7, overwrite=True
     )
     dir_tree = list_directory_tree(output_root_dir)
