@@ -4,6 +4,7 @@ from itertools import count
 from .context import chantstats
 from chantstats import FullAnalysisSpec
 from chantstats.modal_category import ModalCategory
+from chantstats.results_export import export_dendrogram_and_stacked_bar_chart
 from chantstats.utils import list_directory_tree
 
 
@@ -35,8 +36,8 @@ def test_export_results_for_modal_category(dummy_grouping_by_final, tmpdir):
     print(f"[DDD] dummy_grouping_by_final: {dummy_grouping_by_final}")
     grp = dummy_grouping_by_final.groups["D"]
     analysis_spec = FullAnalysisSpec(repertoire_and_genre="plainchant_sequences", analysis="pc_freqs", unit="pcs")
-    grp.export_dendrogram_and_stacked_bar_chart(
-        analysis_spec=analysis_spec, output_root_dir=output_root_dir, p_cutoff=0.7, overwrite=True
+    export_dendrogram_and_stacked_bar_chart(
+        output_root_dir=output_root_dir, analysis_spec=analysis_spec, modal_category=grp, p_cutoff=0.7, overwrite=True
     )
     dir_tree = list_directory_tree(output_root_dir)
     expected_dir_tree = textwrap.dedent(
@@ -62,8 +63,8 @@ def test_export_results_for_modal_category_v2(dummy_grouping_by_final_and_ambitu
     print(f"[DDD] dummy_grouping_by_final_and_ambitus: {dummy_grouping_by_final_and_ambitus}")
     grp = dummy_grouping_by_final_and_ambitus.groups[("D", "plagal")]
     analysis_spec = FullAnalysisSpec(repertoire_and_genre="plainchant_sequences", analysis="pc_freqs", unit="pcs")
-    grp.export_dendrogram_and_stacked_bar_chart(
-        analysis_spec=analysis_spec, output_root_dir=output_root_dir, p_cutoff=0.7, overwrite=True
+    export_dendrogram_and_stacked_bar_chart(
+        output_root_dir=output_root_dir, analysis_spec=analysis_spec, modal_category=grp, p_cutoff=0.7, overwrite=True
     )
     dir_tree = list_directory_tree(output_root_dir)
     expected_dir_tree = textwrap.dedent(
