@@ -78,9 +78,6 @@ class ModalCategory:
         """
         logger.info(f"Exporting results for {self}")
 
-        final = self.key  # TODO: ensure that the key is always a final!!
-        assert isinstance(final, str)
-
         output_dir = analysis_spec.output_path(root_dir=output_root_dir, modal_category=self)
         if os.path.exists(output_dir):
             if not overwrite:

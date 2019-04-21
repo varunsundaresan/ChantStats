@@ -32,3 +32,8 @@ def diff_reporter():
 @pytest.fixture(scope="session")
 def dummy_grouping_by_final():
     return make_dummy_grouping_by_modal_category(group_by="final")
+
+
+@pytest.fixture(scope="session")
+def dummy_grouping_by_final_and_ambitus():
+    return make_dummy_grouping_by_modal_category(group_by="final_and_ambitus")
