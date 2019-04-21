@@ -10,24 +10,24 @@ from chantstats.utils import list_directory_tree
 def test_modal_category_output_path_stub():
     mc = ModalCategory(items=[], modal_category_type="final", key="D")
     assert mc.output_path_stub == "by_final/D_final"
-    assert mc.descr == "D_final"
+    assert mc.descr == "D-final"
     mc = ModalCategory(items=[], modal_category_type="final", key="G")
     assert mc.output_path_stub == "by_final/G_final"
-    assert mc.descr == "G_final"
+    assert mc.descr == "G-final"
 
     mc = ModalCategory(items=[], modal_category_type="final_and_ambitus", key=("C", "authentic"))
     assert mc.output_path_stub == "authentic_modes/C_authentic"
-    assert mc.descr == "C_authentic"
+    assert mc.descr == "C-authentic"
     mc = ModalCategory(items=[], modal_category_type="final_and_ambitus", key=("F", "authentic"))
     assert mc.output_path_stub == "authentic_modes/F_authentic"
-    assert mc.descr == "F_authentic"
+    assert mc.descr == "F-authentic"
 
     mc = ModalCategory(items=[], modal_category_type="final_and_ambitus", key=("A", "plagal"))
     assert mc.output_path_stub == "plagal_modes/A_plagal"
-    assert mc.descr == "A_plagal"
+    assert mc.descr == "A-plagal"
     mc = ModalCategory(items=[], modal_category_type="final_and_ambitus", key=("B", "plagal"))
     assert mc.output_path_stub == "plagal_modes/B_plagal"
-    assert mc.descr == "B_plagal"
+    assert mc.descr == "B-plagal"
 
 
 def test_export_results_for_modal_category(dummy_grouping, tmpdir):

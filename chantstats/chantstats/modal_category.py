@@ -36,11 +36,11 @@ class ModalCategoryType(str, Enum):
 
     def get_descr(self, key):
         if self == "final":
-            return os.path.join(f"{key}_final")
+            return os.path.join(f"{key}-final")
         elif self == "final_and_ambitus":
             final = key[0]
             ambitus = AmbitusType(key[1])
-            return os.path.join(f"{final}_{ambitus}")
+            return os.path.join(f"{final}-{ambitus}")
         else:
             raise NotImplementedError(f"Unexpected grouping type: {self}")
 
