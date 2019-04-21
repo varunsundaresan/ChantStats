@@ -80,18 +80,6 @@ class GroupingByModalCategory:
         return f"<Grouping by '{self.grouped_by}': {len(self.groups)} groups ({len(self.items)} items)>"
 
     def export_results(self, *, analysis_spec, output_root_dir, p_cutoff, overwrite=False, sort_freqs_ascending=False):
-        if os.path.exists(output_root_dir):
-            if not overwrite:
-                logger.warning(
-                    f"Output directory exists. Use `overwrite=True` to delete its contents before exporting results: '{output_root_dir}'"
-                )
-                return
-            else:
-                logger.warning(
-                    f"Deleting contents of existing output directory (because overwrite=True): '{output_root_dir}'"
-                )
-                shutil.rmtree(output_root_dir)
-
         logger.info(f"Exporting results for {self}")
         for modal_category in self.groups.values():
             export_dendrogram_and_stacked_bar_chart(
@@ -100,4 +88,5 @@ class GroupingByModalCategory:
                 modal_category=modal_category,
                 p_cutoff=p_cutoff,
                 sort_freqs_ascending=sort_freqs_ascending,
+                overwrite=overwrite,
             )
