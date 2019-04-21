@@ -13,6 +13,9 @@ except KeyError:
     raise RuntimeError("The environment variable CHANTS_DIR must be defined to run the tests.")
 
 
+@pytest.mark.skip(
+    reason="This test needs to be rewritten once the analysis spec and modal category refactoring is complete."
+)
 @pytest.mark.parametrize(
     "repertoire_and_genre, analysis, unit, mode, final, output_path_expected",
     [
@@ -46,9 +49,11 @@ def test_output_path(repertoire_and_genre, analysis, unit, mode, final, output_p
     """
     Analysis spec returns the expected output path, depending on its input parameters.
     """
-    spec = FullAnalysisSpec(repertoire_and_genre=repertoire_and_genre, analysis=analysis, unit=unit, mode=mode)
-    output_path = spec.output_path(root_dir="/foobar", final=final)
-    assert output_path_expected == output_path
+    spec = FullAnalysisSpec(repertoire_and_genre=repertoire_and_genre, analysis=analysis, unit=unit)
+    # modal_category = ModalCategory(items=[], ...)
+    # output_path = spec.output_path(root_dir="/foobar", modal_category=...)
+    # assert output_path_expected == output_path
+    assert False
 
 
 @pytest.mark.slow
@@ -59,9 +64,7 @@ def test_results_folder_structure(tmpdir, diff_reporter):
         chants_dir, pattern="BN_lat_1112_Sequence_*.xml", exclude_heavy_polymodal_frame_pieces=False
     )
     monomodal_sections = sum([p.get_monomodal_sections(min_length=3) for p in pieces], [])
-    analysis_spec = FullAnalysisSpec(
-        repertoire_and_genre="plainchant_sequences", analysis="pc_freqs", unit="pcs", mode="authentic_modes"
-    )
+    analysis_spec = FullAnalysisSpec(repertoire_and_genre="plainchant_sequences", analysis="pc_freqs", unit="pcs")
     group_by = "final"
     grouping = GroupingByModalCategory(monomodal_sections, group_by=group_by)
     grouping.export_results(

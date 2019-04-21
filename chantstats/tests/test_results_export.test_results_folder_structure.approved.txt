@@ -3,23 +3,23 @@
     └── pc_freqs
         └── sequences
             └── pcs
-                └── authentic_modes
-                    ├── A_authentic
+                └── by_final
+                    ├── A_final
                     │   ├── dendrogram.png
                     │   └── stacked_bar_chart.png
-                    ├── B_authentic
+                    ├── B_final
                     │   ├── dendrogram.png
                     │   └── stacked_bar_chart.png
-                    ├── C_authentic
+                    ├── C_final
                     │   ├── dendrogram.png
                     │   └── stacked_bar_chart.png
-                    ├── D_authentic
+                    ├── D_final
                     │   ├── dendrogram.png
                     │   └── stacked_bar_chart.png
-                    ├── E_authentic
+                    ├── E_final
                     │   ├── dendrogram.png
                     │   └── stacked_bar_chart.png
-                    └── G_authentic
+                    └── G_final
                         ├── dendrogram.png
                         └── stacked_bar_chart.png
 

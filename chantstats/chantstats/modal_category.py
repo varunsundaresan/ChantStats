@@ -59,13 +59,29 @@ class ModalCategory:
     def make_results_dataframe(self, *, analysis_func):
         return pd.DataFrame({x.descr: analysis_func(x) for x in self.items}).T
 
-    def export_results(self, *, output_root_dir, analysis_spec, p_cutoff, sort_freqs_ascending=False, overwrite=False):
+    def export_dendrogram_and_stacked_bar_chart(
+        self, *, output_root_dir, analysis_spec, p_cutoff, sort_freqs_ascending=False, overwrite=False
+    ):
+        """
+        Export dendrogram and stacked bar chart for this modal category.
+
+        Parameters
+        ----------
+        output_root_dir : str
+            The path under which to export results. Note that the actual directory
+            where the plots are saved will be a sub-directory of this root directory,
+            for example: `<output_root_dir>/authentic_modes/G_authentic`.
+        analysis_spec : FullAnalysisSpec
+        p_cutoff : float
+        sort_freqs_ascending : bool, optional
+        overwrite: book, optional
+        """
         logger.info(f"Exporting results for {self}")
 
         final = self.key  # TODO: ensure that the key is always a final!!
         assert isinstance(final, str)
 
-        output_dir = analysis_spec.output_path(root_dir=output_root_dir, final=final)
+        output_dir = analysis_spec.output_path(root_dir=output_root_dir, modal_category=self)
         if os.path.exists(output_dir):
             if not overwrite:
                 logger.warning(
@@ -85,13 +101,13 @@ class ModalCategory:
         dendrogram = Dendrogram(df, p_threshold=p_cutoff)
 
         output_filename = os.path.join(output_dir, "dendrogram.png")
-        title = f"Dendrogram: {analysis_spec.get_description(final=final)} (p_cutoff={p_cutoff})"
+        title = f"Dendrogram: {analysis_spec.get_description(modal_category=self)} (p_cutoff={p_cutoff})"
         fig = dendrogram.plot_dendrogram(title=title)
         fig.savefig(output_filename)
         logger.debug(f"Saved dendrogram plot: '{output_filename}'")
 
         output_filename = os.path.join(output_dir, "stacked_bar_chart.png")
-        title = f"{analysis_spec.get_description(final=final)} (p_cutoff={p_cutoff})"
+        title = f"{analysis_spec.get_description(modal_category=self)} (p_cutoff={p_cutoff})"
         fig = dendrogram.plot_stacked_bar_charts(title=title, sort_freqs_ascending=sort_freqs_ascending)
         fig.savefig(output_filename)
         logger.debug(f"Saved stacked bar chart: '{output_filename}'")
@@ -131,7 +147,7 @@ class GroupingByModalCategory:
 
         logger.info(f"Exporting results for {self}")
         for group in self.groups.values():
-            group.export_results(
+            group.export_dendrogram_and_stacked_bar_chart(
                 analysis_spec=analysis_spec,
                 output_root_dir=output_root_dir,
                 p_cutoff=p_cutoff,

@@ -103,7 +103,7 @@ class ModeType(EnumWithDescription):
             raise RuntimeError(f"Unexpected value: {self.value!r}")
 
 
-class FullAnalysisSpec:
+class FullAnalysisSpecOLD:
     def __init__(self, *, repertoire_and_genre, analysis, unit, mode):
         self.repertoire_and_genre = RepertoireAndGenreType(repertoire_and_genre)
         self.analysis = AnalysisType(analysis)
@@ -116,9 +116,13 @@ class FullAnalysisSpec:
         # TODO: assert that `final` is a valid pitch class
         return f"{self.analysis.description}, {self.repertoire_and_genre.description}, {self.mode.get_description(final=final)}"
 
+    def get_description_NEW(self, *, modal_category):
+        assert isinstance(modal_category, ModalCategory)
+        return f"{self.analysis.description}, {self.repertoire_and_genre.description}, {modal_category.descr}"
+
     def __repr__(self):
         return (
-            f"<FullAnalysisSpec: "
+            f"<FullAnalysisSpecOLD: "
             f"repertoire_and_genre={self.repertoire_and_genre.value!r}, "
             f"analysis={self.analysis.value!r}, "
             f"unit={self.unit.value!r}, "
@@ -135,6 +139,45 @@ class FullAnalysisSpec:
             self.unit.value,
             self.mode.value,
             self.mode.get_subfolder(final=final),
+        )
+
+    def export_results(self, *, output_root_dir, grouping, p_cutoff, overwrite=False, sort_freqs_ascending=False):
+        raise DeprecationWarning(
+            "This method has been moved to the class GroupingByModalCategory. "
+            "You should call grouping.export_results(analysis_spec=..., ...)."
+        )
+
+
+class FullAnalysisSpec:
+    def __init__(self, *, repertoire_and_genre, analysis, unit):
+        self.repertoire_and_genre = RepertoireAndGenreType(repertoire_and_genre)
+        self.analysis = AnalysisType(analysis)
+        self.unit = UnitType(unit)
+        # self.mode = ModeType(mode)
+
+        self.analysis_func = self.analysis.analysis_func
+
+    def get_description(self, *, modal_category):
+        assert isinstance(modal_category, ModalCategory)
+        return f"{self.analysis.description}, {self.repertoire_and_genre.description}, {modal_category.descr}"
+
+    def __repr__(self):
+        return (
+            f"<FullAnalysisSpec: "
+            f"repertoire_and_genre={self.repertoire_and_genre.value!r}, "
+            f"analysis={self.analysis.value!r}, "
+            f"unit={self.unit.value!r}, "
+            ">"
+        )
+
+    def output_path(self, *, root_dir, modal_category):
+        return os.path.join(
+            root_dir,
+            self.repertoire_and_genre.path_stub_1,
+            self.analysis.value,
+            self.repertoire_and_genre.path_stub_2,
+            self.unit.value,
+            modal_category.output_path_stub,
         )
 
     def export_results(self, *, output_root_dir, grouping, p_cutoff, overwrite=False, sort_freqs_ascending=False):
