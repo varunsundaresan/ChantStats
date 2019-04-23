@@ -1,6 +1,7 @@
 import music21
 import re
 
+from .ambitus import calculate_ambitus
 from .pitch_class_freqs import PCFreqs
 
 
@@ -18,14 +19,15 @@ class PlainchantSequencePhrase:
         self.lowest_note = min(self.notes)
         self.pitch_classes = [n.name for n in self.notes]
         self.phrase_final = self.pitch_classes[-1]
-        self.note_of_phrase_final = self.notes[-1]
         self.final = self.phrase_final  # alias for consistency with other analysis items (e.g. pieces)
+        self.note_of_phrase_final = self.notes[-1]
         self.note_of_final = self.note_of_phrase_final  # alias for consistency with other analysis items (e.g. pieces)
         self.phrase_final_note = self.notes[-1]
         self.pc_freqs = PCFreqs(self.pitch_classes)
         self.time_signature = self.piece.stream.flat.getElementAtOrBefore(
             self.measure_stream.getOffsetInHierarchy(self.piece.stream), [music21.meter.TimeSignature]
         ).ratioString
+        self.ambitus = calculate_ambitus(self)
 
     def __repr__(self):
         return f"<Phrase {self.phrase_number} of piece {self.piece}>"
