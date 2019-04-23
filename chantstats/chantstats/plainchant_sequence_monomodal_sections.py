@@ -1,8 +1,7 @@
 from itertools import groupby
 from operator import itemgetter
 
-from .ambitus import get_ambitus
-from .logging import logger
+from .ambitus import calculate_ambitus
 from .pitch_class_freqs import PCFreqs
 
 __all__ = ["MonomodalSection", "extract_monomodal_sections"]
@@ -31,23 +30,15 @@ class MonomodalSection:
         self.descr = f"s{self.piece.number:02d}.{self.final}.mm_{self.idx_start:02d}_{self.idx_end:02d}"
         self.note_of_final = self.phrases[0].notes[-1]
         self.lowest_note = min([p.lowest_note for p in self.phrases])
-        try:
-            self.ambitus = get_ambitus(note_of_final=self.note_of_final, lowest_note=self.lowest_note)
-        except:
-            from .ambitus import AmbitusType
-
-            logger.warning(
-                f"Ambitus of monomodal section is undefined because lowest note is "
-                f"an octave or more below the note of the final: '{self}'"
-            )
-            self.ambitus = AmbitusType.UNDEFINED
+        self.ambitus = calculate_ambitus(self)
 
     def __repr__(self):
         s = (
             f"<MonomodalSection: '{self.piece.filename_short}', "
             f"phrase-final '{self.final}', "
             f"phrases {self.idx_start}-{self.idx_end} "
-            f"(length {len(self)})>"
+            f"(length {len(self)}), "
+            f"ambitus={self.ambitus.value!r}>"
         )
         return s
 
