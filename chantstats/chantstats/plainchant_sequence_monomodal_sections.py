@@ -50,24 +50,7 @@ class MonomodalSection:
         return sum([p.pc_freqs for p in self.phrases], PCFreqs.zero_freqs)
 
 
-class MonomodalSectionInfo:
-    def __init__(self, phrase_final, length, idx_start, idx_end):
-        self.phrase_final = phrase_final
-        self.length = length
-        self.idx_start = idx_start
-        self.idx_end = idx_end
-
-    def __repr__(self):
-        return f"<MonomodalSectionInfo: '{self.phrase_final}', length={self.length} ({self.idx_start}-{self.idx_end})>"
-
-
-def get_groups_with_length_and_indices(items):
-    grps = [(x, list(grp)) for x, grp in groupby(enumerate(items, start=1), key=itemgetter(1))]
-    grps = [MonomodalSectionInfo(x, len(grp), grp[0][0], grp[-1][0]) for x, grp in grps]
-    return grps
-
-
-def extract_monomodal_sections(piece, *, min_length=3):
+def extract_monomodal_sections(piece, *, enforce_same_ambitus, min_length=3):
     """
     Extract monomodal sections (= sections of consecutive phrases with the same phrase-final).
 
@@ -75,6 +58,9 @@ def extract_monomodal_sections(piece, *, min_length=3):
     ----------
     piece : PlainchantSequencePiece
         The piece from which to extract monomodal sections.
+    ignore_ambitus : boolean
+        If True, all phrases in the monomodal section must have
+        the same ambitus (in addition to the same phrase-final).
     min_length : int
         Minimum length for a section to be included in the result
         (any phrase sections with fewer phrases are discarded).
@@ -83,6 +69,15 @@ def extract_monomodal_sections(piece, *, min_length=3):
     -------
     list of MonomodalSection
     """
-    grps = get_groups_with_length_and_indices(piece.phrase_finals)
-    phrase_sections = [MonomodalSection(piece, g.idx_start, g.idx_end) for g in grps]
-    return [x for x in phrase_sections if len(x) >= min_length]
+    if enforce_same_ambitus:
+        key_func = lambda phrase: (phrase.final, phrase.ambitus)
+    else:
+        key_func = lambda phrase: phrase.final
+
+    get_idx_start = lambda grp: grp[1][0][0]
+    get_idx_end = lambda grp: grp[1][-1][0]
+
+    items = [key_func(p) for p in piece.phrases]
+    grps = [(x, list(grp)) for x, grp in groupby(enumerate(items, start=1), key=itemgetter(1))]
+    monomodal_sections = [MonomodalSection(piece, get_idx_start(g), get_idx_end(g)) for g in grps]
+    return [x for x in monomodal_sections if len(x) >= min_length]

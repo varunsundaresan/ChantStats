@@ -117,14 +117,18 @@ class PlainchantSequencePiece:
                 else:
                     return FrameType.HEAVY_POLYMODAL_FRAME_2
 
-    def get_monomodal_sections(self, *, min_length=3):
+    def get_monomodal_sections(self, *, enforce_same_ambitus, min_length=3):
         """
-        Extract monomodal sections (= sections of consecutive phrases with the same phrase-final).
+        Extract monomodal sections (= sections of consecutive phrases
+        with the same phrase-final, and optionally the same ambitus).
 
         Parameters
         ----------
         piece : PlainchantSequencePiece
             The piece from which to extract monomodal sections.
+        enforce_same_ambitus: boolean
+            If True, all phrases in the monomodal section must have
+            the same ambitus (in addition to the same phrase-final).
         min_length : int
             Minimum length for a section to be included in the result
             (any phrase sections with fewer phrases are discarded).
@@ -133,7 +137,7 @@ class PlainchantSequencePiece:
         -------
         list of MonomodalSection
         """
-        return extract_monomodal_sections(self, min_length=min_length)
+        return extract_monomodal_sections(self, enforce_same_ambitus=enforce_same_ambitus, min_length=min_length)
 
 
 def load_plainchant_sequence_pieces(input_dir, *, pattern="*.xml", exclude_heavy_polymodal_frame_pieces=False):
