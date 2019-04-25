@@ -56,8 +56,8 @@ class ModalCategory:
     def __repr__(self):
         return f"<ModalCategory with {self.modal_category_type.value}={self.key}, {len(self.items)} items>"
 
-    def make_results_dataframe(self, *, analysis_func):
-        return pd.DataFrame({x.descr: analysis_func(x) for x in self.items}).T
+    def make_results_dataframe(self, *, analysis_func, unit):
+        return pd.DataFrame({x.descr: analysis_func(x, unit=unit) for x in self.items}).T
 
 
 class GroupingByModalCategory:

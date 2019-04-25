@@ -52,8 +52,13 @@ class AnalysisFuncPCFreqs(BaseAnalysisFunc):
         assert abs_or_rel in ["abs_freqs", "rel_freqs"]
         self.abs_or_rel = abs_or_rel
 
-    def __call__(self, item):
-        return getattr(item.pc_freqs, self.abs_or_rel)
+    def __call__(self, item, *, unit):
+        if unit == UnitType.PCS:
+            return getattr(item.pc_freqs, self.abs_or_rel)
+        elif self.unit == UnitType.MODE_DEGREES:
+            return getattr(item.mode_degree_freqs, self.abs_or_rel)
+        else:
+            raise RuntimeError("Unexpected unit: {self.unit}")
 
 
 class AnalysisType(EnumWithDescription):
