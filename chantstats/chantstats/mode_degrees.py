@@ -31,6 +31,9 @@ class ModeDegree:
     def __str__(self):
         return self.descr
 
+    def __format__(self, fmt):
+        return f"{self.prefix}{self.value}\u0302"
+
     def __eq__(self, other):
         if isinstance(other, int):
             return self.alter == 0 and self.value == other
