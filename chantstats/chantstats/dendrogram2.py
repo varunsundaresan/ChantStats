@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import palettable
+from matplotlib.patches import Patch
 from scipy.cluster.hierarchy import dendrogram, set_link_color_palette, to_tree, ClusterNode
 
 from .dendrogram import calculate_linkage_matrix_in_python_format
@@ -145,8 +146,10 @@ class Dendrogram:
 
         num_clusters = len(self.nodes_below_cutoff)
         for i, n in enumerate(self.nodes_below_cutoff):
+            # Note: since we're extracting the non-zero entries from n.distribution
+            # we must also use the non-zero column names for the legend entries below!
             plot_stacked_bar_chart_for_relative_frequencies(
-                n.distribution,
+                n.distribution[self.cols_with_nonzero_entries],
                 color_palette=color_palette,
                 xpos=i,
                 ax=ax,
@@ -155,6 +158,15 @@ class Dendrogram:
             )
         ax.set_xticks(list(range(num_clusters + 1)))
         ax.set_xticklabels([f"Cluster {n.id}:\n{n.num_leaves} leaves" for n in self.nodes_below_cutoff])
+
+        if num_clusters > 0:
+            legend_labels = self.cols_with_nonzero_entries
+            legend_elements = [
+                Patch(facecolor=color, edgecolor=color, label=value)
+                for value, color in reversed(list(zip(legend_labels, color_palette)))
+            ]
+            ax.legend(handles=legend_elements, loc="right")
+
         if title:
             ax.set_title(title)
         if use_tight_layout:
