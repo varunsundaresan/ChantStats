@@ -74,9 +74,9 @@ def extract_monomodal_sections(piece, *, enforce_same_ambitus, min_length=3):
     list of MonomodalSection
     """
     if enforce_same_ambitus:
-        key_func = lambda phrase: (phrase.final, phrase.ambitus)
+        key_func = lambda phrase: (phrase.note_of_final, phrase.ambitus)
     else:
-        key_func = lambda phrase: phrase.final
+        key_func = lambda phrase: phrase.note_of_final
 
     get_idx_start = lambda grp: grp[1][0][0]
     get_idx_end = lambda grp: grp[1][-1][0]
