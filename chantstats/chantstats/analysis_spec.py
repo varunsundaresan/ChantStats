@@ -1,12 +1,9 @@
 import os
 import palettable
-import shutil
 from abc import ABCMeta
 from enum import Enum
 
-from .dendrogram2 import Dendrogram
-from .logging import logger
-from .modal_category import ModalCategory, GroupingByModalCategory
+from .modal_category import ModalCategory
 
 __all__ = ["FullAnalysisSpec"]
 
