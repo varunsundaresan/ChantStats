@@ -8,7 +8,7 @@ __all__ = ["export_dendrogram_and_stacked_bar_chart"]
 
 
 def export_dendrogram_and_stacked_bar_chart(
-    *, output_root_dir, analysis_spec, modal_category, p_cutoff, sort_freqs_ascending=False, overwrite=False
+    *, output_root_dir, analysis_spec, modal_category, p_cutoff, unit, sort_freqs_ascending=False, overwrite=False
 ):
     """
     Export dendrogram and stacked bar chart for this modal category.
@@ -22,12 +22,13 @@ def export_dendrogram_and_stacked_bar_chart(
     analysis_spec : FullAnalysisSpec
     modal_cagetory : ModalCategory
     p_cutoff : float
+    unit : UnitType
     sort_freqs_ascending : bool, optional
     overwrite: book, optional
     """
     logger.info(f"Exporting results for anaysis_spec={analysis_spec}, modal_category={modal_category}")
 
-    output_dir = analysis_spec.output_path(root_dir=output_root_dir, modal_category=modal_category)
+    output_dir = analysis_spec.output_path(root_dir=output_root_dir, modal_category=modal_category, unit=unit)
     if os.path.exists(output_dir):
         if not overwrite:
             logger.warning(
@@ -41,7 +42,7 @@ def export_dendrogram_and_stacked_bar_chart(
         logger.debug(f"Creating output dir: {output_dir}")
         os.makedirs(output_dir, exist_ok=True)
 
-    df = modal_category.make_results_dataframe(analysis_func=analysis_spec.analysis_func, unit=analysis_spec.unit)
+    df = modal_category.make_results_dataframe(analysis_func=analysis_spec.analysis_func, unit=unit)
     dendrogram = Dendrogram(df, p_threshold=p_cutoff)
 
     output_filename = os.path.join(output_dir, "dendrogram.png")
@@ -54,7 +55,7 @@ def export_dendrogram_and_stacked_bar_chart(
     title = f"{analysis_spec.get_description(modal_category=modal_category)} (p_cutoff={p_cutoff})"
 
     fig = dendrogram.plot_stacked_bar_charts(
-        title=title, sort_freqs_ascending=sort_freqs_ascending, color_palette=analysis_spec.color_palette
+        title=title, sort_freqs_ascending=sort_freqs_ascending, color_palette=unit.color_palette
     )
     fig.savefig(output_filename)
     logger.debug(f"Saved stacked bar chart: '{output_filename}'")

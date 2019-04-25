@@ -78,7 +78,9 @@ class GroupingByModalCategory:
     def __repr__(self):
         return f"<Grouping by '{self.grouped_by}': {len(self.groups)} groups ({len(self.items)} items)>"
 
-    def export_results(self, *, analysis_spec, output_root_dir, p_cutoff, overwrite=False, sort_freqs_ascending=False):
+    def export_results(
+        self, *, analysis_spec, output_root_dir, p_cutoff, unit, overwrite=False, sort_freqs_ascending=False
+    ):
         logger.info(f"Exporting results for {self}")
         for modal_category in self.groups.values():
             export_dendrogram_and_stacked_bar_chart(
@@ -86,6 +88,7 @@ class GroupingByModalCategory:
                 analysis_spec=analysis_spec,
                 modal_category=modal_category,
                 p_cutoff=p_cutoff,
+                unit=unit,
                 sort_freqs_ascending=sort_freqs_ascending,
                 overwrite=overwrite,
             )

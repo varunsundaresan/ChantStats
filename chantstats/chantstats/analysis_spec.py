@@ -162,14 +162,12 @@ class FullAnalysisSpecOLD:
 
 
 class FullAnalysisSpec:
-    def __init__(self, *, repertoire_and_genre, analysis, unit):
+    def __init__(self, *, repertoire_and_genre, analysis):
         self.repertoire_and_genre = RepertoireAndGenreType(repertoire_and_genre)
         self.analysis = AnalysisType(analysis)
-        self.unit = UnitType(unit)
         # self.mode = ModeType(mode)
 
         self.analysis_func = self.analysis.analysis_func
-        self.color_palette = self.unit.color_palette
 
     def get_description(self, *, modal_category):
         assert isinstance(modal_category, ModalCategory)
@@ -179,18 +177,18 @@ class FullAnalysisSpec:
         return (
             f"<FullAnalysisSpec: "
             f"repertoire_and_genre={self.repertoire_and_genre.value!r}, "
-            f"analysis={self.analysis.value!r}, "
-            f"unit={self.unit.value!r}, "
+            f"analysis={self.analysis.value!r}"
             ">"
         )
 
-    def output_path(self, *, root_dir, modal_category):
+    def output_path(self, *, root_dir, modal_category, unit):
+        unit = UnitType(unit)
         return os.path.join(
             root_dir,
             self.repertoire_and_genre.path_stub_1,
             self.analysis.value,
             self.repertoire_and_genre.path_stub_2,
-            self.unit.value,
+            unit.value,
             modal_category.output_path_stub,
         )
 
