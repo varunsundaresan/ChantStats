@@ -26,7 +26,7 @@ def export_dendrogram_and_stacked_bar_chart(
     sort_freqs_ascending : bool, optional
     overwrite: book, optional
     """
-    logger.info(f"Exporting results for anaysis_spec={analysis_spec}, modal_category={modal_category}")
+    logger.info(f"Exporting results for analysis_spec={analysis_spec}, modal_category={modal_category}, unit='{unit}'")
 
     output_dir = analysis_spec.output_path(root_dir=output_root_dir, modal_category=modal_category, unit=unit)
     if os.path.exists(output_dir):
