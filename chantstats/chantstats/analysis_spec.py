@@ -12,7 +12,7 @@ __all__ = ["FullAnalysisSpec"]
 
 class EnumWithDescription(str, Enum):
     def __new__(cls, name, desc, **kwargs):
-        obj = str.__new__(cls)
+        obj = str.__new__(cls, name)
         obj._value_ = name
         obj._description = desc
         return obj
