@@ -2,6 +2,8 @@ from collections import Counter
 import pandas as pd
 import textwrap
 
+from .mode_degrees import ModeDegree
+
 __all__ = ["PCFreqs"]
 
 
@@ -32,8 +34,11 @@ class BaseFreqs(metaclass=BaseFreqsMeta):
             assert list(freqs.index == self.ALLOWED_VALUES)
             self.abs_freqs = freqs
         elif isinstance(list_or_freqs, list):
-            pitch_classes = list_or_freqs
-            self.abs_freqs = pd.Series(Counter(pitch_classes), index=self.ALLOWED_VALUES).fillna(0, downcast="infer")
+            if not set(list_or_freqs).issubset(self.ALLOWED_VALUES):
+                raise ValueError(
+                    f"Unexpected values: {set(list_or_freqs)}. Must be a subset of allowed values: {self.ALLOWED_VALUES}"
+                )
+            self.abs_freqs = pd.Series(Counter(list_or_freqs), index=self.ALLOWED_VALUES).fillna(0, downcast="infer")
         else:  # pragma: no cover
             raise ValueError(f"Cannot instantiate {self.__class__.__name__} from object: {list_or_freqs}")
 
@@ -52,7 +57,28 @@ class BaseFreqs(metaclass=BaseFreqsMeta):
 
 class PCFreqs(BaseFreqs):
     """
-    Represent pitch class frequencies.
+    Represents pitch class frequencies.
     """
 
     ALLOWED_VALUES = ["A", "B-", "B", "C", "D", "E", "F", "G"]
+
+
+class ModeDegreeFreqs(BaseFreqs):
+    """
+    Represents mode degree frequencies.
+    """
+
+    ALLOWED_VALUES = [
+        ModeDegree(value=1, alter=-1),
+        ModeDegree(value=1),
+        ModeDegree(value=2, alter=-1),
+        ModeDegree(value=2),
+        ModeDegree(value=3, alter=-1),
+        ModeDegree(value=3),
+        ModeDegree(value=4),
+        ModeDegree(value=5),
+        ModeDegree(value=6, alter=-1),
+        ModeDegree(value=6),
+        ModeDegree(value=7, alter=-1),
+        ModeDegree(value=7),
+    ]

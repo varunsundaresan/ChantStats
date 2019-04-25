@@ -2,7 +2,7 @@ from itertools import groupby
 from operator import itemgetter
 
 from .ambitus import calculate_ambitus
-from .pitch_class_freqs import PCFreqs
+from .pitch_class_freqs import PCFreqs, ModeDegreeFreqs
 
 __all__ = ["MonomodalSection", "extract_monomodal_sections"]
 
@@ -48,6 +48,10 @@ class MonomodalSection:
     @property
     def pc_freqs(self):
         return sum([p.pc_freqs for p in self.phrases], PCFreqs.zero_freqs)
+
+    @property
+    def mode_degree_freqs(self):
+        return sum([p.mode_degree_freqs for p in self.phrases], ModeDegreeFreqs.zero_freqs)
 
 
 def extract_monomodal_sections(piece, *, enforce_same_ambitus, min_length=3):

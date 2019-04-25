@@ -2,7 +2,8 @@ import music21
 import re
 
 from .ambitus import calculate_ambitus
-from .pitch_class_freqs import PCFreqs
+from .mode_degrees import calculate_mode_degrees
+from .pitch_class_freqs import PCFreqs, ModeDegreeFreqs
 
 
 class PlainchantSequencePhrase:
@@ -28,6 +29,8 @@ class PlainchantSequencePhrase:
             self.measure_stream.getOffsetInHierarchy(self.piece.stream), [music21.meter.TimeSignature]
         ).ratioString
         self.ambitus = calculate_ambitus(self)
+        self.mode_degrees = calculate_mode_degrees(self)
+        self.mode_degree_freqs = ModeDegreeFreqs(self.mode_degrees)
 
     def __repr__(self):
         return f"<Phrase {self.phrase_number} of piece {self.piece}>"
