@@ -60,7 +60,9 @@ class DendrogramNode:
 
 class Dendrogram:
     def __init__(self, df, *, p_threshold=0.15, optimal_ordering=True):
-        self.df = df
+        self.df_orig = df
+        self.cols_with_nonzero_entries = df.columns[(df != 0).any()]
+        self.df = self.df_orig[self.cols_with_nonzero_entries]
         self.L = calculate_linkage_matrix_in_python_format(df, optimal_ordering=optimal_ordering)
         self.p_threshold = p_threshold
         self.R = dendrogram(self.L, no_plot=True)
