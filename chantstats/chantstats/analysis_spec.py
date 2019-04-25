@@ -55,7 +55,7 @@ class AnalysisFuncPCFreqs(BaseAnalysisFunc):
     def __call__(self, item, *, unit):
         if unit == UnitType.PCS:
             return getattr(item.pc_freqs, self.abs_or_rel)
-        elif self.unit == UnitType.MODE_DEGREES:
+        elif unit == UnitType.MODE_DEGREES:
             return getattr(item.mode_degree_freqs, self.abs_or_rel)
         else:
             raise RuntimeError("Unexpected unit: {self.unit}")
