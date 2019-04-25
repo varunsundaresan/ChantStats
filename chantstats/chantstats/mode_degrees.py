@@ -6,7 +6,7 @@ major_c_scale = MajorScale(tonic="C")
 
 
 class ModeDegree:
-    def __init__(self, *, value, alter):
+    def __init__(self, *, value, alter=0):
         assert value in [1, 2, 3, 4, 5, 6, 7]
         assert alter in [0, -1.0]
 
