@@ -52,6 +52,9 @@ def export_dendrogram_and_stacked_bar_chart(
 
     output_filename = os.path.join(output_dir, "stacked_bar_chart.png")
     title = f"{analysis_spec.get_description(modal_category=modal_category)} (p_cutoff={p_cutoff})"
-    fig = dendrogram.plot_stacked_bar_charts(title=title, sort_freqs_ascending=sort_freqs_ascending)
+
+    fig = dendrogram.plot_stacked_bar_charts(
+        title=title, sort_freqs_ascending=sort_freqs_ascending, color_palette=analysis_spec.color_palette
+    )
     fig.savefig(output_filename)
     logger.debug(f"Saved stacked bar chart: '{output_filename}'")

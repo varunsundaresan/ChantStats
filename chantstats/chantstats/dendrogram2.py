@@ -7,13 +7,15 @@ from scipy.cluster.hierarchy import dendrogram, set_link_color_palette, to_tree,
 from .dendrogram import calculate_linkage_matrix_in_python_format
 
 
-def plot_stacked_bar_chart_for_relative_frequencies(s, *, xpos, ax, width=0.6, sort_freqs_ascending=False):
+def plot_stacked_bar_chart_for_relative_frequencies(
+    s, *, xpos, ax, color_palette, width=0.6, sort_freqs_ascending=False
+):
     assert np.isclose(s.sum(), 100.0)  # ensure relative frequencies add up to 100%
 
-    # color_palette = palettable.colorbrewer.qualitative.Set2_8.hex_colors
-    # color_palette = palettable.cartocolors.qualitative.Pastel_8.hex_colors
-    color_palette = palettable.cartocolors.qualitative.Vivid_8.hex_colors
-    # color_palette = palettable.tableau.Tableau_10.hex_colors
+    # # color_palette = palettable.colorbrewer.qualitative.Set2_8.hex_colors
+    # # color_palette = palettable.cartocolors.qualitative.Pastel_8.hex_colors
+    # color_palette = palettable.cartocolors.qualitative.Vivid_8.hex_colors
+    # # color_palette = palettable.tableau.Tableau_10.hex_colors
 
     df_s = pd.DataFrame({"value": s, "color": color_palette[: len(s)]})
     if sort_freqs_ascending:
@@ -131,7 +133,7 @@ class Dendrogram:
         return fig
 
     def plot_stacked_bar_charts(
-        self, *, ax=None, title=None, figsize=(20, 4), use_tight_layout=True, sort_freqs_ascending=False
+        self, *, color_palette, ax=None, title=None, figsize=(20, 4), use_tight_layout=True, sort_freqs_ascending=False
     ):
         if ax is None:
             fig, ax = plt.subplots(figsize=figsize)
@@ -142,7 +144,12 @@ class Dendrogram:
         num_clusters = len(self.nodes_below_cutoff)
         for i, n in enumerate(self.nodes_below_cutoff):
             plot_stacked_bar_chart_for_relative_frequencies(
-                n.distribution, xpos=i, ax=ax, width=0.6, sort_freqs_ascending=sort_freqs_ascending
+                n.distribution,
+                color_palette=color_palette,
+                xpos=i,
+                ax=ax,
+                width=0.6,
+                sort_freqs_ascending=sort_freqs_ascending,
             )
         ax.set_xticks(list(range(num_clusters + 1)))
         ax.set_xticklabels([f"Cluster {n.id}:\n{n.num_leaves} leaves" for n in self.nodes_below_cutoff])

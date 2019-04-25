@@ -1,4 +1,5 @@
 import os
+import palettable
 import shutil
 from abc import ABCMeta
 from enum import Enum
@@ -78,6 +79,16 @@ class AnalysisType(EnumWithDescription):
 class UnitType(EnumWithDescription):
     PCS = ("pcs", "pitch classes")
     MODE_DEGREES = ("mode_degrees", "mode degrees")
+
+    @property
+    def color_palette(self):
+        if self.value == "pcs":
+            return palettable.cartocolors.qualitative.Vivid_8.hex_colors
+        elif self.value == "mode_degrees":
+            return palettable.cartocolors.qualitative.Pastel_10.hex_colors
+            # return palettable.colorbrewer.qualitative.Set3_12.hex_colors
+        else:
+            raise ValueError(f"Unexpected value: {self.value}")
 
 
 class ModeType(EnumWithDescription):
@@ -161,6 +172,7 @@ class FullAnalysisSpec:
         # self.mode = ModeType(mode)
 
         self.analysis_func = self.analysis.analysis_func
+        self.color_palette = self.unit.color_palette
 
     def get_description(self, *, modal_category):
         assert isinstance(modal_category, ModalCategory)
