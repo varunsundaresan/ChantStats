@@ -46,13 +46,13 @@ def export_dendrogram_and_stacked_bar_chart(
     dendrogram = Dendrogram(df, p_threshold=p_cutoff)
 
     output_filename = os.path.join(output_dir, "dendrogram.png")
-    title = f"Dendrogram: {analysis_spec.get_description(modal_category=modal_category)} (p_cutoff={p_cutoff})"
+    title = f"Dendrogram: {analysis_spec.get_description(modal_category=modal_category)} (p_cutoff={p_cutoff}, unit='{unit}')"
     fig = dendrogram.plot_dendrogram(title=title)
     fig.savefig(output_filename)
     logger.debug(f"Saved dendrogram plot: '{output_filename}'")
 
     output_filename = os.path.join(output_dir, "stacked_bar_chart.png")
-    title = f"{analysis_spec.get_description(modal_category=modal_category)} (p_cutoff={p_cutoff})"
+    title = f"{analysis_spec.get_description(modal_category=modal_category)} (p_cutoff={p_cutoff}, unit='{unit}')"
 
     fig = dendrogram.plot_stacked_bar_charts(
         title=title, sort_freqs_ascending=sort_freqs_ascending, color_palette=unit.color_palette
