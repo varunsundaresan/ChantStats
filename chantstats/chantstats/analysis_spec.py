@@ -1,29 +1,10 @@
 import os
-import palettable
 from abc import ABCMeta
-from enum import Enum
 
+from chantstats.unit import UnitType, EnumWithDescription
 from .modal_category import ModalCategory
 
 __all__ = ["FullAnalysisSpec"]
-
-
-class EnumWithDescription(str, Enum):
-    def __new__(cls, name, desc, **kwargs):
-        obj = str.__new__(cls, name)
-        obj._value_ = name
-        obj._description = desc
-        return obj
-
-    @property
-    def description(self) -> str:
-        """
-        Returns
-        -------
-        str
-            Long form description of this enum suitable for use in plot titles etc.
-        """
-        return self._description
 
 
 class RepertoireAndGenreType(EnumWithDescription):
@@ -71,21 +52,6 @@ class AnalysisType(EnumWithDescription):
             return AnalysisFuncPCFreqs("rel_freqs")
         else:
             return BaseAnalysisFunc()
-
-
-class UnitType(EnumWithDescription):
-    PCS = ("pcs", "pitch classes")
-    MODE_DEGREES = ("mode_degrees", "mode degrees")
-
-    @property
-    def color_palette(self):
-        if self.value == "pcs":
-            return palettable.cartocolors.qualitative.Vivid_8.hex_colors
-        elif self.value == "mode_degrees":
-            return palettable.cartocolors.qualitative.Pastel_10.hex_colors
-            # return palettable.colorbrewer.qualitative.Set3_12.hex_colors
-        else:
-            raise ValueError(f"Unexpected value: {self.value}")
 
 
 class ModeType(EnumWithDescription):
