@@ -35,9 +35,14 @@ def test_export_results_for_modal_category(dummy_grouping_by_final, tmpdir):
     output_root_dir = str(tmpdir)
     print(f"[DDD] dummy_grouping_by_final: {dummy_grouping_by_final}")
     grp = dummy_grouping_by_final.groups["D"]
-    analysis_spec = FullAnalysisSpec(repertoire_and_genre="plainchant_sequences", analysis="pc_freqs", unit="pcs")
+    analysis_spec = FullAnalysisSpec(repertoire_and_genre="plainchant_sequences", analysis="pc_freqs")
     export_dendrogram_and_stacked_bar_chart(
-        output_root_dir=output_root_dir, analysis_spec=analysis_spec, modal_category=grp, p_cutoff=0.7, overwrite=True
+        output_root_dir=output_root_dir,
+        analysis_spec=analysis_spec,
+        modal_category=grp,
+        p_cutoff=0.7,
+        overwrite=True,
+        unit="pcs",
     )
     dir_tree = list_directory_tree(output_root_dir)
     expected_dir_tree = textwrap.dedent(
@@ -62,9 +67,14 @@ def test_export_results_for_modal_category_v2(dummy_grouping_by_final_and_ambitu
     output_root_dir = str(tmpdir)
     print(f"[DDD] dummy_grouping_by_final_and_ambitus: {dummy_grouping_by_final_and_ambitus}")
     grp = dummy_grouping_by_final_and_ambitus.groups[("D", "plagal")]
-    analysis_spec = FullAnalysisSpec(repertoire_and_genre="plainchant_sequences", analysis="pc_freqs", unit="pcs")
+    analysis_spec = FullAnalysisSpec(repertoire_and_genre="plainchant_sequences", analysis="pc_freqs")
     export_dendrogram_and_stacked_bar_chart(
-        output_root_dir=output_root_dir, analysis_spec=analysis_spec, modal_category=grp, p_cutoff=0.7, overwrite=True
+        output_root_dir=output_root_dir,
+        analysis_spec=analysis_spec,
+        modal_category=grp,
+        p_cutoff=0.7,
+        overwrite=True,
+        unit="pcs",
     )
     dir_tree = list_directory_tree(output_root_dir)
     expected_dir_tree = textwrap.dedent(
@@ -88,9 +98,9 @@ def test_export_results_for_modal_category_v2(dummy_grouping_by_final_and_ambitu
 def test_export_results_for_grouping_by_modal_category(dummy_grouping_by_final, tmpdir):
     output_root_dir = str(tmpdir)
     print(f"[DDD] dummy_grouping_by_final: {dummy_grouping_by_final}")
-    analysis_spec = FullAnalysisSpec(repertoire_and_genre="plainchant_sequences", analysis="pc_freqs", unit="pcs")
+    analysis_spec = FullAnalysisSpec(repertoire_and_genre="plainchant_sequences", analysis="pc_freqs")
     dummy_grouping_by_final.export_results(
-        analysis_spec=analysis_spec, output_root_dir=output_root_dir, p_cutoff=0.7, overwrite=True
+        analysis_spec=analysis_spec, output_root_dir=output_root_dir, p_cutoff=0.7, overwrite=True, unit="pcs"
     )
     dir_tree = list_directory_tree(output_root_dir)
     expected_dir_tree = textwrap.dedent(
@@ -120,9 +130,9 @@ def test_export_results_for_grouping_by_modal_category(dummy_grouping_by_final, 
 def test_export_results_for_grouping_by_modal_category_v2(dummy_grouping_by_final_and_ambitus, tmpdir):
     output_root_dir = str(tmpdir)
     print(f"[DDD] dummy_grouping_by_final_and_ambitus: {dummy_grouping_by_final_and_ambitus}")
-    analysis_spec = FullAnalysisSpec(repertoire_and_genre="plainchant_sequences", analysis="pc_freqs", unit="pcs")
+    analysis_spec = FullAnalysisSpec(repertoire_and_genre="plainchant_sequences", analysis="pc_freqs")
     dummy_grouping_by_final_and_ambitus.export_results(
-        analysis_spec=analysis_spec, output_root_dir=output_root_dir, p_cutoff=0.7, overwrite=True
+        analysis_spec=analysis_spec, output_root_dir=output_root_dir, p_cutoff=0.7, overwrite=True, unit="pcs"
     )
     dir_tree = list_directory_tree(output_root_dir)
     expected_dir_tree = textwrap.dedent(
