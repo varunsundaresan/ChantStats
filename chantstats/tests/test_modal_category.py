@@ -1,5 +1,5 @@
+import pytest
 import textwrap
-from itertools import count
 
 from .context import chantstats
 from chantstats import FullAnalysisSpec
@@ -31,6 +31,7 @@ def test_modal_category_output_path_stub():
     assert mc.descr == "B-plagal"
 
 
+@pytest.mark.slow
 def test_export_results_for_modal_category(dummy_grouping_by_final, tmpdir):
     output_root_dir = str(tmpdir)
     print(f"[DDD] dummy_grouping_by_final: {dummy_grouping_by_final}")
@@ -63,6 +64,7 @@ def test_export_results_for_modal_category(dummy_grouping_by_final, tmpdir):
     assert expected_dir_tree == dir_tree
 
 
+@pytest.mark.slow
 def test_export_results_for_modal_category_v2(dummy_grouping_by_final_and_ambitus, tmpdir):
     output_root_dir = str(tmpdir)
     print(f"[DDD] dummy_grouping_by_final_and_ambitus: {dummy_grouping_by_final_and_ambitus}")
@@ -95,6 +97,7 @@ def test_export_results_for_modal_category_v2(dummy_grouping_by_final_and_ambitu
     assert expected_dir_tree == dir_tree
 
 
+@pytest.mark.slow
 def test_export_results_for_grouping_by_modal_category(dummy_grouping_by_final, tmpdir):
     output_root_dir = str(tmpdir)
     print(f"[DDD] dummy_grouping_by_final: {dummy_grouping_by_final}")
@@ -127,6 +130,7 @@ def test_export_results_for_grouping_by_modal_category(dummy_grouping_by_final, 
     assert expected_dir_tree == dir_tree
 
 
+@pytest.mark.slow
 def test_export_results_for_grouping_by_modal_category_v2(dummy_grouping_by_final_and_ambitus, tmpdir):
     output_root_dir = str(tmpdir)
     print(f"[DDD] dummy_grouping_by_final_and_ambitus: {dummy_grouping_by_final_and_ambitus}")
