@@ -3,6 +3,7 @@ from operator import itemgetter
 
 from .ambitus import calculate_ambitus
 from .pitch_class_freqs import PCFreqs, ModeDegreeFreqs
+from .pitch_class_tendencies import PCTendencies
 
 __all__ = ["MonomodalSection", "extract_monomodal_sections"]
 
@@ -52,6 +53,10 @@ class MonomodalSection:
     @property
     def mode_degree_freqs(self):
         return sum([p.mode_degree_freqs for p in self.phrases], ModeDegreeFreqs.zero_freqs)
+
+    @property
+    def pc_tendencies(self):
+        return sum([p.pc_tendencies for p in self.phrases], PCTendencies.zeros)
 
 
 def extract_monomodal_sections(piece, *, enforce_same_ambitus, min_length=3):
