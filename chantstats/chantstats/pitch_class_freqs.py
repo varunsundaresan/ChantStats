@@ -7,6 +7,9 @@ from .mode_degrees import ModeDegree
 __all__ = ["PCFreqs"]
 
 
+ALLOWED_PCS = ["A", "B-", "B", "C", "D", "E", "F", "G"]
+
+
 class BaseFreqsMeta(type):
 
     # Note: the only purpose of this metaclass is to ensure that the `BaseFreqs`
@@ -60,7 +63,7 @@ class PCFreqs(BaseFreqs):
     Represents pitch class frequencies.
     """
 
-    ALLOWED_VALUES = ["A", "B-", "B", "C", "D", "E", "F", "G"]
+    ALLOWED_VALUES = ALLOWED_PCS
 
 
 class ModeDegreeFreqs(BaseFreqs):
