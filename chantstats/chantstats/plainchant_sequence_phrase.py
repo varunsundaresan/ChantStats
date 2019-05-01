@@ -4,6 +4,7 @@ import re
 from .ambitus import calculate_ambitus
 from .mode_degrees import calculate_mode_degrees
 from .pitch_class_freqs import PCFreqs, ModeDegreeFreqs
+from .pitch_class_tendencies import PCTendencies
 
 
 class PlainchantSequencePhrase:
@@ -31,6 +32,7 @@ class PlainchantSequencePhrase:
         self.ambitus = calculate_ambitus(self)
         self.mode_degrees = calculate_mode_degrees(self)
         self.mode_degree_freqs = ModeDegreeFreqs(self.mode_degrees)
+        self.pc_tendencies = PCTendencies.from_pitch_classes(self.pitch_classes)
 
     def __repr__(self):
         return f"<Phrase {self.phrase_number} of piece {self.piece}>"
