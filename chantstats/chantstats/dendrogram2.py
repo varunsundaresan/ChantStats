@@ -37,7 +37,7 @@ class DendrogramNode:
         self.is_leaf = self.cluster_node.is_leaf()
         self.num_leaves = self.cluster_node.get_count()
         self.leaf_ids = self.cluster_node.pre_order(lambda x: x.id)
-        self.distribution = self.df_full.iloc[self.leaf_ids].mean()  #  average distribution of all leaf nodes
+        self.avg_distribution = self.df_full.iloc[self.leaf_ids].mean()  #  average distribution of all leaf nodes
 
         # The following are helpful for plotting because they determine
         # the left/right edge of the cluster.
@@ -149,7 +149,7 @@ class Dendrogram:
             # Note: since we're extracting the non-zero entries from n.distribution
             # we must also use the non-zero column names for the legend entries below!
             plot_stacked_bar_chart_for_relative_frequencies(
-                n.distribution[self.cols_with_nonzero_entries],
+                n.avg_distribution[self.cols_with_nonzero_entries],
                 color_palette=color_palette,
                 xpos=i,
                 ax=ax,
