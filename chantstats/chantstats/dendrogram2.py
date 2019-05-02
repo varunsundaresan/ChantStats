@@ -1,3 +1,4 @@
+import json
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -39,6 +40,11 @@ class DendrogramNode:
         self.leaf_ids = self.cluster_node.pre_order(lambda x: x.id)
         self.avg_distribution = self.df_full.iloc[self.leaf_ids].mean()  #  average distribution of all leaf nodes
 
+        if self.is_leaf:
+            self.descr = self.df_full.index[self.id]
+        else:
+            self.descr = f"Cluster #{self.id} ({self.num_leaves} leaves)"
+
         # The following are helpful for plotting because they determine
         # the left/right edge of the cluster.
         self.leftmost_idx = all_leaf_ids.index(self.leaf_ids[0])
@@ -55,8 +61,18 @@ class DendrogramNode:
             return 0.5 * (self.left.xpos + self.right.xpos)
 
     def __repr__(self):
-        leaf_info = " (leaf node)" if self.is_leaf else f" ({self.num_leaves} leaves: {self.leaf_ids})"
+        leaf_info = f" (leaf node: '{self.descr}')" if self.is_leaf else f" ({self.num_leaves} leaves: {self.leaf_ids})"
         return f"<DendrogramNode: id={self.id}{leaf_info}>"
+
+    def to_json(self):
+        avg_distribution_as_json = json.loads(self.avg_distribution.to_json())
+        return {
+            "descr": self.descr,
+            "id": self.id,
+            "is_leaf": self.is_leaf,
+            "leaf_ids": self.leaf_ids,
+            "avg_distribution": avg_distribution_as_json,
+        }
 
 
 class Dendrogram:
@@ -70,6 +86,7 @@ class Dendrogram:
         root_node, all_cluster_nodes = to_tree(self.L, rd=True)
         self.leaf_ids = root_node.pre_order(lambda x: x.id)
         self.all_cluster_nodes = [DendrogramNode(df, cn, all_leaf_ids=self.leaf_ids) for cn in all_cluster_nodes]
+        self.leaf_nodes = [n for n in self.all_cluster_nodes if n.is_leaf]
         self.root_node = [n for n in self.all_cluster_nodes if n.cluster_node is root_node][0]  # TODO: simplify this
 
         # Retroactively assign left/right children to each DendrogramNode
@@ -93,6 +110,9 @@ class Dendrogram:
             key=lambda n: n.num_leaves,
             reverse=True,
         )
+
+    def to_json(self):
+        return {"leaf_ids": self.leaf_ids, "nodes": {n.id: n.to_json() for n in self.all_cluster_nodes}}
 
     def plot_dendrogram(
         self,
