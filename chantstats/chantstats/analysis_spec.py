@@ -13,12 +13,12 @@ class RepertoireAndGenreType(EnumWithDescription):
     RESPONSORIAL_CHANTS = ("responsorial_chants", "Responsorial Chants", ("chant", "responsorial_chants"))
     ORGANA = ("organa", "Organa", ("organum", ""))
 
-    def __new__(cls, name, desc, path_stubs, **kwargs):
+    def __new__(cls, name, desc, output_path_stubs, **kwargs):
         obj = str.__new__(cls)
         obj._value_ = name
         obj._description = desc
-        obj.path_stub_1 = path_stubs[0]
-        obj.path_stub_2 = path_stubs[1]
+        obj.output_path_stub_1 = output_path_stubs[0]
+        obj.output_path_stub_2 = output_path_stubs[1]
         return obj
 
 
@@ -46,6 +46,10 @@ class AnalysisType(EnumWithDescription):
     TENDENCY = ("tendency", "Tendency")
     APPROACHES_AND_DEPARTURES = ("approaches_and_departures", "Approaches & Departures")
     LEAPS_AND_MELODIC_OUTLINES = ("leaps_and_melodic_outlines", "Leaps & Melodic Outlines")
+
+    @property
+    def output_path_stub(self):
+        return self.value
 
     @property
     def analysis_func(self):
@@ -113,9 +117,9 @@ class FullAnalysisSpecOLD:
     def output_path(self, *, root_dir, final):
         return os.path.join(
             root_dir,
-            self.repertoire_and_genre.path_stub_1,
+            self.repertoire_and_genre.output_path_stub_1,
             self.analysis.value,
-            self.repertoire_and_genre.path_stub_2,
+            self.repertoire_and_genre.output_path_stub_2,
             self.unit.value,
             self.mode.value,
             self.mode.get_subfolder(final=final),
@@ -152,10 +156,10 @@ class FullAnalysisSpec:
         unit = UnitType(unit)
         return os.path.join(
             root_dir,
-            self.repertoire_and_genre.path_stub_1,
-            self.analysis.value,
-            self.repertoire_and_genre.path_stub_2,
-            unit.value,
+            self.repertoire_and_genre.output_path_stub_1,
+            self.analysis.output_path_stub,
+            self.repertoire_and_genre.output_path_stub_2,
+            unit.output_path_stub,
             modal_category.output_path_stub,
         )
 
