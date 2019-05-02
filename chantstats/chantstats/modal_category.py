@@ -76,7 +76,14 @@ class GroupingByModalCategory:
         self.keys = list(sorted(self.groups.keys()))
 
     def __repr__(self):
-        return f"<Grouping by '{self.grouped_by}': {len(self.groups)} groups ({len(self.items)} items)>"
+        s = f"<Grouping by '{self.grouped_by}' with {len(self.groups)} groups ({len(self.items)} items):\n"
+        for key, grp in self.groups.items():
+            s += f"   {key!r}: {grp}\n"
+        s += f">"
+        return s
+
+    def __getitem__(self, key):
+        return self.groups[key]
 
     def export_results(
         self, *, analysis_spec, output_root_dir, p_cutoff, unit, overwrite=False, sort_freqs_ascending=False
