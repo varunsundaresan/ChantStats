@@ -1,5 +1,6 @@
 import os
 import sh
+from enum import Enum
 
 from .logging import logger
 
@@ -22,3 +23,21 @@ def list_directory_tree(root_dir):
     res = sh.tree().stdout.decode("utf-8")
     os.chdir(cwd)
     return res
+
+
+class EnumWithDescription(str, Enum):
+    def __new__(cls, name, desc, **kwargs):
+        obj = str.__new__(cls, name)
+        obj._value_ = name
+        obj._description = desc
+        return obj
+
+    @property
+    def description(self) -> str:
+        """
+        Returns
+        -------
+        str
+            Long form description of this enum suitable for use in plot titles etc.
+        """
+        return self._description
