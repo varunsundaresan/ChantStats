@@ -25,14 +25,23 @@ class PlainchantSequencePhrase:
         self.note_of_phrase_final = self.notes[-1]
         self.note_of_final = self.note_of_phrase_final  # alias for consistency with other analysis items (e.g. pieces)
         self.phrase_final_note = self.notes[-1]
-        self.pc_freqs = PCFreqs(self.pitch_classes)
+        self.mode_degrees = calculate_mode_degrees(self)
         self.time_signature = self.piece.stream.flat.getElementAtOrBefore(
             self.measure_stream.getOffsetInHierarchy(self.piece.stream), [music21.meter.TimeSignature]
         ).ratioString
         self.ambitus = calculate_ambitus(self)
-        self.mode_degrees = calculate_mode_degrees(self)
-        self.mode_degree_freqs = ModeDegreeFreqs(self.mode_degrees)
-        self.pc_tendencies = PCTendencies.from_pitch_classes(self.pitch_classes)
+
+    @property
+    def pc_freqs(self):
+        return PCFreqs(self.pitch_classes)
+
+    @property
+    def mode_degree_freqs(self):
+        return ModeDegreeFreqs(self.mode_degrees)
+
+    @property
+    def pc_tendencies(self):
+        return PCTendencies.from_pitch_classes(self.pitch_classes)
 
     def __repr__(self):
         return f"<Phrase {self.phrase_number} of piece {self.piece}>"
