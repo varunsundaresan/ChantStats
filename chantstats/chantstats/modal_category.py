@@ -65,18 +65,18 @@ class GroupingByModalCategory:
     """
 
     def __init__(self, items, *, group_by):
-        self.items = items
+        self._items = items
         self.grouped_by = ModalCategoryType(group_by)
         self.grouping_func = self.grouped_by.grouping_func
 
         grps = defaultdict(list)
-        for item in self.items:
+        for item in self._items:
             grps[self.grouping_func(item)].append(item)
         self.groups = {key: ModalCategory(items, self.grouped_by, key) for key, items in grps.items()}
         self.keys = list(sorted(self.groups.keys()))
 
     def __repr__(self):
-        s = f"<Grouping by '{self.grouped_by}' with {len(self.groups)} groups ({len(self.items)} items):\n"
+        s = f"<Grouping by '{self.grouped_by}' with {len(self.groups)} groups ({len(self._items)} items):\n"
         for key, grp in self.groups.items():
             s += f"   {key!r}: {grp}\n"
         s += f">"
