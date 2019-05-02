@@ -59,7 +59,7 @@ class MonomodalSection:
         return sum([p.pc_tendencies for p in self.phrases], PCTendencies.zeros)
 
 
-def extract_monomodal_sections(piece, *, enforce_same_ambitus, min_length=3):
+def extract_monomodal_sections_from_piece(piece, *, enforce_same_ambitus, min_length=3):
     """
     Extract monomodal sections (= sections of consecutive phrases with the same phrase-final).
 
@@ -90,3 +90,10 @@ def extract_monomodal_sections(piece, *, enforce_same_ambitus, min_length=3):
     grps = [(x, list(grp)) for x, grp in groupby(enumerate(items, start=1), key=itemgetter(1))]
     monomodal_sections = [MonomodalSection(piece, get_idx_start(g), get_idx_end(g)) for g in grps]
     return [x for x in monomodal_sections if len(x) >= min_length]
+
+
+def extract_monomodal_sections(pieces, *, enforce_same_ambitus, min_length=3):
+    assert isinstance(pieces, (list, tuple))
+    return sum(
+        [p.get_monomodal_sections(enforce_same_ambitus=enforce_same_ambitus, min_length=min_length) for p in pieces], []
+    )

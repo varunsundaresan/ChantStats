@@ -3,14 +3,13 @@ import os
 import re
 from enum import Enum
 from glob import glob
-from music21.interval import Interval
 from time import time
 from tqdm import tqdm
 
 from .ambitus import get_ambitus
 from .logging import logger
 from .plainchant_sequence_phrase import PlainchantSequencePhrase
-from .plainchant_sequence_monomodal_sections import extract_monomodal_sections
+from .plainchant_sequence_monomodal_sections import extract_monomodal_sections_from_piece
 
 
 class FrameType(str, Enum):
@@ -137,7 +136,9 @@ class PlainchantSequencePiece:
         -------
         list of MonomodalSection
         """
-        return extract_monomodal_sections(self, enforce_same_ambitus=enforce_same_ambitus, min_length=min_length)
+        return extract_monomodal_sections_from_piece(
+            self, enforce_same_ambitus=enforce_same_ambitus, min_length=min_length
+        )
 
 
 def load_plainchant_sequence_pieces(input_dir, *, pattern="*.xml", exclude_heavy_polymodal_frame_pieces=False):

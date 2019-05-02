@@ -3,7 +3,7 @@ from .dendrogram import plot_dendrogram
 from .logging import logger
 from .modal_category import GroupingByModalCategory
 from .plainchant_sequence_piece import load_plainchant_sequence_pieces
-from .plainchant_sequence_monomodal_sections import MonomodalSection
+from .plainchant_sequence_monomodal_sections import MonomodalSection, extract_monomodal_sections
 from .phrase_collection import PhraseCollection
 from .results_export import export_dendrogram_and_stacked_bar_chart
 
