@@ -3,7 +3,7 @@ import pytest
 from approvaltests.reporters.generic_diff_reporter_factory import GenericDiffReporterFactory
 
 from .context import chantstats
-from chantstats.utils import make_dummy_grouping_by_modal_category
+from chantstats.dummy import make_dummy_grouping_by_modal_category
 
 here = os.path.dirname(os.path.abspath(__file__))
 
