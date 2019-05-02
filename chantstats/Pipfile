@@ -20,6 +20,7 @@ pytest-cov = "*"
 ipdb = "*"
 sh = "*"
 approvaltests = "*"
+pytest-profiling = "*"
 
 [requires]
 python_version = "3.7"
