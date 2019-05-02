@@ -1,12 +1,14 @@
 import json
 import matplotlib.pyplot as plt
 import numpy as np
+import os
 import pandas as pd
 import palettable
 from matplotlib.patches import Patch
 from scipy.cluster.hierarchy import dendrogram, set_link_color_palette, to_tree, ClusterNode
 
 from .dendrogram import calculate_linkage_matrix_in_python_format
+from .logging import logger
 
 
 def plot_stacked_bar_chart_for_relative_frequencies(
@@ -64,15 +66,24 @@ class DendrogramNode:
         leaf_info = f" (leaf node: '{self.descr}')" if self.is_leaf else f" ({self.num_leaves} leaves: {self.leaf_ids})"
         return f"<DendrogramNode: id={self.id}{leaf_info}>"
 
-    def to_json(self):
+    def to_json(self, filename=None, overwrite=False):
         avg_distribution_as_json = json.loads(self.avg_distribution.to_json())
-        return {
+        json_data = {
             "descr": self.descr,
             "id": self.id,
             "is_leaf": self.is_leaf,
             "leaf_ids": self.leaf_ids,
             "avg_distribution": avg_distribution_as_json,
         }
+
+        if filename is None:
+            return json_data
+        else:
+            if os.path.exists(filename) and not overwrite:
+                logger.warning(f"File exists: '{filename}'. Use `overwrite=True` to overwrite existing file.")
+                return
+            with open(filename, "w") as f:
+                json.dump(json_data, f)
 
 
 class Dendrogram:
@@ -111,8 +122,17 @@ class Dendrogram:
             reverse=True,
         )
 
-    def to_json(self):
-        return {"leaf_ids": self.leaf_ids, "nodes": {n.id: n.to_json() for n in self.all_cluster_nodes}}
+    def to_json(self, filename=None, overwrite=False):
+        json_data = {"leaf_ids": self.leaf_ids, "nodes": {n.id: n.to_json() for n in self.all_cluster_nodes}}
+
+        if filename is None:
+            return json_data
+        else:
+            if os.path.exists(filename) and not overwrite:
+                logger.warning(f"File exists (use `overwrite=True` to overwrite): {filename}")
+                return
+            with open(filename, "w") as f:
+                json.dump(json_data, f)
 
     def plot_dendrogram(
         self,
