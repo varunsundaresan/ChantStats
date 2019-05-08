@@ -67,7 +67,8 @@ class DendrogramNode:
         return f"<DendrogramNode: id={self.id}{leaf_info}>"
 
     def to_json(self, filename=None, overwrite=False):
-        avg_distribution_as_json = json.loads(self.avg_distribution.to_json())
+        s = pd.Series(self.avg_distribution.values, index=[str(x) for x in self.avg_distribution.index])
+        avg_distribution_as_json = json.loads(s.to_json())
         json_data = {
             "descr": self.descr,
             "id": self.id,
