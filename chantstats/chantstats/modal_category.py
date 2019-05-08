@@ -23,13 +23,23 @@ class ModalCategoryType(str, Enum):
         else:
             raise NotImplementedError(f"Unexpected grouping type: {self}")
 
-    def get_output_path_stub(self, key):
+    def get_output_path_stub_1(self, key):
         if self == "final":
-            return os.path.join("by_final", f"{key}_final")
+            return "by_final"
         elif self == "final_and_ambitus":
             final = key[0]
             ambitus = AmbitusType(key[1])
-            return os.path.join(f"{ambitus}_modes", f"{final}_{ambitus}")
+            return f"{ambitus}_modes"
+        else:
+            raise NotImplementedError(f"Unexpected grouping type: {self}")
+
+    def get_output_path_stub_2(self, key):
+        if self == "final":
+            return f"{key}_final"
+        elif self == "final_and_ambitus":
+            final = key[0]
+            ambitus = AmbitusType(key[1])
+            return f"{final}_{ambitus}"
         else:
             raise NotImplementedError(f"Unexpected grouping type: {self}")
 
@@ -53,7 +63,8 @@ class ModalCategory:
         self.items = items
         self.modal_category_type = ModalCategoryType(modal_category_type)
         self.key = key
-        self.output_path_stub = self.modal_category_type.get_output_path_stub(self.key)
+        self.output_path_stub_1 = self.modal_category_type.get_output_path_stub_1(self.key)
+        self.output_path_stub_2 = self.modal_category_type.get_output_path_stub_2(self.key)
         self.descr = self.modal_category_type.get_descr(self.key)
 
     def __repr__(self):
