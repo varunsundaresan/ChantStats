@@ -160,6 +160,7 @@ def load_plainchant_sequence_pieces(input_dir, *, pattern="*.xml", exclude_heavy
     -------
     list of PlainchantSequencePiece
     """
+    pattern = pattern if pattern is not None else "*.xml"
     filenames = sorted(glob(os.path.join(input_dir, pattern)))
     logger.debug(f"Found {len(filenames)} pieces matching the pattern '{pattern}'.")
     logger.debug(f"Loading pieces... ")
