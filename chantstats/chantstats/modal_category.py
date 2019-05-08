@@ -45,6 +45,10 @@ class ModalCategoryType(str, Enum):
 
 
 class ModalCategory:
+    """
+    Represents a "modal category".
+    """
+
     def __init__(self, items, modal_category_type, key):
         self.items = items
         self.modal_category_type = ModalCategoryType(modal_category_type)
