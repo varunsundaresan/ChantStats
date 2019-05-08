@@ -14,7 +14,7 @@ class RepertoireAndGenreType(EnumWithDescription):
     ORGANA = ("organa", "Organa", ("organum", ""))
 
     def __new__(cls, name, desc, output_path_stubs, **kwargs):
-        obj = str.__new__(cls)
+        obj = str.__new__(cls, name)
         obj._value_ = name
         obj._description = desc
         obj.output_path_stub_1 = output_path_stubs[0]
