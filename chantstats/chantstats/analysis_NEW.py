@@ -39,6 +39,9 @@ class AnalysisResultCollection:
         self._results = defaultdict(dict)
         self._results_nested = recursive_defaultdict()  # this is redudant (could compute on the fly), but nice to have
 
+    def __getitem__(self, path_stubs):
+        return self._results[path_stubs]
+
     def _get_path_stubs(self, repertoire_and_genre, analysis, unit, modal_category):
         rep_and_genre = RepertoireAndGenreType(repertoire_and_genre)
         analysis = AnalysisType(analysis)
