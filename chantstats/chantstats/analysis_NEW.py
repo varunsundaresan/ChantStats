@@ -37,7 +37,7 @@ def convert_to_nested_dict(d):
 class AnalysisResultCollection:
     def __init__(self):
         self._results = defaultdict(dict)
-        self._results_nested = recursive_defaultdict()  # TODO: we can calculate it on the fly if needed
+        self._results_nested = recursive_defaultdict()  # this is redudant (could compute on the fly), but nice to have
 
     def _get_path_stubs(self, repertoire_and_genre, analysis, unit, modal_category):
         rep_and_genre = RepertoireAndGenreType(repertoire_and_genre)
@@ -52,19 +52,16 @@ class AnalysisResultCollection:
             modal_category.output_path_stub_2,
         )
 
-    #     def get_subdict(self, repertoire_and_genre, analysis, unit, modal_category, results_key, value):
-    #         return get_recursive_subdict(self._results, path_stubs)[results_key]
+    def insert_results(self, repertoire_and_genre, analysis, unit, modal_category, results_key, value):
+        path_stubs = self._get_path_stubs(repertoire_and_genre, analysis, unit, modal_category)
+        get_recursive_subdict(self._results_nested, path_stubs)[results_key] = value
+        self._results[path_stubs][results_key] = value
 
     def to_dict(self):
         return dict(self._results)  # convert from defaultdict to dict
 
     def to_nested_dict(self):
         return convert_to_nested_dict(self._results_nested)
-
-    def insert_results(self, repertoire_and_genre, analysis, unit, modal_category, results_key, value):
-        path_stubs = self._get_path_stubs(repertoire_and_genre, analysis, unit, modal_category)
-        get_recursive_subdict(self._results_nested, path_stubs)[results_key] = value
-        self._results[path_stubs][results_key] = value
 
     def to_pickle(self, filename, overwrite=False):
         if os.path.exists(filename):
