@@ -1,3 +1,5 @@
+import os
+import pickle
 from collections import defaultdict
 from tqdm import tqdm
 
@@ -54,7 +56,7 @@ class AnalysisResultCollection:
     #         return get_recursive_subdict(self._results, path_stubs)[results_key]
 
     def to_dict(self):
-        return self._results
+        return dict(self._results)  # convert from defaultdict to dict
 
     def to_nested_dict(self):
         return convert_to_nested_dict(self._results_nested)
@@ -63,6 +65,22 @@ class AnalysisResultCollection:
         path_stubs = self._get_path_stubs(repertoire_and_genre, analysis, unit, modal_category)
         get_recursive_subdict(self._results_nested, path_stubs)[results_key] = value
         self._results[path_stubs][results_key] = value
+
+    def to_pickle(self, filename, overwrite=False):
+        if os.path.exists(filename):
+            if not overwrite:
+                logger.warn(f"Not overwriting existing file: '{filename}' (use 'overwrite=True' to overwrite)")
+                return
+            else:
+                logger.warn(f"Overwriting existing file: '{filename}'")
+
+        with open(filename, "wb") as f:
+            pickle.dump(self, f)
+
+    @classmethod
+    def from_pickle(cls, filename):
+        with open(filename, "rb") as f:
+            return pickle.load(f)
 
 
 def prepare_analysis_inputs(repertoire_and_genre, mode, *, cfg, min_length_monomodal_sections=3, filename_pattern=None):
