@@ -1,5 +1,3 @@
-from functools import lru_cache
-
 from .analysis_spec import RepertoireAndGenreType
 from .plainchant_sequence_piece import load_plainchant_sequence_pieces
 
@@ -13,7 +11,6 @@ class ChantStatsConfig:
         musicxml_path = self.musicxml_paths[rep_and_genre]
         return musicxml_path
 
-    @lru_cache(maxsize=10)
     def load_pieces(self, repertoire_and_genre, *, pattern=None):
         musicxml_path = self.get_musicxml_path(repertoire_and_genre)
 

@@ -2,6 +2,7 @@ import music21
 import os
 import re
 from enum import Enum
+from functools import lru_cache
 from glob import glob
 from time import time
 from tqdm import tqdm
@@ -141,6 +142,7 @@ class PlainchantSequencePiece:
         )
 
 
+@lru_cache(maxsize=10)
 def load_plainchant_sequence_pieces(input_dir, *, pattern="*.xml", exclude_heavy_polymodal_frame_pieces=False):
     """
     Load plainchant sequence pieces from MusicXML files in a given input directory.
