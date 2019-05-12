@@ -123,6 +123,30 @@ class AnalysisResultCollection:
             fig.savefig(os.path.join(output_dir, "stacked_bar_chart.png"))
 
 
+from .plainchant_sequence_piece import PlainchantSequencePiece
+
+
+class PlainchantSequencePieces:
+    def __init__(self, pieces):
+        assert all([isinstance(p, PlainchantSequencePiece) for p in pieces])
+        self.pieces = pieces
+        self.repertoire_and_genre = RepertoireAndGenreType("plainchant_sequences")
+
+    def __repr__(self):
+        return f"<Collection of {len(self.pieces)} plainchant sequence pieces>"
+
+    @classmethod
+    def from_musicxml_files(cls, cfg, filename_pattern=None):
+        pieces = cfg.load_pieces("plainchant_sequences", pattern=filename_pattern)
+        return cls(pieces)
+
+    def get_analysis_inputs(self, mode, min_length_monomodal_sections=3):
+        mode = ModalCategoryType(mode)
+        return extract_monomodal_sections(
+            self.pieces, enforce_same_ambitus=mode.enforce_same_ambitus, min_length=min_length_monomodal_sections
+        )
+
+
 def prepare_analysis_inputs(repertoire_and_genre, mode, *, cfg, min_length_monomodal_sections=3, filename_pattern=None):
     pieces = cfg.load_pieces(repertoire_and_genre, pattern=filename_pattern)
     mode = ModalCategoryType(mode)
