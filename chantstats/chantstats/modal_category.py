@@ -23,11 +23,19 @@ class ModalCategoryType(str, Enum):
         else:
             raise NotImplementedError(f"Unexpected grouping type: {self}")
 
+    @property
+    def enforce_same_ambitus(self):
+        if self == "final":
+            return False
+        elif self == "final_and_ambitus":
+            return True
+        else:
+            raise NotImplementedError(f"Unexpected grouping type: {self}")
+
     def get_output_path_stub_1(self, key):
         if self == "final":
             return "by_final"
         elif self == "final_and_ambitus":
-            final = key[0]
             ambitus = AmbitusType(key[1])
             return f"{ambitus}_modes"
         else:
