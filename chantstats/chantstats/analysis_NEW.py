@@ -69,6 +69,34 @@ class AnalysisResultCollection:
             modal_category.output_path_stub_2,
         )
 
+    def accumulate_results(
+        self, repertoire_and_genre, analysis, unit, mode, min_length_monomodal_sections=3, p_cutoff=0.7
+    ):
+        analysis_inputs = prepare_analysis_inputs(
+            repertoire_and_genre,
+            mode,
+            cfg=self.cfg,
+            min_length_monomodal_sections=min_length_monomodal_sections,
+            filename_pattern=None,
+        )
+
+        grouping = GroupingByModalCategory(analysis_inputs, group_by=mode)
+        logger.debug(f"Calculating results for {grouping}")
+        for key in tqdm(grouping.keys):
+            modal_category = grouping[key]
+            df = modal_category.make_results_dataframe(analysis_func=AnalysisFuncPCFreqs("rel_freqs"), unit=unit)
+            dendrogram = Dendrogram(df, p_threshold=p_cutoff)
+
+            self.insert_results(repertoire_and_genre, analysis, unit, modal_category, "dendrogram", dendrogram)
+            self.insert_results(
+                repertoire_and_genre,
+                analysis,
+                unit,
+                modal_category,
+                "clusters",
+                [c for c in dendrogram.nodes_below_cutoff],
+            )
+
     def insert_results(self, repertoire_and_genre, analysis, unit, modal_category, results_key, value):
         if isinstance(value, list):
             value_json = [x.to_json() for x in value]
@@ -167,30 +195,3 @@ def prepare_analysis_inputs(repertoire_and_genre, mode, *, cfg, min_length_monom
         )
     else:
         raise NotImplementedError(f"Unsupported repertoire/genre: {repertoire_and_genre}")
-
-
-def accumulate_results(
-    existing_results, cfg, repertoire_and_genre, analysis, unit, mode, min_length_monomodal_sections=3, p_cutoff=0.7
-):
-    results = existing_results or AnalysisResultCollection()
-    analysis_inputs = prepare_analysis_inputs(
-        repertoire_and_genre,
-        mode,
-        cfg=cfg,
-        min_length_monomodal_sections=min_length_monomodal_sections,
-        filename_pattern=None,
-    )
-
-    grouping = GroupingByModalCategory(analysis_inputs, group_by=mode)
-    logger.debug(f"Calculating results for {grouping}")
-    for key in tqdm(grouping.keys):
-        modal_category = grouping[key]
-        df = modal_category.make_results_dataframe(analysis_func=AnalysisFuncPCFreqs("rel_freqs"), unit=unit)
-        dendrogram = Dendrogram(df, p_threshold=p_cutoff)
-
-        results.insert_results(repertoire_and_genre, analysis, unit, modal_category, "dendrogram", dendrogram)
-        results.insert_results(
-            repertoire_and_genre, analysis, unit, modal_category, "clusters", [c for c in dendrogram.nodes_below_cutoff]
-        )
-
-    return results
