@@ -69,8 +69,8 @@ class AnalysisResultCollection:
 
     def _load_pieces_if_needed(self, repertoire_and_genre):
         if repertoire_and_genre == "plainchant_sequences":
-            if "plainchant_sequences" not in self.all_pieces.key():
-                self.all_pieces["plainchant_sequences"] = PlainchantSequencePieces.from_musicxml_files(cfg)
+            if "plainchant_sequences" not in self.all_pieces.keys():
+                self.all_pieces["plainchant_sequences"] = PlainchantSequencePieces.from_musicxml_files(self.cfg)
         else:
             raise NotImplementedError(
                 "TODO: when initialising AnalysisResultCollection, load pieces for all rep/genre types, not just plainchant sequences!"
@@ -120,7 +120,7 @@ class AnalysisResultCollection:
     def to_nested_dict(self):
         return convert_to_nested_dict(self._results_nested_json)
 
-    def to_pickle(self, filename, overwrite=False):
+    def dump(self, filename, overwrite=False):
         if os.path.exists(filename):
             if not overwrite:
                 logger.warn(f"Not overwriting existing file: '{filename}' (use 'overwrite=True' to overwrite)")
@@ -128,13 +128,26 @@ class AnalysisResultCollection:
             else:
                 logger.warn(f"Overwriting existing file: '{filename}'")
 
+        data = {
+            "cfg": self.cfg,
+            "_results": self._results,
+            "_results_json": self._results_json,
+            "_results_nested": self._results_nested,
+            "_results_nested_json": self._results_nested_json,
+        }
+
         with open(filename, "wb") as f:
-            pickle.dump(self, f)
+            pickle.dump(data, f)
 
     @classmethod
-    def from_pickle(cls, filename):
+    def load(cls, filename):
         with open(filename, "rb") as f:
-            return pickle.load(f)
+            data = pickle.load(f)
+
+        cfg = data.pop("cfg")
+        results = cls(cfg)
+        results.__dict__.update(data)
+        return results
 
     def export_plots(self, output_root_dir, overwrite=False):
         if os.path.exists(output_root_dir):
