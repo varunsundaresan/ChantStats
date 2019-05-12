@@ -5,6 +5,7 @@ from collections import defaultdict
 from tqdm import tqdm
 
 from .analysis_spec import RepertoireAndGenreType, AnalysisType, AnalysisFuncPCFreqs
+from .config import ChantStatsConfig
 from .dendrogram2 import Dendrogram
 from .logging import logger
 from .modal_category import ModalCategoryType, GroupingByModalCategory
@@ -37,13 +38,20 @@ def convert_to_nested_dict(d):
 
 
 class AnalysisResultCollection:
-    def __init__(self):
+    def __init__(self, cfg):
+        assert isinstance(cfg, ChantStatsConfig)
+        self.cfg = cfg
         self._results = defaultdict(dict)
         self._results_json = defaultdict(dict)
 
         # These are redundant (could compute from the above on the fly), but nice to have
         self._results_nested = recursive_defaultdict()
         self._results_nested_json = recursive_defaultdict()
+
+        logger.warning(
+            "TODO: when initialising AnalysisResultCollection, load pieces for all rep/genre types, not just plainchant sequences!"
+        )
+        self.all_pieces = {"plainchant_sequences": PlainchantSequencePieces.from_musicxml_files(cfg)}
 
     def __getitem__(self, path_stubs):
         return self._results[path_stubs]
