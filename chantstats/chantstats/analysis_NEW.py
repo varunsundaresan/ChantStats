@@ -44,14 +44,12 @@ class AnalysisResultCollection:
         self._results = defaultdict(dict)
         self._results_json = defaultdict(dict)
 
-        # These are redundant (could compute from the above on the fly), but nice to have
+        # The following two are redundant (could compute from the above two on the fly), but nice to have
         self._results_nested = recursive_defaultdict()
         self._results_nested_json = recursive_defaultdict()
 
-        logger.warning(
-            "TODO: when initialising AnalysisResultCollection, load pieces for all rep/genre types, not just plainchant sequences!"
-        )
-        self.all_pieces = {"plainchant_sequences": PlainchantSequencePieces.from_musicxml_files(cfg)}
+        self.all_pieces = {}
+        self._load_pieces_if_needed("plainchant_sequences")
 
     def __getitem__(self, path_stubs):
         return self._results[path_stubs]
@@ -69,9 +67,20 @@ class AnalysisResultCollection:
             modal_category.output_path_stub_2,
         )
 
+    def _load_pieces_if_needed(self, repertoire_and_genre):
+        if repertoire_and_genre == "plainchant_sequences":
+            if "plainchant_sequences" not in self.all_pieces.key():
+                self.all_pieces["plainchant_sequences"] = PlainchantSequencePieces.from_musicxml_files(cfg)
+        else:
+            raise NotImplementedError(
+                "TODO: when initialising AnalysisResultCollection, load pieces for all rep/genre types, not just plainchant sequences!"
+            )
+
     def accumulate_results(
         self, repertoire_and_genre, analysis, unit, mode, min_length_monomodal_sections=3, p_cutoff=0.7
     ):
+        self._load_pieces_if_needed(repertoire_and_genre)
+
         pieces = self.all_pieces[repertoire_and_genre]
         analysis_inputs = pieces.get_analysis_inputs(mode, min_length_monomodal_sections=min_length_monomodal_sections)
 
