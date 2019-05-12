@@ -152,7 +152,8 @@ class AnalysisResultCollection:
     def export_plots(self, output_root_dir, overwrite=False):
         if os.path.exists(output_root_dir):
             if not overwrite:
-                logger.warn(f"Aborting because output root dir already exists (and overwrite=False): {output_root_dir}")
+                logger.warn(f"Aborting because output root dir already exists: '{output_root_dir}'")
+                logger.warn(f"Use 'overwrite=True' to overwrite existing results.")
                 return
             else:
                 logger.warn(f"Removing existing output root dir: {output_root_dir}")
@@ -160,7 +161,7 @@ class AnalysisResultCollection:
 
         for path_stubs in self.to_dict().keys():
             output_dir = os.path.join(output_root_dir, *path_stubs)
-            logger.debug(f"Exporting results to folder: {output_dir}")
+            logger.info(f"Exporting results to folder: {output_dir}")
 
             dendrogram = self._results[path_stubs]["dendrogram"]
 
