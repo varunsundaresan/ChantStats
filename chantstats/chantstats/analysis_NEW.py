@@ -72,13 +72,8 @@ class AnalysisResultCollection:
     def accumulate_results(
         self, repertoire_and_genre, analysis, unit, mode, min_length_monomodal_sections=3, p_cutoff=0.7
     ):
-        analysis_inputs = prepare_analysis_inputs(
-            repertoire_and_genre,
-            mode,
-            cfg=self.cfg,
-            min_length_monomodal_sections=min_length_monomodal_sections,
-            filename_pattern=None,
-        )
+        pieces = self.all_pieces[repertoire_and_genre]
+        analysis_inputs = pieces.get_analysis_inputs(mode, min_length_monomodal_sections=min_length_monomodal_sections)
 
         grouping = GroupingByModalCategory(analysis_inputs, group_by=mode)
         logger.debug(f"Calculating results for {grouping}")
