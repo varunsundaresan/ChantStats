@@ -12,16 +12,33 @@ from .logging import logger
 
 
 def plot_stacked_bar_chart_for_relative_frequencies(
-    s, *, xpos, ax, color_palette, width=0.6, sort_freqs_ascending=False
+    values, *, xpos, ax, color_palette, width=0.6, sort_freqs_ascending=False
 ):
-    assert np.isclose(s.sum(), 100.0)  # ensure relative frequencies add up to 100%
+    """
+    Parameters
+    ----------
+    values : pandas.Series
+        The relative frequency values to plot (note that these must add up to 100.0)
+    xpos : float
+        The x-position at which to add the stacked bar to the existing plot.
+    ax : AxesSubplot
+        The matplotlib axes to which to add the stacked bar chart.
+    color_palette : list
+        List of hex color values to use.
+    width : float
+        Width of each bar.
+    sort_freqs_ascending : bool
+        If True, sort the relative frequency values in ascending order before assembling
+        them into the stacked bar (default: False).
+    """
+    assert np.isclose(values.sum(), 100.0)  # ensure relative frequencies add up to 100%
 
     # # color_palette = palettable.colorbrewer.qualitative.Set2_8.hex_colors
     # # color_palette = palettable.cartocolors.qualitative.Pastel_8.hex_colors
     # color_palette = palettable.cartocolors.qualitative.Vivid_8.hex_colors
     # # color_palette = palettable.tableau.Tableau_10.hex_colors
 
-    df_s = pd.DataFrame({"value": s, "color": color_palette[: len(s)]})
+    df_s = pd.DataFrame({"value": values, "color": color_palette[: len(values)]})
     if sort_freqs_ascending:
         df_s = df_s.sort_values("value", ascending=False)
     df_s["value_cum"] = df_s["value"].cumsum().shift(fill_value=0)
