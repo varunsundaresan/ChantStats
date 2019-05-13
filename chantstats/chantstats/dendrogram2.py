@@ -47,8 +47,9 @@ def plot_stacked_bar_chart_for_relative_frequencies(
 
 
 class DendrogramNode:
-    def __init__(self, df_full, cluster_node, *, all_leaf_ids):
+    def __init__(self, df_full, cluster_node, *, analysis, all_leaf_ids):
         assert isinstance(cluster_node, ClusterNode)
+        self.analysis = analysis  # self.analysis = AnalysisType(analysis)
         self.df_full = df_full
         self.cluster_node = cluster_node
         self.id = self.cluster_node.get_id()
@@ -105,8 +106,9 @@ class DendrogramNode:
 
 
 class Dendrogram:
-    def __init__(self, df, *, p_threshold=0.15, optimal_ordering=True):
+    def __init__(self, df, *, analysis, p_threshold=0.15, optimal_ordering=True):
         self.df_orig = df
+        self.analysis = analysis  # self.analysis = AnalysisType(analysis)
         self.cols_with_nonzero_entries = df.columns[(df != 0).any()]
         self.df = self.df_orig[self.cols_with_nonzero_entries]
         self.L = calculate_linkage_matrix_in_python_format(df, optimal_ordering=optimal_ordering)
@@ -114,7 +116,9 @@ class Dendrogram:
         self.R = dendrogram(self.L, no_plot=True)
         root_node, all_cluster_nodes = to_tree(self.L, rd=True)
         self.leaf_ids = root_node.pre_order(lambda x: x.id)
-        self.all_cluster_nodes = [DendrogramNode(df, cn, all_leaf_ids=self.leaf_ids) for cn in all_cluster_nodes]
+        self.all_cluster_nodes = [
+            DendrogramNode(df, cn, analysis=self.analysis, all_leaf_ids=self.leaf_ids) for cn in all_cluster_nodes
+        ]
         self.leaf_nodes = [n for n in self.all_cluster_nodes if n.is_leaf]
         self.root_node = [n for n in self.all_cluster_nodes if n.cluster_node is root_node][0]  # TODO: simplify this
 
