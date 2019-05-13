@@ -7,6 +7,7 @@ import palettable
 from matplotlib.patches import Patch
 from scipy.cluster.hierarchy import dendrogram, set_link_color_palette, to_tree, ClusterNode
 
+# from .analysis_spec import AnalysisType
 from .dendrogram import calculate_linkage_matrix_in_python_format
 from .logging import logger
 
@@ -46,6 +47,29 @@ def plot_stacked_bar_chart_for_relative_frequencies(
         ax.bar(xpos, value, bottom=bottom, width=width, color=color)
 
 
+class PCFreqDistribution:
+    def __init__(self, values):
+        assert isinstance(values, pd.Series)
+        assert np.isclose(values.sum(), 100.0)  # ensure these are relative frequencies which add up to 100%
+        self.values = values
+        self.index = self.values.index
+
+    def __repr__(self):
+        return f"<PCFreqDistribution: [{', '.join([f'{label!r}: {x:.3f}' for label, x in self.values.iteritems()])}]>"
+
+    def plot_as_stacked_bar(self, ax, xpos, color_palette, bar_width=0.6, sort_freqs_ascending=False):
+        from .plotting import plot_single_pandas_series_as_stacked_bar
+
+        plot_single_pandas_series_as_stacked_bar(
+            self.values,
+            ax=ax,
+            xpos=xpos,
+            color_palette=color_palette,
+            bar_width=bar_width,
+            sort_freqs_ascending=sort_freqs_ascending,
+        )
+
+
 class DendrogramNode:
     def __init__(self, df_full, cluster_node, *, analysis, all_leaf_ids):
         assert isinstance(cluster_node, ClusterNode)
@@ -59,6 +83,10 @@ class DendrogramNode:
         self.num_leaves = self.cluster_node.get_count()
         self.leaf_ids = self.cluster_node.pre_order(lambda x: x.id)
         self.avg_distribution = self.df_full.iloc[self.leaf_ids].mean()  #  average distribution of all leaf nodes
+        if analysis == "pc_freqs":
+            self.avg_pc_freq_distribution = PCFreqDistribution(self.avg_distribution)
+        else:
+            raise NotImplementedError()
 
         if self.is_leaf:
             self.descr = self.df_full.index[self.id]
