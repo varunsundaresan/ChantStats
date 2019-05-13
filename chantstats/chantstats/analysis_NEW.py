@@ -38,7 +38,7 @@ def convert_to_nested_dict(d):
 
 
 class AnalysisResultCollection:
-    def __init__(self, cfg):
+    def __init__(self, cfg, load_pieces=True):
         assert isinstance(cfg, ChantStatsConfig)
         self.cfg = cfg
         self._results = defaultdict(dict)
@@ -49,7 +49,11 @@ class AnalysisResultCollection:
         self._results_nested_json = recursive_defaultdict()
 
         self.all_pieces = {}
-        self._load_pieces_if_needed("plainchant_sequences")
+        if load_pieces:
+            # Note: loading pieces here is just a convenience for a more intuitive
+            # interface. If the user specifies load_pieces=False, we will load them
+            # later as needed.
+            self._load_pieces_if_needed("plainchant_sequences")
 
     def __getitem__(self, path_stubs):
         return self._results[path_stubs]
@@ -175,30 +179,6 @@ class AnalysisResultCollection:
             color_palette = get_color_palette_for_unit(unit)
             fig = dendrogram.plot_stacked_bar_charts(color_palette=color_palette)
             fig.savefig(os.path.join(output_dir, "stacked_bar_chart.png"))
-
-
-from .plainchant_sequence_piece import PlainchantSequencePiece
-
-
-class PlainchantSequencePieces:
-    def __init__(self, pieces):
-        assert all([isinstance(p, PlainchantSequencePiece) for p in pieces])
-        self.pieces = pieces
-        self.repertoire_and_genre = RepertoireAndGenreType("plainchant_sequences")
-
-    def __repr__(self):
-        return f"<Collection of {len(self.pieces)} plainchant sequence pieces>"
-
-    @classmethod
-    def from_musicxml_files(cls, cfg, filename_pattern=None):
-        pieces = cfg.load_pieces("plainchant_sequences", pattern=filename_pattern)
-        return cls(pieces)
-
-    def get_analysis_inputs(self, mode, min_length_monomodal_sections=3):
-        mode = ModalCategoryType(mode)
-        return extract_monomodal_sections(
-            self.pieces, enforce_same_ambitus=mode.enforce_same_ambitus, min_length=min_length_monomodal_sections
-        )
 
 
 #

@@ -8,9 +8,11 @@ from time import time
 from tqdm import tqdm
 
 from .ambitus import get_ambitus
+from .analysis_spec import RepertoireAndGenreType
 from .logging import logger
+from .modal_category import ModalCategoryType
 from .plainchant_sequence_phrase import PlainchantSequencePhrase
-from .plainchant_sequence_monomodal_sections import extract_monomodal_sections_from_piece
+from .plainchant_sequence_monomodal_sections import extract_monomodal_sections_from_piece, extract_monomodal_sections
 
 
 class FrameType(str, Enum):
@@ -176,3 +178,32 @@ def load_plainchant_sequence_pieces(input_dir, *, pattern="*.xml", exclude_heavy
     )
     logger.debug(f"Loading pieces took {toc-tic:.2f} seconds.")
     return pieces
+
+
+class PlainchantSequencePieces:
+    def __init__(self, pieces):
+        assert all([isinstance(p, PlainchantSequencePiece) for p in pieces])
+        self.pieces = pieces
+        self.repertoire_and_genre = RepertoireAndGenreType("plainchant_sequences")
+
+    def __repr__(self):
+        return f"<Collection of {len(self.pieces)} plainchant sequence pieces>"
+
+    @classmethod
+    def from_musicxml_files(cls, cfg, filename_pattern=None):
+        musicxml_path = cfg.get_musicxml_path("plainchant_sequences")
+        pieces = load_plainchant_sequence_pieces(musicxml_path, pattern=filename_pattern)
+        return cls(pieces)
+
+    def get_analysis_inputs(self, mode, min_length_monomodal_sections=3):
+        mode = ModalCategoryType(mode)
+        return extract_monomodal_sections(
+            self.pieces, enforce_same_ambitus=mode.enforce_same_ambitus, min_length=min_length_monomodal_sections
+        )
+
+
+def load_pieces(repertoire_and_genre, cfg, filename_pattern=None):
+    if repertoire_and_genre == "plainchant_sequences":
+        return PlainchantSequencePieces.from_musicxml_files(cfg, filename_pattern=filename_pattern)
+    else:
+        raise NotImplementedError()
