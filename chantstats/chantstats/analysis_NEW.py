@@ -8,9 +8,9 @@ from .analysis_spec import RepertoireAndGenreType, AnalysisType, AnalysisFuncPCF
 from .config import ChantStatsConfig
 from .dendrogram2 import Dendrogram
 from .logging import logger
-from .modal_category import ModalCategoryType, GroupingByModalCategory
+from .modal_category import GroupingByModalCategory
+from .plainchant_sequence_piece import load_pieces
 from .unit import UnitType
-from .plainchant_sequence_monomodal_sections import extract_monomodal_sections
 from .results_export import get_color_palette_for_unit
 
 __all__ = []
@@ -74,7 +74,7 @@ class AnalysisResultCollection:
     def _load_pieces_if_needed(self, repertoire_and_genre):
         if repertoire_and_genre == "plainchant_sequences":
             if "plainchant_sequences" not in self.all_pieces.keys():
-                self.all_pieces["plainchant_sequences"] = PlainchantSequencePieces.from_musicxml_files(self.cfg)
+                self.all_pieces["plainchant_sequences"] = load_pieces(repertoire_and_genre, self.cfg)
         else:
             raise NotImplementedError(
                 "TODO: when initialising AnalysisResultCollection, load pieces for all rep/genre types, not just plainchant sequences!"
