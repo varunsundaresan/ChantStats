@@ -1,5 +1,4 @@
 from .analysis_spec import RepertoireAndGenreType
-from .plainchant_sequence_piece import load_plainchant_sequence_pieces
 
 
 class ChantStatsConfig:
@@ -12,10 +11,4 @@ class ChantStatsConfig:
         return musicxml_path
 
     def load_pieces(self, repertoire_and_genre, *, pattern=None):
-        musicxml_path = self.get_musicxml_path(repertoire_and_genre)
-
-        if repertoire_and_genre == "plainchant_sequences":
-            pieces = load_plainchant_sequence_pieces(musicxml_path, pattern=pattern)
-        else:
-            raise NotImplementedError()
-        return pieces
+        raise DeprecationWarning("This method is deprecated. Use the function 'load_pieces()' instead.")
