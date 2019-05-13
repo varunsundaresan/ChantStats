@@ -79,7 +79,16 @@ class ModalCategory:
         return f"<ModalCategory with {self.modal_category_type.value}={self.key}, {len(self.items)} items>"
 
     def make_results_dataframe(self, *, analysis_func, unit):
-        return pd.DataFrame({x.descr: analysis_func(x, unit=unit) for x in self.items}).T
+        df = pd.DataFrame({x.descr: analysis_func(x, unit=unit) for x in self.items}).T
+        if unit == "pcs":
+            # column labels are already strings; nothing to do
+            pass
+        elif unit == "mode_degrees":
+            logger.debug("Converting column labels from mode degrees to strings.")
+            df.columns = [x.descr for x in df.columns]
+        else:
+            raise NotImplementedError()
+        return df
 
 
 class GroupingByModalCategory:
