@@ -1,23 +1,12 @@
 import os
-import palettable
 import shutil
 
 from chantstats.unit import UnitType
 from .dendrogram2 import Dendrogram
 from .logging import logger
+from .plotting import get_color_palette_for_unit
 
 __all__ = ["export_dendrogram_and_stacked_bar_chart"]
-
-
-def get_color_palette_for_unit(unit):
-    unit = UnitType(unit)
-    if unit.value == "pcs":
-        return palettable.cartocolors.qualitative.Vivid_8.hex_colors
-    elif unit.value == "mode_degrees":
-        return palettable.cartocolors.qualitative.Pastel_10.hex_colors
-        # return palettable.colorbrewer.qualitative.Set3_12.hex_colors
-    else:
-        raise ValueError(f"Unexpected value: {unit.value}")
 
 
 def export_dendrogram_and_stacked_bar_chart(
