@@ -91,7 +91,7 @@ class DendrogramNode:
         if self.is_leaf:
             self.descr = self.df_full.index[self.id]
         else:
-            self.descr = f"Cluster #{self.id} ({self.num_leaves} leaves)"
+            self.descr = f"Cluster #{self.id}\n({self.num_leaves} leaves)"
 
         # The following are helpful for plotting because they determine
         # the left/right edge of the cluster.
