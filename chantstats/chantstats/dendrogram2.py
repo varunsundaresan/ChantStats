@@ -160,14 +160,14 @@ class Dendrogram:
                 n.right.parent = n
         self.root_node.parent = None
 
-        self.nodes_below_cutoff = sorted(
+        self.nodes_below_cutoff = self.get_nodes_below_cutoff(self.p_threshold)
+
+    def get_nodes_below_cutoff(self, p_cutoff):
+        return sorted(
             [
                 n
                 for n in self.all_cluster_nodes
-                if not n.is_leaf
-                and n.dist < self.p_threshold
-                and n.parent is not None
-                and n.parent.dist > self.p_threshold
+                if not n.is_leaf and n.dist < p_cutoff and n.parent is not None and n.parent.dist > p_cutoff
             ],
             key=lambda n: n.num_leaves,
             reverse=True,
