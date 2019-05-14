@@ -218,6 +218,9 @@ class Dendrogram:
             for i, n in enumerate(self.get_nodes_below_cutoff(p_cutoff)):
                 ax.annotate(n.id, xy=(n.xpos, n.ypos), xycoords="data", xytext=(4, 4), textcoords="offset points")
                 ax.scatter(n.xpos, n.ypos, zorder=2, color="gray")
+
+        ax.set_ylim(0.0, 1.0)
+
         if title:
             ax.set_title(title)
         if use_tight_layout:
