@@ -35,8 +35,8 @@ def export_results(results, output_root_dir, p_cutoff=0.7, overwrite=False):
             shutil.rmtree(output_root_dir)
 
     for path_stubs in results.keys():
-        analysis_name = AnalysisType(path_stubs[1])
-        unit = UnitType(path_stubs[3])
+        analysis_name = path_stubs.analysis
+        unit = path_stubs.unit
         assert analysis_name == "pc_freqs"
 
         path_stub_p_cutoff = f"p_cutoff_{p_cutoff:.2f}"

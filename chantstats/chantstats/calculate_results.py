@@ -8,6 +8,31 @@ from .unit import UnitType
 __all__ = ["calculate_results"]
 
 
+class PathStubs(tuple):
+    def __new__(cls, repertoire_and_genre, analysis, unit, modal_category):
+        rep_and_genre = RepertoireAndGenreType(repertoire_and_genre)
+        analysis = AnalysisType(analysis)
+        unit = UnitType(unit)
+        modal_category = modal_category
+
+        path_stubs = (
+            rep_and_genre.output_path_stub_1,
+            analysis.output_path_stub,
+            rep_and_genre.output_path_stub_2,
+            unit.output_path_stub,
+            modal_category.output_path_stub_1,
+            modal_category.output_path_stub_2,
+        )
+
+        obj = tuple.__new__(cls, path_stubs)
+        obj.rep_and_genre = rep_and_genre
+        obj.analysis = analysis
+        obj.unit = unit
+        obj.modal_category = modal_category
+
+        return obj
+
+
 def get_path_stubs(repertoire_and_genre, analysis, unit, modal_category):
     rep_and_genre = RepertoireAndGenreType(repertoire_and_genre)
     analysis = AnalysisType(analysis)
@@ -63,7 +88,7 @@ def calculate_results(repertoire_and_genre, analysis_name, cfg, min_length_monom
             logger.info(f"Calculating results for {modal_category}")
             for unit in list(UnitType):
                 dendrogram = calculate_dendrogram(modal_category, analysis_name=analysis_name, unit=unit)
-                path_stubs = get_path_stubs(repertoire_and_genre, analysis_name, unit, modal_category)
+                path_stubs = PathStubs(repertoire_and_genre, analysis_name, unit, modal_category)
                 results[path_stubs] = {"dendrogram": dendrogram}
 
     return results
