@@ -214,10 +214,19 @@ class Dendrogram:
         )
         set_link_color_palette(None)  # reset to default
 
+        nodes_below_cutoff = self.get_nodes_below_cutoff(p_cutoff)
+        size_nodes_below_cutoff = 20
+        size_other_nodes = 10
+
+        # Draw dots to indicate the dendrogram nodes which are not leaves
+        for n in self.all_cluster_nodes:
+            if not n.is_leaf and not n in nodes_below_cutoff:
+                ax.scatter(n.xpos, n.ypos, s=size_other_nodes, zorder=2, color="gray")
+
         if annotate_nodes_below_cutoff:
-            for i, n in enumerate(self.get_nodes_below_cutoff(p_cutoff)):
+            for i, n in enumerate(nodes_below_cutoff):
                 ax.annotate(n.id, xy=(n.xpos, n.ypos), xycoords="data", xytext=(4, 4), textcoords="offset points")
-                ax.scatter(n.xpos, n.ypos, zorder=2, color="gray")
+                ax.scatter(n.xpos, n.ypos, s=size_nodes_below_cutoff, zorder=2, color="gray")
 
         ax.set_ylim(0.0, 1.0)
 
