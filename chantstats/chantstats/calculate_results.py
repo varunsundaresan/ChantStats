@@ -75,17 +75,21 @@ def calculate_dendrogram(modal_category, *, analysis_name, unit):
     return dendrogram
 
 
-def calculate_results(repertoire_and_genre, analysis_name, cfg, min_length_monomodal_sections=3):
+def calculate_results(
+    repertoire_and_genre, analysis_name, cfg, min_length_monomodal_sections=3, modes=None, units=None
+):
     results = {}
 
     pieces = load_pieces(repertoire_and_genre, cfg)
+    modes = modes or list(ModalCategoryType)
+    units = units or list(UnitType)
 
-    for mode in list(ModalCategoryType):
+    for mode in modes:
         analysis_inputs = pieces.get_analysis_inputs(mode, min_length_monomodal_sections=min_length_monomodal_sections)
         grouping = GroupingByModalCategory(analysis_inputs, group_by=mode)
         for modal_category in grouping.groups.values():
             logger.info(f"Calculating results for {modal_category}")
-            for unit in list(UnitType):
+            for unit in units:
                 dendrogram = calculate_dendrogram(modal_category, analysis_name=analysis_name, unit=unit)
                 path_stubs = PathStubs(repertoire_and_genre, analysis_name, unit, modal_category)
                 results[path_stubs] = {"dendrogram": dendrogram}
