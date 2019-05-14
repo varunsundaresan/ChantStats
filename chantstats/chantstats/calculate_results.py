@@ -33,20 +33,6 @@ class PathStubs(tuple):
         return obj
 
 
-def get_path_stubs(repertoire_and_genre, analysis, unit, modal_category):
-    rep_and_genre = RepertoireAndGenreType(repertoire_and_genre)
-    analysis = AnalysisType(analysis)
-    unit = UnitType(unit)
-    return (
-        rep_and_genre.output_path_stub_1,
-        analysis.output_path_stub,
-        rep_and_genre.output_path_stub_2,
-        unit.output_path_stub,
-        modal_category.output_path_stub_1,
-        modal_category.output_path_stub_2,
-    )
-
-
 def calculate_pc_freqs(analysis_input, unit):
     if unit == "pcs":
         # freqs = PCFreqs(analysis_input.pc)
