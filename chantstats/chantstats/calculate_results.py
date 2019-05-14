@@ -90,7 +90,7 @@ def calculate_results(
         analysis_inputs = pieces.get_analysis_inputs(mode, min_length_monomodal_sections=min_length_monomodal_sections)
         grouping = GroupingByModalCategory(analysis_inputs, group_by=mode)
         for modal_category in grouping.groups.values():
-            logger.info(f"Calculating results for {modal_category}")
+            logger.info(f"Calculating {analysis_name} results for {modal_category}")
             for unit in units:
                 dendrogram = calculate_dendrogram(modal_category, analysis_name=analysis_name, unit=unit)
                 path_stubs = PathStubs(repertoire_and_genre, analysis_name, unit, modal_category)
