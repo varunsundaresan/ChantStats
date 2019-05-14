@@ -84,8 +84,10 @@ class PCTendencyDistribution:
 
         # assert all([is_close_to_zero_or_100(x) for x in df.dropna(axis=1).sum(axis=0)])  # ensure the columns are relative frequencies which add up to 100%
         if not all([is_close_to_zero_or_100(x) for x in df.dropna(axis=1).sum(axis=0)]):
-            logger.warning(
-                "PC tendency distribution values do not add up to 100 (because some sub-distributions for this dendrogram nodes contain undefined values which were set to zero."
+            logger.debug(
+                "Warning: PC tendency distribution values do not add up to 100 "
+                "(because some sub-distributions for this dendrogram nodes "
+                "contain undefined values which were set to zero."
             )
 
         self.values_flat = values
