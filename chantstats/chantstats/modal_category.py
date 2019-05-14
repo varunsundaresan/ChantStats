@@ -5,7 +5,7 @@ from enum import Enum
 
 from .ambitus import AmbitusType
 from .logging import logger
-from .results_export import export_dendrogram_and_stacked_bar_chart
+from .results_export_OLD import export_dendrogram_and_stacked_bar_chart
 
 __all__ = ["GroupingByModalCategory"]
 

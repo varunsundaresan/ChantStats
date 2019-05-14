@@ -4,7 +4,7 @@ import textwrap
 from .context import chantstats
 from chantstats import FullAnalysisSpec
 from chantstats.modal_category import ModalCategory
-from chantstats.results_export import export_dendrogram_and_stacked_bar_chart
+from chantstats.results_export_OLD import export_dendrogram_and_stacked_bar_chart
 from chantstats.utils import list_directory_tree
 
 
