@@ -164,7 +164,9 @@ class Dendrogram:
             [
                 n
                 for n in self.all_cluster_nodes
-                if not n.is_leaf and n.dist < p_cutoff and n.parent is not None and n.parent.dist > p_cutoff
+                if not n.is_leaf
+                and n.dist < p_cutoff
+                and (n.parent is None or (n.parent is not None and n.parent.dist > p_cutoff))
             ],
             key=lambda n: n.num_leaves,
             reverse=True,
