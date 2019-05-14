@@ -70,6 +70,34 @@ class PCFreqDistribution:
         )
 
 
+def is_close_to_zero_or_100(x):
+    return np.isclose(x, 0.0) or np.isclose(x, 100.0)
+
+
+class PCTendencyDistribution:
+    def __init__(self, values):
+        # `values` should be a pandas Series with a hierarchical index, where the first level contains the given PCs and the second level the dependent PCs
+        assert isinstance(values, pd.Series)
+        assert len(values.index.levels) == 2
+        df = values.unstack(level=0)
+        assert list(df.index) == list(df.columns)
+
+        # assert all([is_close_to_zero_or_100(x) for x in df.dropna(axis=1).sum(axis=0)])  # ensure the columns are relative frequencies which add up to 100%
+        if not all([is_close_to_zero_or_100(x) for x in df.dropna(axis=1).sum(axis=0)]):
+            logger.warning(
+                "PC tendency distribution values do not add up to 100 (because some sub-distributions for this dendrogram nodes contain undefined values which were set to zero."
+            )
+
+        self.values_flat = values
+        self.df = df
+        self.df_filled = self.df.fillna(0)
+        self.index = self.df_filled.index
+        self.columns = self.df_filled.columns
+
+    def __repr__(self):
+        return f"<PCTendencyDistribution (first column: [{', '.join([f'{label!r}: {x:.3f}' for label, x in self.df_filled[self.df_filled.columns[0]].iteritems()])}])>"
+
+
 class DendrogramNode:
     def __init__(self, df_full, cluster_node, *, analysis_name, all_leaf_ids):
         assert isinstance(cluster_node, ClusterNode)
@@ -85,6 +113,8 @@ class DendrogramNode:
         self.avg_distribution = self.df_full.iloc[self.leaf_ids].mean()  #  average distribution of all leaf nodes
         if self.analysis_name == "pc_freqs":
             self.avg_pc_freq_distribution = PCFreqDistribution(self.avg_distribution)
+        elif self.analysis_name == "pc_tendencies":
+            self.avg_pc_tendency_distribution = PCTendencyDistribution(self.avg_distribution)
         else:
             raise NotImplementedError()
 
