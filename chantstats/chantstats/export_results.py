@@ -1,12 +1,46 @@
+import matplotlib.pyplot as plt
 import os
 import shutil
 
-from .analysis_spec import AnalysisType
 from .logging import logger
-from .plotting import get_color_palette_for_unit, plot_pc_freq_distributions
-from .unit import UnitType
+from .plotting import get_color_palette_for_unit, plot_pc_freq_distributions, plot_pc_tendency_distributions
+
 
 __all__ = ["export_results"]
+
+
+class MissingDendrogramNodesError(Exception):
+    """
+    Custom exception
+    """
+
+
+def export_stacked_bar_charts_for_pc_freqs(dendrogram, p_cutoff, output_dir, unit):
+    nodes_below_cutoff = dendrogram.get_nodes_below_cutoff(p_cutoff)
+    if nodes_below_cutoff == []:
+        raise MissingDendrogramNodesError()
+    color_palette = get_color_palette_for_unit(unit)
+    fig = plot_pc_freq_distributions(nodes_below_cutoff, color_palette=color_palette)
+    fig.savefig(os.path.join(output_dir, "stacked_bar_chart.png"))
+    plt.close(fig)
+
+
+def export_stacked_bar_charts_for_pc_tendencies(dendrogram, p_cutoff, output_dir, unit):
+    nodes_below_cutoff = dendrogram.get_nodes_below_cutoff(p_cutoff)
+    if nodes_below_cutoff == []:
+        raise MissingDendrogramNodesError()
+    height_per_axes = 2.5
+    color_palette = get_color_palette_for_unit(unit)
+    fig, axes = plt.subplots(
+        nrows=len(nodes_below_cutoff), ncols=1, figsize=(7, len(nodes_below_cutoff) * height_per_axes)
+    )
+    if len(nodes_below_cutoff) == 1:
+        axes = [axes]
+    for ax, node in zip(axes, nodes_below_cutoff):
+        plot_pc_tendency_distributions(node, ax=ax, color_palette=color_palette)
+    fig.tight_layout()
+    fig.savefig(os.path.join(output_dir, "stacked_bar_chart.png"))
+    plt.close(fig)
 
 
 def export_results(results, output_root_dir, p_cutoff=0.7, overwrite=False):
@@ -37,7 +71,7 @@ def export_results(results, output_root_dir, p_cutoff=0.7, overwrite=False):
     for path_stubs in results.keys():
         analysis_name = path_stubs.analysis
         unit = path_stubs.unit
-        assert analysis_name == "pc_freqs"
+        assert analysis_name in ["pc_freqs", "pc_tendencies"]
 
         path_stub_p_cutoff = f"p_cutoff_{p_cutoff:.2f}"
         extra_path_stubs = [path_stub_p_cutoff]
@@ -51,11 +85,13 @@ def export_results(results, output_root_dir, p_cutoff=0.7, overwrite=False):
         fig.savefig(os.path.join(output_dir, "dendrogram.png"))
 
         # Export stacked bar chart(s)
-        nodes_below_cutoff = dendrogram.get_nodes_below_cutoff(p_cutoff)
-        if nodes_below_cutoff == []:
+        try:
+            if analysis_name == "pc_freqs":
+                export_stacked_bar_charts_for_pc_freqs(dendrogram, p_cutoff, output_dir, unit)
+            elif analysis_name == "pc_tendencies":
+                export_stacked_bar_charts_for_pc_tendencies(dendrogram, p_cutoff, output_dir, unit)
+            else:
+                raise NotImplementedError()
+        except MissingDendrogramNodesError:
             msg = f"Cannot plot PC freq distributions: no dendrogram nodes are below p_cutoff={p_cutoff} {path_stubs}"
             logger.warning(msg)
-            continue
-        color_palette = get_color_palette_for_unit(unit)
-        fig = plot_pc_freq_distributions(nodes_below_cutoff, color_palette=color_palette)
-        fig.savefig(os.path.join(output_dir, "stacked_bar_chart.png"))

@@ -2,9 +2,11 @@ import matplotlib.pyplot as plt
 import numpy as np
 import palettable
 import pandas as pd
-import seaborn as sns
+
+# import seaborn as sns
 from matplotlib.patches import Patch
 
+from .dendrogram2 import PCTendencyDistribution, is_close_to_zero_or_100
 from .unit import UnitType
 
 
@@ -59,7 +61,8 @@ def plot_single_pandas_series_as_stacked_bar(values, *, ax, xpos, color_palette,
     """
     assert isinstance(values, pd.Series)
     assert not isinstance(values.index, pd.MultiIndex)
-    assert np.isclose(values.sum(), 100.0)
+    # assert np.isclose(values.sum(), 100.0)
+    assert is_close_to_zero_or_100(values.sum())
 
     df_s = pd.DataFrame({"value": values, "color": color_palette[: len(values)]})
     if sort_freqs_ascending:
@@ -147,12 +150,12 @@ def plot_pc_tendency_distributions(
     """
     Create a stacked bar chart from the PC tendency distributions of the given dendrogram node.
     """
-    assert isinstance(dendrogram_node.distribution, PCT)
-    assert isinstance(dendrogram_node, DendrogramNodeForPCTendencyDistributions)
+    assert isinstance(dendrogram_node.avg_pc_tendency_distribution, PCTendencyDistribution)
 
     fig, ax = plt.subplots(figsize=figsize) if ax is None else (ax.figure, ax)
 
-    df = dendrogram_node.distribution.values
+    # df = dendrogram_node.distribution.values
+    df = dendrogram_node.avg_pc_tendency_distribution.df
     series = [df[col] for col in df.columns]
     title = f"PC Tendencies for {dendrogram_node.descr}"
 
