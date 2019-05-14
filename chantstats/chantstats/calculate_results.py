@@ -46,9 +46,22 @@ def calculate_pc_freqs(analysis_input, unit):
     return freqs
 
 
+def calculate_pc_tendencies(analysis_input, unit):
+    if unit == "pcs":
+        freqs = analysis_input.pc_tendencies.condprobs_v1
+    elif unit == "mode_degrees":
+        raise NotImplementedError("TODO")
+    else:
+        raise NotImplementedError()
+
+    return freqs.fillna(0).unstack()
+
+
 def get_analysis_function(analysis):
     if analysis == "pc_freqs":
         return calculate_pc_freqs
+    elif analysis == "pc_tendencies":
+        return calculate_pc_tendencies
     else:
         raise NotImplementedError()
 
