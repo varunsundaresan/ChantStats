@@ -191,6 +191,7 @@ class Dendrogram:
         ax=None,
         title=None,
         figsize=(20, 4),
+        ylim=(0.0, 1.0),
         leaf_font_size=10,
         annotate_nodes_below_cutoff=True,
         link_color_palette=None,
@@ -230,7 +231,8 @@ class Dendrogram:
                 ax.annotate(n.id, xy=(n.xpos, n.ypos), xycoords="data", xytext=(4, 4), textcoords="offset points")
                 ax.scatter(n.xpos, n.ypos, s=size_nodes_below_cutoff, zorder=2, color="gray")
 
-        ax.set_ylim(0.0, 1.0)
+        ax.set_ylim(ylim)
+        ax.axhline(y=0.0, linewidth=0.5, color="black")
 
         if title:
             ax.set_title(title)
