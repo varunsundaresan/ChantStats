@@ -29,6 +29,8 @@ class PathStubs(tuple):
         obj.analysis = analysis
         obj.unit = unit
         obj.modal_category = modal_category
+        obj.path_stubs = path_stubs
+        obj.path_stubs_without_unit_and_mode = path_stubs[:3]
 
         return obj
 
