@@ -134,13 +134,12 @@ class DendrogramNode:
 
 
 class Dendrogram:
-    def __init__(self, df, *, analysis_name, p_threshold=0.15, optimal_ordering=True):
+    def __init__(self, df, *, analysis_name, optimal_ordering=True):
         self.df_orig = df
         self.analysis_name = analysis_name  # self.analysis = AnalysisType(analysis)
         self.cols_with_nonzero_entries = df.columns[(df != 0).any()]
         self.df = self.df_orig[self.cols_with_nonzero_entries]
         self.L = calculate_linkage_matrix_in_python_format(df, optimal_ordering=optimal_ordering)
-        self.p_threshold = p_threshold
         self.R = dendrogram(self.L, no_plot=True)
         root_node, all_cluster_nodes = to_tree(self.L, rd=True)
         self.leaf_ids = root_node.pre_order(lambda x: x.id)
@@ -159,8 +158,6 @@ class Dendrogram:
                 n.left.parent = n
                 n.right.parent = n
         self.root_node.parent = None
-
-        self.nodes_below_cutoff = self.get_nodes_below_cutoff(self.p_threshold)
 
     def get_nodes_below_cutoff(self, p_cutoff):
         return sorted(
@@ -187,6 +184,7 @@ class Dendrogram:
 
     def plot_dendrogram(
         self,
+        p_cutoff=0.15,
         *,
         ax=None,
         title=None,
@@ -208,7 +206,7 @@ class Dendrogram:
             self.L,
             labels=self.df.index,
             truncate_mode=None,
-            color_threshold=self.p_threshold,
+            color_threshold=p_cutoff,
             above_threshold_color="#999999",
             leaf_rotation=90.0,  # rotates the x axis labels
             leaf_font_size=leaf_font_size,  # font size for the x axis labels
@@ -217,7 +215,7 @@ class Dendrogram:
         set_link_color_palette(None)  # reset to default
 
         if annotate_nodes_below_cutoff:
-            for i, n in enumerate(self.nodes_below_cutoff):
+            for i, n in enumerate(self.get_nodes_below_cutoff(p_cutoff)):
                 ax.annotate(n.id, xy=(n.xpos, n.ypos), xycoords="data", xytext=(4, 4), textcoords="offset points")
                 ax.scatter(n.xpos, n.ypos, zorder=2, color="gray")
         if title:
@@ -227,7 +225,15 @@ class Dendrogram:
         return fig
 
     def plot_stacked_bar_charts(
-        self, *, color_palette, ax=None, title=None, figsize=(20, 4), use_tight_layout=True, sort_freqs_ascending=False
+        self,
+        *,
+        color_palette,
+        p_cutoff=0.15,
+        ax=None,
+        title=None,
+        figsize=(20, 4),
+        use_tight_layout=True,
+        sort_freqs_ascending=False,
     ):
         if ax is None:
             fig, ax = plt.subplots(figsize=figsize)
@@ -235,8 +241,10 @@ class Dendrogram:
         else:
             fig = ax.figure
 
-        num_clusters = len(self.nodes_below_cutoff)
-        for i, n in enumerate(self.nodes_below_cutoff):
+        nodes_below_cutoff = self.get_nodes_below_cutoff(p_cutoff)
+
+        num_clusters = len(nodes_below_cutoff)
+        for i, n in enumerate(nodes_below_cutoff):
             # Note: since we're extracting the non-zero entries from n.distribution
             # we must also use the non-zero column names for the legend entries below!
             plot_stacked_bar_chart_for_relative_frequencies(
@@ -248,7 +256,7 @@ class Dendrogram:
                 sort_freqs_ascending=sort_freqs_ascending,
             )
         ax.set_xticks(list(range(num_clusters + 1)))
-        ax.set_xticklabels([f"Cluster {n.id}:\n{n.num_leaves} leaves" for n in self.nodes_below_cutoff])
+        ax.set_xticklabels([f"Cluster {n.id}:\n{n.num_leaves} leaves" for n in nodes_below_cutoff])
 
         if num_clusters > 0:
             legend_labels = self.cols_with_nonzero_entries
