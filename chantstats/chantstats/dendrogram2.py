@@ -71,9 +71,9 @@ class PCFreqDistribution:
 
 
 class DendrogramNode:
-    def __init__(self, df_full, cluster_node, *, analysis, all_leaf_ids):
+    def __init__(self, df_full, cluster_node, *, analysis_name, all_leaf_ids):
         assert isinstance(cluster_node, ClusterNode)
-        self.analysis = analysis  # self.analysis = AnalysisType(analysis)
+        self.analysis_name = analysis_name  # self.analysis = AnalysisType(analysis)
         self.df_full = df_full
         self.cluster_node = cluster_node
         self.id = self.cluster_node.get_id()
@@ -83,7 +83,7 @@ class DendrogramNode:
         self.num_leaves = self.cluster_node.get_count()
         self.leaf_ids = self.cluster_node.pre_order(lambda x: x.id)
         self.avg_distribution = self.df_full.iloc[self.leaf_ids].mean()  #  average distribution of all leaf nodes
-        if analysis == "pc_freqs":
+        if self.analysis_name == "pc_freqs":
             self.avg_pc_freq_distribution = PCFreqDistribution(self.avg_distribution)
         else:
             raise NotImplementedError()
@@ -134,9 +134,9 @@ class DendrogramNode:
 
 
 class Dendrogram:
-    def __init__(self, df, *, analysis, p_threshold=0.15, optimal_ordering=True):
+    def __init__(self, df, *, analysis_name, p_threshold=0.15, optimal_ordering=True):
         self.df_orig = df
-        self.analysis = analysis  # self.analysis = AnalysisType(analysis)
+        self.analysis_name = analysis_name  # self.analysis = AnalysisType(analysis)
         self.cols_with_nonzero_entries = df.columns[(df != 0).any()]
         self.df = self.df_orig[self.cols_with_nonzero_entries]
         self.L = calculate_linkage_matrix_in_python_format(df, optimal_ordering=optimal_ordering)
@@ -145,7 +145,8 @@ class Dendrogram:
         root_node, all_cluster_nodes = to_tree(self.L, rd=True)
         self.leaf_ids = root_node.pre_order(lambda x: x.id)
         self.all_cluster_nodes = [
-            DendrogramNode(df, cn, analysis=self.analysis, all_leaf_ids=self.leaf_ids) for cn in all_cluster_nodes
+            DendrogramNode(df, cn, analysis_name=self.analysis_name, all_leaf_ids=self.leaf_ids)
+            for cn in all_cluster_nodes
         ]
         self.leaf_nodes = [n for n in self.all_cluster_nodes if n.is_leaf]
         self.root_node = [n for n in self.all_cluster_nodes if n.cluster_node is root_node][0]  # TODO: simplify this
