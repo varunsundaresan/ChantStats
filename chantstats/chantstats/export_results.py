@@ -59,14 +59,14 @@ def export_results(results, output_root_dir, p_cutoff=0.7, overwrite=False):
     overwrite : bool
         If True, delete the output root folder (if it exists) before exporting results. Default: False.
     """
-    if os.path.exists(output_root_dir):
-        if not overwrite:
-            logger.warn(f"Aborting because output root dir already exists: '{output_root_dir}'")
-            logger.warn(f"Use 'overwrite=True' to overwrite existing results.")
-            return
-        else:
-            logger.warn(f"Removing existing output root dir: {output_root_dir}")
-            shutil.rmtree(output_root_dir)
+    # if os.path.exists(output_root_dir):
+    #     if not overwrite:
+    #         logger.warn(f"Aborting because output root dir already exists: '{output_root_dir}'")
+    #         logger.warn(f"Use 'overwrite=True' to overwrite existing results.")
+    #         return
+    #     else:
+    #         logger.warn(f"Removing existing output root dir: {output_root_dir}")
+    #         shutil.rmtree(output_root_dir)
 
     for path_stubs in results.keys():
         analysis_name = path_stubs.analysis
@@ -76,6 +76,15 @@ def export_results(results, output_root_dir, p_cutoff=0.7, overwrite=False):
         path_stub_p_cutoff = f"p_cutoff_{p_cutoff:.2f}"
         extra_path_stubs = [path_stub_p_cutoff]
         output_dir = os.path.join(output_root_dir, *extra_path_stubs, *path_stubs)
+
+        if os.path.exists(output_dir):
+            if overwrite:
+                logger.warn(f"Removing existing output folder: {output_dir}")
+                shutil.rmtree(output_dir)
+            else:
+                logger.warning(f"Aborting because output folder already exists: {output_dir}")
+                return
+
         logger.info(f"Exporting results to folder: {output_dir}")
         dendrogram = results[path_stubs]["dendrogram"]
 
