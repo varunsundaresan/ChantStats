@@ -43,7 +43,7 @@ class AnalysisFuncPCFreqs(BaseAnalysisFunc):
 
 class AnalysisType(EnumWithDescription):
     PC_FREQS = ("pc_freqs", "PC Frequencies")
-    TENDENCY = ("tendency", "Tendency")
+    TENDENCY = ("pc_tendencies", "PC Tendencies")
     APPROACHES_AND_DEPARTURES = ("approaches_and_departures", "Approaches & Departures")
     LEAPS_AND_MELODIC_OUTLINES = ("leaps_and_melodic_outlines", "Leaps & Melodic Outlines")
 

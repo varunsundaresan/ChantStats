@@ -29,11 +29,11 @@ except KeyError:
         ),
         (
             "responsorial_chants",
-            "tendency",
+            "pc_tendencies",
             "mode_degrees",
             "authentic_modes",
             "G",
-            "/foobar/chant/tendency/responsorial_chants/mode_degrees/authentic_modes/G_authentic",
+            "/foobar/chant/pc_tendencies/responsorial_chants/mode_degrees/authentic_modes/G_authentic",
         ),
         (
             "organa",
