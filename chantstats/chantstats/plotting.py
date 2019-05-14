@@ -134,7 +134,7 @@ def plot_pc_freq_distributions(
     )
     plt.close(fig)
 
-    return ax
+    return fig
 
 
 def plot_pc_tendency_distributions(
@@ -161,4 +161,4 @@ def plot_pc_tendency_distributions(
         bar_width=bar_width,
         sort_freqs_ascending=sort_freqs_ascending,
     )
-    return ax
+    return fig
