@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import palettable
 import pandas as pd
+import seaborn as sns
 from matplotlib.patches import Patch
 
 from .unit import UnitType
@@ -27,8 +28,11 @@ def get_color_palette_for_unit(unit):
     if unit.value == "pcs":
         return palettable.cartocolors.qualitative.Vivid_8.hex_colors
     elif unit.value == "mode_degrees":
-        return palettable.cartocolors.qualitative.Pastel_10.hex_colors
-        # return palettable.colorbrewer.qualitative.Set3_12.hex_colors
+        # return palettable.cartocolors.qualitative.Pastel_10.hex_colors
+        return palettable.colorbrewer.qualitative.Set3_12.hex_colors
+        # return palettable.matplotlib.Viridis_12.hex_colors
+        # return palettable.tableau.PurpleGray_12.hex_colors
+        # return sns.color_palette("muted", 12).as_hex()  # WARNING: this contains only 10 distinct colors!!!
     else:
         raise ValueError(f"Unexpected value: {unit.value}")
 
