@@ -23,10 +23,10 @@ class PCTendencies:
         self.df_pair_counts = df_pair_counts
 
         sums_per_col = self.df_pair_counts.sum(axis="index", skipna=False)
-        self.condprobs_v1 = 100 * self.df_pair_counts.div(sums_per_col, axis="columns")  # each column sums up to 100
+        self.df_condprobs_v1 = 100 * self.df_pair_counts.div(sums_per_col, axis="columns")  # each column sums up to 100
 
         # sums_per_row = self.df_pair_counts.sum(axis="columns", skipna=False)
-        # self.condprobs_v2 = 100 * self.df_pair_counts.div(sums_per_col, axis="columns")  # each column sums up to 100
+        # self.df_condprobs_v2 = 100 * self.df_pair_counts.div(sums_per_col, axis="columns")  # each column sums up to 100
 
     @classmethod
     def from_pitch_classes(cls, pcs):
@@ -54,7 +54,7 @@ class PCTendencies:
         return cls(self.df_pair_counts + other.df_pair_counts)
 
     def get_condprobs_v1(self, given_pc):
-        return self.condprobs_v1[given_pc]
+        return self.df_condprobs_v1[given_pc]
 
     # @property
     # def condprobs_v1(self):
