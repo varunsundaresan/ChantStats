@@ -1,0 +1,17 @@
+version: 2
+
+jobs:
+  build:
+    docker:
+      - image: circleci/python:3.7
+        environment:
+          CHANTS_DIR: ~/chants/BN_lat_1112_Sequences
+          CHANTSTATS_OUTPUT_ROOT_DIR: /tmp/analysis_results
+    steps:
+      - checkout
+      - run: git clone https://github.com/maxalbert/chants.git ~/chants
+      - run: pipenv install --deploy --dev
+      - run: make test-all
+      - store_artifacts:
+          path: /tmp/analysis_results
+          destination: analysis_results
