@@ -1,4 +1,4 @@
-PYTEST ?= pytest
+PYTEST ?= pipenv run pytest
 PYTEST_ARGS ?= --cov=chantstats --cov-report=term-missing -svx
 
 all: test-fast
