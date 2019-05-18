@@ -3,7 +3,13 @@ import pytest
 from approvaltests.approvals import verify
 
 from .context import chantstats
-from chantstats import load_plainchant_sequence_pieces, FullAnalysisSpec, GroupingByModalCategory
+from chantstats import (
+    load_pieces,
+    load_plainchant_sequence_pieces,
+    FullAnalysisSpec,
+    GroupingByModalCategory,
+    ChantStatsConfig,
+)
 from chantstats.utils import list_directory_tree
 
 
@@ -60,17 +66,17 @@ def test_output_path(repertoire_and_genre, analysis, unit, mode, final, output_p
 def test_results_folder_structure(tmpdir, diff_reporter):
     output_root_dir = str(tmpdir)
     print(f"[DDD] output_root_dir={output_root_dir}")
-    pieces = load_plainchant_sequence_pieces(
-        chants_dir, pattern="BN_lat_1112_Sequence_*.xml", exclude_heavy_polymodal_frame_pieces=False
-    )
-    monomodal_sections = sum([p.get_monomodal_sections(min_length=3) for p in pieces], [])
-    analysis_spec = FullAnalysisSpec(repertoire_and_genre="plainchant_sequences", analysis="pc_freqs", unit="pcs")
+    cfg = ChantStatsConfig(musicxml_paths={"plainchant_sequences": chants_dir})
+    pieces = load_pieces(repertoire_and_genre="plainchant_sequences", cfg=cfg)
+    monomodal_sections = pieces.get_analysis_inputs(mode="final", min_length_monomodal_sections=3)
+    analysis_spec = FullAnalysisSpec(repertoire_and_genre="plainchant_sequences", analysis="pc_freqs")
     group_by = "final"
     grouping = GroupingByModalCategory(monomodal_sections, group_by=group_by)
     grouping.export_results(
         output_root_dir=output_root_dir,
         analysis_spec=analysis_spec,
         p_cutoff=0.7,
+        unit="pcs",
         overwrite=True,
         sort_freqs_ascending=False,
     )

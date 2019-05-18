@@ -45,7 +45,7 @@ def export_dendrogram_and_stacked_bar_chart(
         os.makedirs(output_dir, exist_ok=True)
 
     df = modal_category.make_results_dataframe(analysis_func=analysis_spec.analysis_func, unit=unit)
-    dendrogram = Dendrogram(df, p_threshold=p_cutoff)
+    dendrogram = Dendrogram(df, analysis_name=analysis_spec.analysis)
 
     output_filename = os.path.join(output_dir, "dendrogram.png")
     title = f"Dendrogram: {analysis_spec.get_description(modal_category=modal_category)} (p_cutoff={p_cutoff}, unit='{unit}')"
