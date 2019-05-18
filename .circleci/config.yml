@@ -6,19 +6,19 @@ jobs:
       - image: circleci/python:3.7
         environment:
           CHANTS_DIR: /home/circleci/chants/BN_lat_1112_Sequences/musicxml
-          RESULTS_FOLDER_NAME: analysis_results_${CIRCLE_SHA1}
-          ZIP_FILE_NAME: analysis_results_${CIRCLE_SHA1}.zip
-          CHANTSTATS_OUTPUT_ROOT_DIR: /tmp/${RESULTS_FOLDER_NAME}
+          RESULTS_FOLDER_NAME: analysis_results_$CIRCLE_SHA1
+          ZIP_FILE_NAME: analysis_results_$CIRCLE_SHA1.zip
+          CHANTSTATS_OUTPUT_ROOT_DIR: /tmp/$RESULTS_FOLDER_NAME
     steps:
       - checkout
       - run: sudo apt-get update && sudo apt-get install -y tree
       - run: git clone https://github.com/maxalbert/chants.git /home/circleci/chants
       - run: PIPENV_PIPFILE=chantstats/Pipfile pipenv install --deploy --dev
       - run: cd chantstats && make test-all
-      - run: cd /tmp && zip -r ${ZIP_FILE_NAME} ${RESULTS_FOLDER_NAME}
+      - run: cd /tmp && zip -r $ZIP_FILE_NAME $RESULTS_FOLDER_NAME
       - store_artifacts:
-          path: ${CHANTSTATS_OUTPUT_ROOT_DIR}
+          path: $CHANTSTATS_OUTPUT_ROOT_DIR
           destination: analysis_results
       - store_artifacts:
-          path: /tmp/${ZIP_FILE_NAME}
-          destination: ${ZIP_FILE_NAME}
+          path: /tmp/$ZIP_FILE_NAME
+          destination: $ZIP_FILE_NAME
