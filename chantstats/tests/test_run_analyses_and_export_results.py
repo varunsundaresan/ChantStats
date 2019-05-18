@@ -6,7 +6,10 @@ from approvaltests.approvals import verify
 from .context import chantstats
 from chantstats import ChantStatsConfig, calculate_results, export_results, logger
 
-chants_dir = os.environ["CHANTS_DIR"]
+try:
+    chants_dir = os.environ["CHANTS_DIR"]
+except KeyError:
+    raise RuntimeError("The environment variable CHANTS_DIR must be defined to run the tests.")
 
 
 @pytest.mark.slow
