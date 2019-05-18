@@ -5,6 +5,7 @@ from approvaltests.approvals import verify
 
 from .context import chantstats
 from chantstats import ChantStatsConfig, calculate_results, export_results, logger
+from chantstats.utils import list_directory_tree
 
 try:
     chants_dir = os.environ["CHANTS_DIR"]
@@ -27,5 +28,5 @@ def test_run_pc_freqs_analysis(tmpdir, diff_reporter):
     )
     export_results(results, output_root_dir, p_cutoff=0.7)
 
-    exported_files = sh.tail(sh.tree(output_root_dir), "-n", "+2").stdout.decode("utf8")
+    exported_files = list_directory_tree(output_root_dir)
     verify(exported_files, diff_reporter)
