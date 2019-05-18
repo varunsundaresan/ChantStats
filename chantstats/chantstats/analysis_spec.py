@@ -160,7 +160,8 @@ class FullAnalysisSpec:
             self.analysis.output_path_stub,
             self.repertoire_and_genre.output_path_stub_2,
             unit.output_path_stub,
-            modal_category.output_path_stub,
+            modal_category.output_path_stub_1,
+            modal_category.output_path_stub_2,
         )
 
     def export_results(self, *, output_root_dir, grouping, p_cutoff, overwrite=False, sort_freqs_ascending=False):
