@@ -1,6 +1,8 @@
 from .analysis_spec import FullAnalysisSpec
+from .calculate_results import calculate_results
 from .config import ChantStatsConfig
 from .dendrogram import plot_dendrogram
+from .export_results import export_results
 from .logging import logger
 from .modal_category import GroupingByModalCategory
 from .plainchant_sequence_piece import load_plainchant_sequence_pieces, load_pieces
@@ -13,6 +15,8 @@ __all__ = [
     "PhraseCollection",
     "GroupingByModalCategory",
     "ChantStatsConfig",
+    "calculate_results",
+    "export_results",
     "load_pieces",
     "load_plainchant_sequence_pieces",
     "logger",
