@@ -9,6 +9,7 @@ jobs:
           CHANTSTATS_OUTPUT_ROOT_DIR: /tmp/analysis_results
     steps:
       - checkout
+      - run: sudo apt-get update && sudo apt-get install -y tree
       - run: git clone https://github.com/maxalbert/chants.git /home/circleci/chants
       - run: PIPENV_PIPFILE=chantstats/Pipfile pipenv install --deploy --dev
       - run: cd chantstats && make test-all
