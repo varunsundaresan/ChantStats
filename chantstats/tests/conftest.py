@@ -4,6 +4,7 @@ from approvaltests.reporters.generic_diff_reporter_factory import GenericDiffRep
 
 from .context import chantstats
 from chantstats.dummy import make_dummy_grouping_by_modal_category
+from chantstats.logging import logger
 
 here = os.path.dirname(os.path.abspath(__file__))
 
@@ -16,10 +17,12 @@ def pytest_collection_modifyitems(config, items):
     if config.getoption("--runslow"):
         # --runslow option was provided in CLI: do not skip slow tests
         return
-    skip_slow = pytest.mark.skip(reason="need --runslow option to run")
-    for item in items:
-        if "slow" in item.keywords:
-            item.add_marker(skip_slow)
+    else:
+        logger.info("Skipping slow tests. Use --runslow to include them.")
+        skip_slow = pytest.mark.skip(reason="need --runslow option to run")
+        for item in items:
+            if "slow" in item.keywords:
+                item.add_marker(skip_slow)
 
 
 @pytest.fixture(scope="session")
