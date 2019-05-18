@@ -27,6 +27,7 @@ def test_run_pc_freqs_analysis_and_export_results(tmpdir, diff_reporter):
         repertoire_and_genre, analysis_name, cfg, min_length_monomodal_sections=min_length_monomodal_sections
     )
     export_results(results, output_root_dir, p_cutoff=0.7)
+    export_results(results, output_root_dir, p_cutoff=0.15)
 
     exported_files = list_directory_tree(output_root_dir)
     verify(exported_files, diff_reporter)
