@@ -7,6 +7,7 @@ from chantstats.dummy import make_dummy_grouping_by_modal_category
 from chantstats.logging import logger
 
 here = os.path.dirname(os.path.abspath(__file__))
+chantstats_toplevel_dir = os.path.join(here, "..")
 
 
 def pytest_addoption(parser):
@@ -40,3 +41,10 @@ def dummy_grouping_by_final():
 @pytest.fixture(scope="session")
 def dummy_grouping_by_final_and_ambitus():
     return make_dummy_grouping_by_modal_category(group_by="final_and_ambitus")
+
+
+@pytest.fixture(scope="session")
+def diff_reporter():
+    diff_reporter_factory = GenericDiffReporterFactory()
+    diff_reporter_factory.load(os.path.join(chantstats_toplevel_dir, "approvaltests_diff_reporters.json"))
+    return diff_reporter_factory.get_first_working()
