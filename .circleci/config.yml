@@ -9,9 +9,12 @@ jobs:
     steps:
       - checkout
       - run:
+          name: "Export timestamp for this test run"
+          command: echo "TIMESTAMP=$(date +%Y-%m-%d_%H.%M.%S)" > /tmp/env_timestamp.sh
+      - run:
           name: "Setup custom environment variables"
           command: |
-            echo 'export TIMESTAMP="$(date +%Y-%m-%d_%H.%M.%S)"' >> $BASH_ENV
+            echo 'source /tmp/env_timestamp.sh' >> $BASH_ENV
             echo 'export TEST_RUN_ID="${TIMESTAMP}__${CIRCLE_SHA1}"' >> $BASH_ENV
             echo 'export RESULTS_FOLDER_NAME="analysis_results__$TEST_RUN_ID"' >> $BASH_ENV
             echo 'export ZIP_FILE_NAME="analysis_results__$TEST_RUN_ID.zip"' >> $BASH_ENV
