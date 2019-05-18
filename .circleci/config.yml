@@ -11,8 +11,10 @@ jobs:
       - run:
           name: "Setup custom environment variables"
           command: |
-            echo 'export RESULTS_FOLDER_NAME="analysis_results_$CIRCLE_SHA1"' >> $BASH_ENV
-            echo 'export ZIP_FILE_NAME="analysis_results_$CIRCLE_SHA1.zip"' >> $BASH_ENV
+            echo 'export TIMESTAMP=$(date +%Y-%m-%d_%H.%M.%S)' >> $BASH_ENV
+            echo 'export TEST_RUN_ID="$TIMESTAMP_$CIRCE_SHA1"' >> $BASH_ENV
+            echo 'export RESULTS_FOLDER_NAME="analysis_results_$TEST_RUN_ID"' >> $BASH_ENV
+            echo 'export ZIP_FILE_NAME="analysis_results_$TEST_RUN_ID.zip"' >> $BASH_ENV
             echo 'export CHANTSTATS_OUTPUT_ROOT_DIR="/tmp/$RESULTS_FOLDER_NAME"' >> $BASH_ENV
       - run: sudo apt-get update && sudo apt-get install -y tree
       - run: git clone https://github.com/maxalbert/chants.git /home/circleci/chants
