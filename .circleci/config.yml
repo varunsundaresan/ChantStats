@@ -5,7 +5,7 @@ jobs:
     docker:
       - image: circleci/python:3.7
         environment:
-          CHANTS_DIR: ~/chants/BN_lat_1112_Sequences
+          CHANTS_DIR: ~/chants/BN_lat_1112_Sequences/musicxml
           CHANTSTATS_OUTPUT_ROOT_DIR: /tmp/analysis_results
     steps:
       - checkout
