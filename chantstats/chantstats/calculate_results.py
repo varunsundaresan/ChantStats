@@ -50,7 +50,7 @@ def calculate_pc_freqs(analysis_input, unit):
 
 def calculate_pc_tendencies(analysis_input, unit):
     if unit == "pcs":
-        freqs = analysis_input.pc_tendencies.condprobs_v1
+        freqs = analysis_input.pc_tendencies.df_condprobs_v1
     elif unit == "mode_degrees":
         raise NotImplementedError("TODO")
     else:
