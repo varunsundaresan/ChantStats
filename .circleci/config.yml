@@ -15,15 +15,12 @@ jobs:
             echo 'export TEST_RUN_ID="${TIMESTAMP}__${CIRCLE_SHA1}"' >> $BASH_ENV
             echo 'export RESULTS_FOLDER_NAME="analysis_results__$TEST_RUN_ID"' >> $BASH_ENV
             echo 'export ZIP_FILE_NAME="analysis_results__$TEST_RUN_ID.zip"' >> $BASH_ENV
-            echo 'export CHANTSTATS_OUTPUT_ROOT_DIR="/tmp/$RESULTS_FOLDER_NAME"' >> $BASH_ENV
+            echo 'export CHANTSTATS_OUTPUT_ROOT_DIR="/tmp/analysis_results/$RESULTS_FOLDER_NAME"' >> $BASH_ENV
       - run: sudo apt-get update && sudo apt-get install -y tree
       - run: git clone https://github.com/maxalbert/chants.git /home/circleci/chants
       - run: PIPENV_PIPFILE=chantstats/Pipfile pipenv install --deploy --dev
       - run: cd chantstats && make test-all
-      - run: cd /tmp && zip -r $ZIP_FILE_NAME $RESULTS_FOLDER_NAME
+      - run: cd /tmp/analysis_results/ && zip -r $ZIP_FILE_NAME $RESULTS_FOLDER_NAME
       - store_artifacts:
-          path: $CHANTSTATS_OUTPUT_ROOT_DIR
+          path: /tmp/analysis_results
           destination: analysis_results
-      - store_artifacts:
-          path: /tmp/$ZIP_FILE_NAME
-          destination: $ZIP_FILE_NAME
