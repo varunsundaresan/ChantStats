@@ -11,7 +11,7 @@ jobs:
       - checkout
       - run: git clone https://github.com/maxalbert/chants.git ~/chants
       - run: PIPENV_PIPFILE=chantstats/Pipfile pipenv install --deploy --dev
-      - run: make test-all
+      - run: cd chantstats && make test-all
       - store_artifacts:
           path: /tmp/analysis_results
           destination: analysis_results
