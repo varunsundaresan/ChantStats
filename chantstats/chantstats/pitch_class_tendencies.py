@@ -21,6 +21,7 @@ class PCTendencies:
         assert set(df_pair_counts.index) == set(self.ALLOWED_VALUES)
         assert set(df_pair_counts.columns) == set(self.ALLOWED_VALUES)
         self.df_pair_counts = df_pair_counts
+        # self.s_pair_counts = self.df_pair_counts.unstack()  # same as df_pair_counts, but as a series with a hierarchical index
 
         sums_per_col = self.df_pair_counts.sum(axis="index", skipna=False)
         self.df_condprobs_v1 = 100 * self.df_pair_counts.div(sums_per_col, axis="columns")  # each column sums up to 100
