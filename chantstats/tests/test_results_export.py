@@ -62,6 +62,7 @@ def test_output_path(repertoire_and_genre, analysis, unit, mode, final, output_p
     assert False
 
 
+@pytest.mark.skip(reason="This test is obsolete and superseded by 'test_run_pc_freqs_analysis_and_export_results'")
 @pytest.mark.slow
 def test_results_folder_structure(tmpdir, diff_reporter):
     output_root_dir = str(tmpdir)
