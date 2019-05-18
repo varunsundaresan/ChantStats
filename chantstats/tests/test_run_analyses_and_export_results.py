@@ -14,7 +14,7 @@ except KeyError:
 
 
 @pytest.mark.slow
-def test_run_pc_freqs_analysis(tmpdir, diff_reporter):
+def test_run_pc_freqs_analysis_and_export_results(tmpdir, diff_reporter):
     output_root_dir = os.getenv("CHANTSTATS_OUTPUT_ROOT_DIR", str(tmpdir))
     logger.info(f"Using output root dir: '{output_root_dir}'")
 
