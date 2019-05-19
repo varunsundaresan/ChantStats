@@ -1,3 +1,4 @@
+import os
 from .analysis_spec import RepertoireAndGenreType
 
 
@@ -12,3 +13,17 @@ class ChantStatsConfig:
 
     def load_pieces(self, repertoire_and_genre, *, pattern=None):
         raise DeprecationWarning("This method is deprecated. Use the function 'load_pieces()' instead.")
+
+    @classmethod
+    def from_env(cls):
+        try:
+            chants_dir = os.environ["CHANTS_DIR"]
+        except KeyError:
+            raise RuntimeError("The environment variable CHANTS_DIR must be defined to run the tests.")
+
+        return ChantStatsConfig(
+            musicxml_paths={
+                "plainchant_sequences": os.path.join(chants_dir, "BN_lat_1112_Sequences", "musicxml"),
+                "responsorial_chants": os.path.join(chants_dir, "Organum_Chant_Files_MLO_II_III_IV", "musicxml"),
+            }
+        )
