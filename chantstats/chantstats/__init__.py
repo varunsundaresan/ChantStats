@@ -1,4 +1,3 @@
-from .analysis_spec import FullAnalysisSpec
 from .calculate_results import calculate_results
 from .config import ChantStatsConfig
 from .dendrogram import plot_dendrogram
@@ -11,7 +10,6 @@ from .phrase_collection import PhraseCollection
 from .results_export_OLD import export_dendrogram_and_stacked_bar_chart
 
 __all__ = [
-    "FullAnalysisSpec",
     "PhraseCollection",
     "GroupingByModalCategory",
     "ChantStatsConfig",
