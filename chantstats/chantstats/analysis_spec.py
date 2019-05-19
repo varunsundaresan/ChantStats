@@ -1,11 +1,9 @@
-import os
 from abc import ABCMeta
 
 from chantstats.unit import UnitType
 from chantstats.utils import EnumWithDescription
-from .modal_category import ModalCategory
 
-__all__ = ["FullAnalysisSpec"]
+__all__ = []
 
 
 class RepertoireAndGenreType(EnumWithDescription):

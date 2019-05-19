@@ -5,7 +5,8 @@ from enum import Enum
 
 from .ambitus import AmbitusType
 from .logging import logger
-from .results_export_OLD import export_dendrogram_and_stacked_bar_chart
+
+# from .results_export_OLD import export_dendrogram_and_stacked_bar_chart
 
 __all__ = ["GroupingByModalCategory"]
 
@@ -117,17 +118,17 @@ class GroupingByModalCategory:
     def __getitem__(self, key):
         return self.groups[key]
 
-    def export_results(
-        self, *, analysis_spec, output_root_dir, p_cutoff, unit, overwrite=False, sort_freqs_ascending=False
-    ):
-        logger.info(f"Exporting results for {self}")
-        for modal_category in self.groups.values():
-            export_dendrogram_and_stacked_bar_chart(
-                output_root_dir=output_root_dir,
-                analysis_spec=analysis_spec,
-                modal_category=modal_category,
-                p_cutoff=p_cutoff,
-                unit=unit,
-                sort_freqs_ascending=sort_freqs_ascending,
-                overwrite=overwrite,
-            )
+    # def export_results(
+    #     self, *, analysis_spec, output_root_dir, p_cutoff, unit, overwrite=False, sort_freqs_ascending=False
+    # ):
+    #     logger.info(f"Exporting results for {self}")
+    #     for modal_category in self.groups.values():
+    #         export_dendrogram_and_stacked_bar_chart(
+    #             output_root_dir=output_root_dir,
+    #             analysis_spec=analysis_spec,
+    #             modal_category=modal_category,
+    #             p_cutoff=p_cutoff,
+    #             unit=unit,
+    #             sort_freqs_ascending=sort_freqs_ascending,
+    #             overwrite=overwrite,
+    #         )

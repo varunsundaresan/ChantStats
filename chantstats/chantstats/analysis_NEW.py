@@ -10,8 +10,8 @@ from .dendrogram2 import Dendrogram
 from .logging import logger
 from .modal_category import GroupingByModalCategory
 from .plainchant_sequence_piece import load_pieces
+from .plotting import get_color_palette_for_unit
 from .unit import UnitType
-from .results_export_OLD import get_color_palette_for_unit
 
 __all__ = []
 
