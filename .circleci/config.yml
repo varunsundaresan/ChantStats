@@ -5,7 +5,7 @@ jobs:
     docker:
       - image: circleci/python:3.7
         environment:
-          CHANTS_DIR: /home/circleci/chants/BN_lat_1112_Sequences/musicxml
+          CHANTS_DIR: /home/circleci/chants/
     steps:
       - checkout
       - run:
