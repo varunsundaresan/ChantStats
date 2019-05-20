@@ -189,6 +189,12 @@ class PlainchantSequencePieces:
     def __repr__(self):
         return f"<Collection of {len(self.pieces)} plainchant sequence pieces>"
 
+    def __getitem__(self, idx):
+        return self.pieces[idx]
+
+    def __iter__(self):
+        yield from self.pieces
+
     @classmethod
     def from_musicxml_files(cls, cfg, filename_pattern=None):
         musicxml_path = cfg.get_musicxml_path("plainchant_sequences")
