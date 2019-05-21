@@ -11,9 +11,6 @@ class ChantStatsConfig:
         musicxml_path = self.musicxml_paths[rep_and_genre]
         return musicxml_path
 
-    def load_pieces(self, repertoire_and_genre, *, pattern=None):
-        raise DeprecationWarning("This method is deprecated. Use the function 'load_pieces()' instead.")
-
     @classmethod
     def from_env(cls):
         try:
