@@ -14,7 +14,7 @@ class ModalCategoryType(str, Enum):
             return lambda x: x.final
         elif self == "final_and_ambitus":
             return lambda x: (x.final, x.ambitus)
-        else:
+        else:  # pragma: no cover
             raise NotImplementedError(f"Unexpected grouping type: {self}")
 
     @property
@@ -23,7 +23,7 @@ class ModalCategoryType(str, Enum):
             return False
         elif self == "final_and_ambitus":
             return True
-        else:
+        else:  # pragma: no cover
             raise NotImplementedError(f"Unexpected grouping type: {self}")
 
     def get_output_path_stub_1(self, key):
@@ -32,7 +32,7 @@ class ModalCategoryType(str, Enum):
         elif self == "final_and_ambitus":
             ambitus = AmbitusType(key[1])
             return f"{ambitus}_modes"
-        else:
+        else:  # pragma: no cover
             raise NotImplementedError(f"Unexpected grouping type: {self}")
 
     def get_output_path_stub_2(self, key):
@@ -42,7 +42,7 @@ class ModalCategoryType(str, Enum):
             final = key[0]
             ambitus = AmbitusType(key[1])
             return f"{final}_{ambitus}"
-        else:
+        else:  # pragma: no cover
             raise NotImplementedError(f"Unexpected grouping type: {self}")
 
     def get_descr(self, key):
@@ -52,5 +52,5 @@ class ModalCategoryType(str, Enum):
             final = key[0]
             ambitus = AmbitusType(key[1])
             return f"{final}-{ambitus}"
-        else:
+        else:  # pragma: no cover
             raise NotImplementedError(f"Unexpected grouping type: {self}")
