@@ -82,7 +82,7 @@ def calculate_results(
 ):
     results = {}
 
-    pieces = load_pieces(repertoire_and_genre, cfg)
+    pieces = pieces or load_pieces(repertoire_and_genre, cfg)
     modes = modes or list(ModalCategoryType)
     units = units or list(UnitType)
 
