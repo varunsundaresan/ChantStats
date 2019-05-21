@@ -132,7 +132,7 @@ class PlainchantSequencePieces:
     def get_analysis_inputs(self, mode, min_length_monomodal_sections=3):
         mode = ModalCategoryType(mode)
         return extract_monomodal_sections(
-            self.pieces, enforce_same_ambitus=mode.enforce_same_ambitus, min_length=min_length_monomodal_sections
+            self.pieces, enforce_same_phrase_ambitus=mode.enforce_same_ambitus, min_length=min_length_monomodal_sections
         )
 
 

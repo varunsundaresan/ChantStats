@@ -75,11 +75,11 @@ def extract_monomodal_sections_from_piece(piece, *, enforce_same_phrase_ambitus,
     return [x for x in monomodal_sections if len(x) >= min_length]
 
 
-def extract_monomodal_sections(pieces, *, enforce_same_ambitus, min_length=3):
+def extract_monomodal_sections(pieces, *, enforce_same_phrase_ambitus, min_length=3):
     assert isinstance(pieces, (list, tuple))
     return sum(
         [
-            p.get_monomodal_sections(enforce_same_phrase_ambitus=enforce_same_ambitus, min_length=min_length)
+            p.get_monomodal_sections(enforce_same_phrase_ambitus=enforce_same_phrase_ambitus, min_length=min_length)
             for p in pieces
         ],
         [],
