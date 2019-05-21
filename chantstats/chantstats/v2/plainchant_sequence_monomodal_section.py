@@ -16,13 +16,17 @@ class MonomodalSection:
         self.idx_end = idx_end
         self.phrases = piece.phrases[idx_start - 1 : idx_end]
         self.length = len(self.phrases)
-        self.ambitus = calculate_ambitus(self)
         if len(set(p.phrase_final for p in self.phrases)) != 1:
             error_msg = (
                 f"Non-unique phrase final: {set(p.phrase_final for p in self.phrases)}"
                 f"(section: {self.idx_start}-{self.idx_end})"
             )
             raise ValueError(error_msg)
+        self.note_of_final = self.phrases[0].notes[-1]
+        self.lowest_note = min([p.lowest_note for p in self.phrases])
+        self.final = self.phrases[0].phrase_final
+        self.ambitus = calculate_ambitus(self)
+        self.descr = f"s{self.piece.number:02d}.{self.final}.mm_{self.idx_start:02d}_{self.idx_end:02d}"
 
     def __len__(self):
         return len(self.phrases)
