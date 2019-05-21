@@ -73,7 +73,8 @@ def load_plainchant_sequence_pieces(input_dir, *, pattern="*.xml", exclude_heavy
     tic = time()
     pieces = [PlainchantSequencePiece(f) for f in tqdm(filenames)]
     if exclude_heavy_polymodal_frame_pieces:
-        pieces = [p for p in pieces if not p.has_heavy_polymodal_frame]
+        # pieces = [p for p in pieces if not p.has_heavy_polymodal_frame]
+        raise NotImplementedError()
     toc = time()
     logger.debug(
         f"Done. Loaded {len(pieces)} pieces{' without heavy polymodal frames' if exclude_heavy_polymodal_frame_pieces else ''}."
