@@ -18,7 +18,7 @@ class ChantStatsConfig:
         except KeyError:
             raise RuntimeError("The environment variable CHANTS_DIR must be defined to run the tests.")
 
-        return ChantStatsConfig(
+        return cls(
             musicxml_paths={
                 "plainchant_sequences": os.path.join(chants_dir, "BN_lat_1112_Sequences", "musicxml"),
                 "responsorial_chants": os.path.join(chants_dir, "Organum_Chant_Files_MLO_II_III_IV", "musicxml"),
