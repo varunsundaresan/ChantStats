@@ -7,6 +7,7 @@ from time import time
 from tqdm import tqdm
 
 from .logging import logger
+from .modal_category import ModalCategoryType
 from .plainchant_sequence_phrase import PlainchantSequencePhrase
 from .plainchant_sequence_monomodal_section import extract_monomodal_sections_from_piece, extract_monomodal_sections
 from .repertoire_and_genre import RepertoireAndGenreType
