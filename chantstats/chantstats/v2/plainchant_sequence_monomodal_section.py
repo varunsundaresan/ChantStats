@@ -1,6 +1,8 @@
 from itertools import groupby
 from operator import itemgetter
 
+from .ambitus import calculate_ambitus
+
 
 class MonomodalSection:
     """
@@ -14,6 +16,7 @@ class MonomodalSection:
         self.idx_end = idx_end
         self.phrases = piece.phrases[idx_start - 1 : idx_end]
         self.length = len(self.phrases)
+        self.ambitus = calculate_ambitus(self)
         if len(set(p.phrase_final for p in self.phrases)) != 1:
             error_msg = (
                 f"Non-unique phrase final: {set(p.phrase_final for p in self.phrases)}"
@@ -24,8 +27,18 @@ class MonomodalSection:
     def __len__(self):
         return len(self.phrases)
 
+    def __repr__(self):
+        s = (
+            f"<MonomodalSection: '{self.piece.filename_short}', "
+            f"phrase-final '{self.final}', "
+            f"phrases {self.idx_start}-{self.idx_end} "
+            f"(length {len(self)}), "
+            f"ambitus={self.ambitus.value!r}>"
+        )
+        return s
 
-def extract_monomodal_sections_from_piece(piece, *, enforce_same_ambitus, min_length=3):
+
+def extract_monomodal_sections_from_piece(piece, *, enforce_same_phrase_ambitus, min_length=3):
     """
     Extract monomodal sections (= sections of consecutive phrases with the same phrase-final).
 
@@ -33,7 +46,7 @@ def extract_monomodal_sections_from_piece(piece, *, enforce_same_ambitus, min_le
     ----------
     piece : PlainchantSequencePiece
         The piece from which to extract monomodal sections.
-    ignore_ambitus : boolean
+    enforce_same_phrase_ambitus: boolean
         If True, all phrases in the monomodal section must have
         the same ambitus (in addition to the same phrase-final).
     min_length : int
@@ -44,7 +57,7 @@ def extract_monomodal_sections_from_piece(piece, *, enforce_same_ambitus, min_le
     -------
     list of MonomodalSection
     """
-    if enforce_same_ambitus:
+    if enforce_same_phrase_ambitus:
         key_func = lambda phrase: (phrase.note_of_final, phrase.ambitus)
     else:
         key_func = lambda phrase: phrase.note_of_final
@@ -61,5 +74,9 @@ def extract_monomodal_sections_from_piece(piece, *, enforce_same_ambitus, min_le
 def extract_monomodal_sections(pieces, *, enforce_same_ambitus, min_length=3):
     assert isinstance(pieces, (list, tuple))
     return sum(
-        [p.get_monomodal_sections(enforce_same_ambitus=enforce_same_ambitus, min_length=min_length) for p in pieces], []
+        [
+            p.get_monomodal_sections(enforce_same_phrase_ambitus=enforce_same_ambitus, min_length=min_length)
+            for p in pieces
+        ],
+        [],
     )

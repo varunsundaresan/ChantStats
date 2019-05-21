@@ -46,7 +46,7 @@ class PlainchantSequencePiece:
     def __repr__(self):
         return f"<Piece '{self.filename_short}'>"
 
-    def get_monomodal_sections(self, *, enforce_same_ambitus, min_length=3):
+    def get_monomodal_sections(self, *, enforce_same_phrase_ambitus, min_length=3):
         """
         Extract monomodal sections (= sections of consecutive phrases
         with the same phrase-final, and optionally the same ambitus).
@@ -55,7 +55,7 @@ class PlainchantSequencePiece:
         ----------
         piece : PlainchantSequencePiece
             The piece from which to extract monomodal sections.
-        enforce_same_ambitus: boolean
+        enforce_same_phrase_ambitus: boolean
             If True, all phrases in the monomodal section must have
             the same ambitus (in addition to the same phrase-final).
         min_length : int
@@ -67,7 +67,7 @@ class PlainchantSequencePiece:
         list of MonomodalSection
         """
         return extract_monomodal_sections_from_piece(
-            self, enforce_same_ambitus=enforce_same_ambitus, min_length=min_length
+            self, enforce_same_phrase_ambitus=enforce_same_phrase_ambitus, min_length=min_length
         )
 
 
