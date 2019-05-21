@@ -1,4 +1,5 @@
 import music21
+from .ambitus import calculate_ambitus
 from .pitch_class import PC
 
 __all__ = ["PlainchantSequencePhrase"]
@@ -20,6 +21,7 @@ class PlainchantSequencePhrase:
         self.note_of_final = self.note_of_phrase_final  # alias for consistency with other analysis items (e.g. pieces)
         self.phrase_final = PC.from_note(self.note_of_phrase_final)
         self.final = self.phrase_final  # alias for consistency with other analysis items (e.g. pieces)
+        self.ambitus = calculate_ambitus(self)
 
     def __repr__(self):
         return f"<Phrase {self.phrase_number} of piece {self.piece}>"

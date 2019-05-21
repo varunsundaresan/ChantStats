@@ -8,6 +8,7 @@ from tqdm import tqdm
 
 from .logging import logger
 from .plainchant_sequence_phrase import PlainchantSequencePhrase
+from .plainchant_sequence_monomodal_section import extract_monomodal_sections_from_piece, extract_monomodal_sections
 from .repertoire_and_genre import RepertoireAndGenreType
 
 
@@ -44,6 +45,30 @@ class PlainchantSequencePiece:
 
     def __repr__(self):
         return f"<Piece '{self.filename_short}'>"
+
+    def get_monomodal_sections(self, *, enforce_same_ambitus, min_length=3):
+        """
+        Extract monomodal sections (= sections of consecutive phrases
+        with the same phrase-final, and optionally the same ambitus).
+
+        Parameters
+        ----------
+        piece : PlainchantSequencePiece
+            The piece from which to extract monomodal sections.
+        enforce_same_ambitus: boolean
+            If True, all phrases in the monomodal section must have
+            the same ambitus (in addition to the same phrase-final).
+        min_length : int
+            Minimum length for a section to be included in the result
+            (any phrase sections with fewer phrases are discarded).
+
+        Returns
+        -------
+        list of MonomodalSection
+        """
+        return extract_monomodal_sections_from_piece(
+            self, enforce_same_ambitus=enforce_same_ambitus, min_length=min_length
+        )
 
 
 @lru_cache(maxsize=10)
