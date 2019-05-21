@@ -15,6 +15,7 @@ class MonomodalSection:
         self.idx_start = idx_start
         self.idx_end = idx_end
         self.phrases = piece.phrases[idx_start - 1 : idx_end]
+        self.notes = sum([p.notes for p in self.phrases], [])
         self.length = len(self.phrases)
         if len(set(p.phrase_final for p in self.phrases)) != 1:
             error_msg = (
