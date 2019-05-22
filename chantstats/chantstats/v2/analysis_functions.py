@@ -1,4 +1,12 @@
+from enum import Enum
 from .freqs import PCFreqs
+
+__all__ = ["AnalysisType", "get_analysis_function"]
+
+
+class AnalysisType(str, Enum):
+    PC_FREQS = "pc_freqs"
+    PC_TENDENCIES = "pc_tendencies"
 
 
 def calculate_relative_pc_freqs(item, unit):
@@ -17,6 +25,8 @@ def calculate_relative_pc_freqs(item, unit):
 
 
 def get_analysis_function(analysis):
+    analysis = AnalysisType(analysis)
+
     if analysis == "pc_freqs":
         return calculate_relative_pc_freqs
     elif analysis == "pc_tendencies":
