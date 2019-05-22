@@ -23,7 +23,16 @@ jobs:
       - run: sudo apt-get update && sudo apt-get install -y tree
       - run: git clone https://github.com/maxalbert/chants.git /home/circleci/chants
       - run: PIPENV_PIPFILE=chantstats/Pipfile pipenv install --deploy --dev
-      - run: cd chantstats && make test-all
+      - run:
+          name: "Run unit tests"
+          command: |
+            cd chantstats
+            pipenv run pytest --cov=chantstats --cov-report=term-missing -svx tests/v2/unit_tests/
+      - run:
+          name: "Calculate and export results"
+          command: |
+            cd chantstats
+            pipenv run pytest --cov=chantstats --cov-report=term-missing -svx tests/v2/calculate_and_export_results/
       - run: cd /tmp/analysis_results/ && zip -r $ZIP_FILE_NAME $RESULTS_FOLDER_NAME
       - store_artifacts:
           path: /tmp/analysis_results
