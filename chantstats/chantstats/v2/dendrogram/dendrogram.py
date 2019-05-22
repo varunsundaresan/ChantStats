@@ -1,6 +1,8 @@
+import matplotlib.pyplot as plt
 import numpy as np
+import palettable
 import scipy.stats
-from scipy.cluster.hierarchy import dendrogram, linkage, to_tree
+from scipy.cluster.hierarchy import dendrogram, linkage, set_link_color_palette, to_tree
 from scipy.spatial.distance import pdist
 from ..analysis_functions import get_analysis_function, AnalysisType
 from ..logging import logger
@@ -95,6 +97,62 @@ class Dendrogram:
             key=lambda n: n.num_leaves,
             reverse=True,
         )
+
+    def plot_dendrogram(
+        self,
+        p_cutoff,
+        *,
+        ax=None,
+        title=None,
+        figsize=(20, 4),
+        ylim=(0.0, 1.0),
+        leaf_font_size=10,
+        annotate_nodes_below_cutoff=True,
+        link_color_palette=None,
+        use_tight_layout=True,
+    ):
+        if ax is None:
+            fig, ax = plt.subplots(figsize=figsize)
+            plt.close(fig)
+        else:
+            fig = ax.figure
+
+        link_color_palette = link_color_palette or palettable.tableau.Tableau_10.hex_colors
+        set_link_color_palette(link_color_palette)
+        R = dendrogram(
+            self.L,
+            labels=self.df.index,
+            truncate_mode=None,
+            color_threshold=p_cutoff,
+            above_threshold_color="#999999",
+            leaf_rotation=90.0,  # rotates the x axis labels
+            leaf_font_size=leaf_font_size,  # font size for the x axis labels
+            ax=ax,
+        )
+        set_link_color_palette(None)  # reset to default
+
+        nodes_below_cutoff = self.get_nodes_below_cutoff(p_cutoff)
+        size_nodes_below_cutoff = 20
+        size_other_nodes = 10
+
+        # Draw dots to indicate the dendrogram nodes which are not leaves
+        for n in self.all_cluster_nodes:
+            if not n.is_leaf and not n in nodes_below_cutoff:
+                ax.scatter(n.xpos, n.ypos, s=size_other_nodes, zorder=2, color="gray")
+
+        if annotate_nodes_below_cutoff:
+            for i, n in enumerate(nodes_below_cutoff):
+                ax.annotate(n.id, xy=(n.xpos, n.ypos), xycoords="data", xytext=(4, 4), textcoords="offset points")
+                ax.scatter(n.xpos, n.ypos, s=size_nodes_below_cutoff, zorder=2, color="gray")
+
+        ax.set_ylim(ylim)
+        ax.axhline(y=0.0, linewidth=0.5, color="black")
+
+        if title:
+            ax.set_title(title)
+        if use_tight_layout:
+            fig.tight_layout()
+        return fig
 
 
 def calculate_dendrogram(modal_category, *, analysis, unit):
