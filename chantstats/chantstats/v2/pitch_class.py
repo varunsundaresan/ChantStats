@@ -9,8 +9,8 @@ class PC(str, Enum):
     """
 
     A = "A"
-    B = "B"
     B_FLAT = "B-"
+    B = "B"
     C = "C"
     D = "D"
     E_FLAT = "E-"

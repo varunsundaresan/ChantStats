@@ -54,3 +54,7 @@ class BaseFreqs(metaclass=BaseFreqsMeta):
 
 class PCFreqs(BaseFreqs):
     ALLOWED_VALUES = list(PC)
+
+    @classmethod
+    def from_notes(cls, notes):
+        return cls([PC.from_note(n) for n in notes])
