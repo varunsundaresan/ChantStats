@@ -77,20 +77,22 @@ class ModalCategory:
 
     def make_results_dataframe(self, *, analysis_func, unit):
         df = pd.DataFrame({x.descr: analysis_func(x, unit=unit) for x in self.items}).T
-        if unit == "pcs":
-            # column labels are already strings; nothing to do
-            pass
-        elif unit == "mode_degrees":
-            logger.debug("Converting column labels from mode degrees to strings.")
-            df.columns = [x.descr for x in df.columns]
-        else:
-            raise NotImplementedError()
+        # df.columns = [x.descr for x in df.columns]
+        # if unit == "pcs":
+        #     # column labels are already strings; nothing to do
+        #     pass
+        #     raise NotImplementedError("TODO: add conversion of column labels to strings.")
+        # elif unit == "mode_degrees":
+        #     logger.debug("Converting column labels from mode degrees to strings.")
+        #     df.columns = [x.descr for x in df.columns]
+        # else:
+        #     raise NotImplementedError()
         return df
 
 
 class GroupingByModalCategory:
     """
-    Represents
+    Represents a collection of modal categories grouped by final, or final and ambitus.
     """
 
     def __init__(self, items, *, group_by):
