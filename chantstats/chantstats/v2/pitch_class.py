@@ -22,6 +22,10 @@ class PC(str, Enum):
     def descr(self):
         return self.value
 
+    @property
+    def str_value(self):
+        return self.value
+
     @classmethod
     def from_note(cls, note):
         return cls(note.name)

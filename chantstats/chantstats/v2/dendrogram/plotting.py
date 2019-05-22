@@ -115,7 +115,7 @@ def plot_multiple_pandas_series_as_stacked_bar_chart(
     # Add legend
     assert len(set([tuple(s.index) for s in series])) == 1  # ensure all series objects share the same index
     legend_labels = [
-        x.value for x in series[0].index
+        x.str_value for x in series[0].index
     ]  # TODO: this relies on the fact that the index values are enums; would be good to make this more explicit
     add_color_palette_legend(ax, labels=legend_labels, color_palette=color_palette)
 
