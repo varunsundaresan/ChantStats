@@ -55,9 +55,9 @@ def calculate_linkage_matrix_in_python_format(df_freq_distributions, *, optimal_
 
 
 class Dendrogram:
-    def __init__(self, df, *, analysis_name, optimal_ordering=True):
+    def __init__(self, df, *, analysis, optimal_ordering=True):
         self.df_orig = df
-        self.analysis = AnalysisType(analysis_name)
+        self.analysis = AnalysisType(analysis)
         self.cols_with_nonzero_entries = df.columns[(df != 0).any()]
         if sorted(self.cols_with_nonzero_entries) != sorted(df.columns):
             missing_columns = sorted([x.value for x in set(df.columns).difference(self.cols_with_nonzero_entries)])
@@ -68,8 +68,7 @@ class Dendrogram:
         self.root_node, self.all_cluster_nodes = to_tree(self.L, rd=True)
         self.leaf_ids = self.root_node.pre_order(lambda x: x.id)
         self.all_cluster_nodes = [
-            DendrogramNode(df, cn, analysis_name=self.analysis, all_leaf_ids=self.leaf_ids)
-            for cn in self.all_cluster_nodes
+            DendrogramNode(df, cn, analysis=self.analysis, all_leaf_ids=self.leaf_ids) for cn in self.all_cluster_nodes
         ]
         self.leaf_nodes = [n for n in self.all_cluster_nodes if n.is_leaf]
         self.root_node = [n for n in self.all_cluster_nodes if n.cluster_node is self.root_node][
@@ -161,5 +160,5 @@ def calculate_dendrogram(modal_category, *, analysis, unit):
     analysis_func = get_analysis_function(analysis)
     df = modal_category.make_results_dataframe(analysis_func=analysis_func, unit=unit)
     # df = df[[col for col in df.columns[(df != 0).any()]]]  # remove columns where all values are zero
-    dendrogram = Dendrogram(df, analysis_name=analysis)
+    dendrogram = Dendrogram(df, analysis=analysis)
     return dendrogram

@@ -4,9 +4,9 @@ __all__ = ["DendrogramNode"]
 
 
 class DendrogramNode:
-    def __init__(self, df_full, cluster_node, *, analysis_name, all_leaf_ids):
+    def __init__(self, df_full, cluster_node, *, analysis, all_leaf_ids):
         assert isinstance(cluster_node, ClusterNode)
-        self.analysis_name = analysis_name  # self.analysis = AnalysisType(analysis)
+        self.analysis = analysis  # self.analysis = AnalysisType(analysis)
         self.df_full = df_full
         self.cluster_node = cluster_node
         self.id = self.cluster_node.get_id()
@@ -16,12 +16,6 @@ class DendrogramNode:
         self.num_leaves = self.cluster_node.get_count()
         self.leaf_ids = self.cluster_node.pre_order(lambda x: x.id)
         self.avg_distribution = self.df_full.iloc[self.leaf_ids].mean()  #  average distribution of all leaf nodes
-        # if self.analysis_name == "pc_freqs":
-        #     self.avg_pc_freq_distribution = PCFreqDistribution(self.avg_distribution)
-        # elif self.analysis_name == "pc_tendencies":
-        #     self.avg_pc_tendency_distribution = PCTendencyDistribution(self.avg_distribution)
-        # else:
-        #     raise NotImplementedError()
 
         if self.is_leaf:
             self.descr = self.df_full.index[self.id]
