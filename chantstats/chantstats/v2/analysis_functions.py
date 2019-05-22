@@ -1,5 +1,5 @@
 from enum import Enum
-from .freqs import PCFreqs
+from .freqs import PCFreqs, ModeDegreeFreqs
 
 __all__ = ["AnalysisType", "get_analysis_function"]
 
@@ -17,15 +17,15 @@ def calculate_relative_pc_freqs(item, unit):
     if unit == "pcs":
         # freqs = PCFreqs(analysis_input.pc)
         # freqs = analysis_input.pc_freqs.rel_freqs
-        freqs = PCFreqs.from_notes(item.notes).rel_freqs
+        freqs = PCFreqs.from_notes(item.notes)
     elif unit == "mode_degrees":
         # freqs = ModeDegreeFreqs(analysis_input.mode_degrees)
         # freqs = analysis_input.mode_degree_freqs.rel_freqs
-        raise NotImplementedError()
+        freqs = ModeDegreeFreqs.from_notes_and_final(item.notes, item.note_of_final)
     else:
         raise NotImplementedError()
 
-    return freqs
+    return freqs.rel_freqs
 
 
 def get_analysis_function(analysis):

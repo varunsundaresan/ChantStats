@@ -25,3 +25,7 @@ class PC(str, Enum):
     @classmethod
     def from_note(cls, note):
         return cls(note.name)
+
+    @property
+    def allowed_values(self):
+        return list(PC)

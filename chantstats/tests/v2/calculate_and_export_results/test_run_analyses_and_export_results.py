@@ -18,11 +18,7 @@ def test_run_analyses_and_export_results(tmpdir, diff_reporter):
 
     # Calculate results for PC frequencies
     results_pc_freqs = calculate_results(
-        repertoire_and_genre,
-        analysis="pc_freqs",
-        cfg=cfg,
-        min_length_monomodal_sections=min_length_monomodal_sections,
-        units=["pcs"],  # FIXME: support both units
+        repertoire_and_genre, analysis="pc_freqs", cfg=cfg, min_length_monomodal_sections=min_length_monomodal_sections
     )
 
     # # Calculate results for PC tendencies

@@ -1,6 +1,7 @@
 import pandas as pd
 import textwrap
 from collections import Counter
+from .mode_degree import ModeDegree
 from .pitch_class import PC
 
 
@@ -53,8 +54,16 @@ class BaseFreqs(metaclass=BaseFreqsMeta):
 
 
 class PCFreqs(BaseFreqs):
-    ALLOWED_VALUES = list(PC)
+    ALLOWED_VALUES = PC.allowed_values
 
     @classmethod
     def from_notes(cls, notes):
         return cls([PC.from_note(n) for n in notes])
+
+
+class ModeDegreeFreqs(BaseFreqs):
+    ALLOWED_VALUES = ModeDegree.allowed_values
+
+    @classmethod
+    def from_notes_and_final(cls, notes, final):
+        return cls([ModeDegree.from_note_pair(note=n, base_note=final) for n in notes])
