@@ -18,6 +18,10 @@ class PC(str, Enum):
     F = "F"
     G = "G"
 
+    @property
+    def descr(self):
+        return self.value
+
     @classmethod
     def from_note(cls, note):
         return cls(note.name)
