@@ -1,17 +1,18 @@
 import matplotlib.pyplot as plt
-import numpy as np
 import palettable
 import pandas as pd
 from matplotlib.patches import Patch
 from ..unit import UnitType
+from ..utils import is_close_to_zero_or_100
 
-__all__ = ["plot_stacked_bar_chart_for_relative_pc_frequencies"]
+__all__ = ["plot_pc_freq_distributions"]
 
 
 def get_color_palette_for_unit(unit):
     unit = UnitType(unit)
     if unit.value == "pcs":
-        return palettable.cartocolors.qualitative.Vivid_8.hex_colors
+        # return palettable.cartocolors.qualitative.Vivid_8.hex_colors
+        return palettable.cartocolors.qualitative.Vivid_9.hex_colors
     elif unit.value == "mode_degrees":
         # return palettable.cartocolors.qualitative.Pastel_10.hex_colors
         return palettable.colorbrewer.qualitative.Set3_12.hex_colors
@@ -22,85 +23,128 @@ def get_color_palette_for_unit(unit):
         raise ValueError(f"Unexpected value: {unit.value}")
 
 
-def plot_single_stacked_bar_for_relative_frequencies(
-    values, *, ax, xpos, color_palette, width=0.6, sort_freqs_ascending=False
-):
+def prepare_axes_for_stacked_bar_chart(ax, num_bars):
+    ax.clear()
+    ax.set_xticks(range(num_bars))
+    ax.set_xlim(-0.5, num_bars + 0.5)
+    ax.set_ylim(-5.0, 105.0)  # y-axis contains percentages between 0% and 100%
+
+
+def add_color_palette_legend(ax, *, labels, color_palette):
+    legend_elements = [
+        Patch(facecolor=color, edgecolor=color, label=value)
+        for value, color in reversed(list(zip(labels, color_palette)))
+    ]
+    ax.legend(handles=legend_elements, loc="right")
+
+
+def plot_single_pandas_series_as_stacked_bar(values, *, ax, xpos, color_palette, bar_width, sort_freqs_ascending=False):
     """
+    Plot pandas series as a single stacked bar (as part of a full stacked bar chart).
+
     Parameters
     ----------
     values : pandas.Series
-        The relative frequency values to plot (note that these must add up to 100.0)
+        The values to plot. Note that these must add up to 100.0 (because they represent relative frequency values).
     ax : AxesSubplot
         The matplotlib axes to which to add the stacked bar chart.
     xpos : float
-        The x-position at which to add the stacked bar to the existing plot.
+        The x-position at which to draw the stacked bar to the axes.
     color_palette : list
         List of hex color values to use.
-    width : float
-        Width of each bar.
+    bar_width : float
+        Width of the bar.
     sort_freqs_ascending : bool
         If True, sort the relative frequency values in ascending order before assembling
         them into the stacked bar (default: False).
     """
-    assert np.isclose(values.sum(), 100.0)  # ensure relative frequencies add up to 100%
+    assert isinstance(values, pd.Series)
+    assert not isinstance(values.index, pd.MultiIndex)
+    # assert np.isclose(values.sum(), 100.0)
+    assert is_close_to_zero_or_100(values.sum())
 
-    # # color_palette = palettable.colorbrewer.qualitative.Set2_8.hex_colors
-    # # color_palette = palettable.cartocolors.qualitative.Pastel_8.hex_colors
-    # color_palette = palettable.cartocolors.qualitative.Vivid_8.hex_colors
-    # # color_palette = palettable.tableau.Tableau_10.hex_colors
-
-    df_s = pd.DataFrame({"value": values, "color": color_palette[: len(values)]})
+    colors = color_palette[: len(values)]
+    if len(colors) < len(values):
+        raise RuntimeError(
+            f"Color palette does not contain enough colors (contains {len(colors)}, needs {len(values)})"
+        )
+    df_s = pd.DataFrame({"value": values, "color": colors})
     if sort_freqs_ascending:
         df_s = df_s.sort_values("value", ascending=False)
     df_s["value_cum"] = df_s["value"].cumsum().shift(fill_value=0)
     for value, color, bottom in df_s.itertuples(index=False):
-        ax.bar(xpos, value, bottom=bottom, width=width, color=color)
+        ax.bar(xpos, value, bottom=bottom, width=bar_width, color=color)
 
 
-def plot_stacked_bar_chart_for_relative_pc_frequencies(
-    dendrogram_nodes,
-    *,
-    cols_with_nonzero_entries,
-    color_palette,
-    ax=None,
-    title=None,
-    figsize=(20, 4),
-    use_tight_layout=True,
-    sort_freqs_ascending=False,
+def plot_multiple_pandas_series_as_stacked_bar_chart(
+    series, *, xlabels, ax, color_palette, title, bar_width, sort_freqs_ascending=False
 ):
-    if ax is None:
-        fig, ax = plt.subplots(figsize=figsize)
-        plt.close(fig)
-    else:
-        fig = ax.figure
+    """
+    Plot a collection of pandas series as a stacked bar chart (with one stacked bar per series).
 
-    num_clusters = len(dendrogram_nodes)
-    for i, n in enumerate(dendrogram_nodes):
-        # Note: since we're extracting the non-zero entries from n.distribution
-        # we must also use the non-zero column names for the legend entries below!
-        plot_single_stacked_bar_for_relative_frequencies(
-            n.avg_distribution[cols_with_nonzero_entries],
-            color_palette=color_palette,
-            xpos=i,
+    Parameters
+    ----------
+    series : list of pandas.Series
+        The values to plot. Note that each of these must add up to 100.0 (because they represent relative frequency values).
+    xlabels : list of str
+        The x-axis labels for the resulting stacked bars.
+    ax : AxesSubplot
+        The matplotlib axes to which to add the stacked bar chart.
+    color_palette : list
+        List of hex color values to use.
+    bar_width : float
+        Width of the bar.
+    sort_freqs_ascending : bool
+        If True, sort the relative frequency values in ascending order before assembling
+        them into the stacked bar (default: False).
+    """
+    prepare_axes_for_stacked_bar_chart(ax, num_bars=len(series))
+
+    # Plot stacked bars and associated x-axis labels
+    for idx, s in enumerate(series):
+        plot_single_pandas_series_as_stacked_bar(
+            s,
             ax=ax,
-            width=0.6,
+            xpos=idx,
+            color_palette=color_palette,
+            bar_width=bar_width,
             sort_freqs_ascending=sort_freqs_ascending,
         )
-    ax.set_xticks(list(range(num_clusters + 1)))
-    ax.set_xticklabels([f"Cluster {n.id}:\n{n.num_leaves} leaves" for n in dendrogram_nodes])
+    ax.set_xticklabels(xlabels)
 
-    if num_clusters > 0:
-        legend_labels = [
-            x.value for x in cols_with_nonzero_entries
-        ]  # TODO: this relies on the assumption that the column labels are enums; would be good to encapsulate this better
-        legend_elements = [
-            Patch(facecolor=color, edgecolor=color, label=value)
-            for value, color in reversed(list(zip(legend_labels, color_palette)))
-        ]
-        ax.legend(handles=legend_elements, loc="right")
+    # Add legend
+    assert len(set([tuple(s.index) for s in series])) == 1  # ensure all series objects share the same index
+    legend_labels = [
+        x.value for x in series[0].index
+    ]  # TODO: this relies on the fact that the index values are enums; would be good to make this more explicit
+    add_color_palette_legend(ax, labels=legend_labels, color_palette=color_palette)
 
-    if title:
-        ax.set_title(title)
-    if use_tight_layout:
-        fig.tight_layout()
+    # Add plot title
+    ax.set_title(title)
+
+    return ax
+
+
+def plot_pc_freq_distributions(
+    dendrogram_nodes, *, color_palette=None, bar_width=0.6, sort_freqs_ascending=False, figsize=(20, 4)
+):
+    """
+    Create a stacked bar chart from the PC frequency distributions of the given dendrogram nodes.
+    """
+    series = [n.avg_distribution for n in dendrogram_nodes]
+    xlabels = [n.descr for n in dendrogram_nodes]
+    title = "PC freq distributions"
+
+    fig, ax = plt.subplots(figsize=figsize)
+    plot_multiple_pandas_series_as_stacked_bar_chart(
+        series,
+        xlabels=xlabels,
+        ax=ax,
+        color_palette=color_palette,
+        title=title,
+        bar_width=bar_width,
+        sort_freqs_ascending=sort_freqs_ascending,
+    )
+    plt.close(fig)
+
     return fig
