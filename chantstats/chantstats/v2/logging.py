@@ -5,7 +5,7 @@ __all__ = ["logger"]
 #
 # Create logger
 #
-logger = logging.getLogger("chantstats")
+logger = logging.getLogger("chantstats_v2")
 logger.setLevel(logging.INFO)
 ch = logging.StreamHandler()
 ch.setLevel(logging.DEBUG)
