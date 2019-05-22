@@ -32,7 +32,7 @@ jobs:
           name: "Calculate and export results"
           command: |
             cd chantstats
-            pipenv run pytest --cov=chantstats --cov-report=term-missing -svx tests/v2/calculate_and_export_results/
+            pipenv run pytest -svx --runslow --cov=chantstats --cov-report=term-missing tests/v2/calculate_and_export_results/
       - run: cd /tmp/analysis_results/ && zip -r $ZIP_FILE_NAME $RESULTS_FOLDER_NAME
       - store_artifacts:
           path: /tmp/analysis_results
