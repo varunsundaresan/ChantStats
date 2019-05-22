@@ -8,6 +8,10 @@ class AnalysisType(str, Enum):
     PC_FREQS = "pc_freqs"
     PC_TENDENCIES = "pc_tendencies"
 
+    @property
+    def output_path_stub(self):
+        return self.value
+
 
 def calculate_relative_pc_freqs(item, unit):
     if unit == "pcs":
