@@ -61,7 +61,7 @@ class Dendrogram:
         self.cols_with_nonzero_entries = df.columns[(df != 0).any()]
         if sorted(self.cols_with_nonzero_entries) != sorted(df.columns):
             missing_columns = sorted([x.value for x in set(df.columns).difference(self.cols_with_nonzero_entries)])
-            logger.warning(f"Removed zero-values columns from dataframe: {missing_columns}")
+            logger.debug(f"Removed zero-values columns from dataframe: {missing_columns}")
         self.df = self.df_orig[self.cols_with_nonzero_entries]
         self.L = calculate_linkage_matrix_in_python_format(df, optimal_ordering=optimal_ordering)
         self.R = dendrogram(self.L, no_plot=True)

@@ -63,23 +63,23 @@ def export_results(results, output_root_dir, p_cutoff=0.7, overwrite=False):
         logger.info(f"Exporting results to folder: {output_dir}")
         dendrogram = results[path_stubs]["dendrogram"]
 
-        nodes_below_cutoff = dendrogram.get_nodes_below_cutoff(p_cutoff)
-        if nodes_below_cutoff == []:
-            raise MissingDendrogramNodesError()
-
         # Export dendrogram
         os.makedirs(output_dir, exist_ok=True)
         fig = dendrogram.plot_dendrogram(p_cutoff=p_cutoff)
         fig.savefig(os.path.join(output_dir, "dendrogram.png"))
 
         # Export stacked bar chart(s)
-        try:
-            if analysis_name == "pc_freqs":
-                export_stacked_bar_charts_for_pc_freqs(nodes_below_cutoff, output_dir, unit)
-            # elif analysis_name == "pc_tendencies":
-            #     export_stacked_bar_charts_for_pc_tendencies(dendrogram, p_cutoff, output_dir, unit)
-            else:
-                raise NotImplementedError()
-        except MissingDendrogramNodesError:
-            msg = f"Cannot plot PC freq distributions: no dendrogram nodes are below p_cutoff={p_cutoff} {path_stubs}"
+        nodes_below_cutoff = dendrogram.get_nodes_below_cutoff(p_cutoff)
+        if nodes_below_cutoff == []:
+            msg = (
+                f"Not exporting stacked bar charts since no dendrogram nodes are below p_cutoff={p_cutoff} {path_stubs}"
+            )
             logger.warning(msg)
+            continue
+
+        if analysis_name == "pc_freqs":
+            export_stacked_bar_charts_for_pc_freqs(nodes_below_cutoff, output_dir, unit)
+        # elif analysis_name == "pc_tendencies":
+        #     export_stacked_bar_charts_for_pc_tendencies(dendrogram, p_cutoff, output_dir, unit)
+        else:
+            raise NotImplementedError()
