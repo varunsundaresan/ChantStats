@@ -2,7 +2,7 @@ import pandas as pd
 from collections import defaultdict
 from enum import Enum
 from .ambitus import AmbitusType
-from .logging import logger
+from .unit import UnitType
 
 __all__ = ["ModalCategoryType"]
 
@@ -76,6 +76,7 @@ class ModalCategory:
         return f"<ModalCategory with {self.modal_category_type.value}={self.key}, {len(self.items)} items>"
 
     def make_results_dataframe(self, *, analysis_func, unit):
+        unit = UnitType(unit)
         df = pd.DataFrame({x.descr: analysis_func(x, unit=unit) for x in self.items}).T
         # df.columns = [x.descr for x in df.columns]
         # if unit == "pcs":
