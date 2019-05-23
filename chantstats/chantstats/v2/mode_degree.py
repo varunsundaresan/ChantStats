@@ -22,23 +22,6 @@ class ModeDegree:
 
         return ModeDegree(value=diatonic_distance, alter=alter)
 
-    @property
-    def allowed_values(self):
-        return [
-            ModeDegree(value=1, alter=-1),
-            ModeDegree(value=1, alter=0),
-            ModeDegree(value=2, alter=-1),
-            ModeDegree(value=2, alter=0),
-            ModeDegree(value=3, alter=-1),
-            ModeDegree(value=3, alter=0),
-            ModeDegree(value=4, alter=0),
-            ModeDegree(value=5, alter=0),
-            ModeDegree(value=6, alter=-1),
-            ModeDegree(value=6, alter=0),
-            ModeDegree(value=7, alter=-1),
-            ModeDegree(value=7, alter=0),
-        ]
-
     def __repr__(self):
         return f"<ModeDegree: {self.descr}>"
 
@@ -63,3 +46,19 @@ class ModeDegree:
 
     def __hash__(self):
         return hash((self.value, self.alter))
+
+
+ModeDegree.allowed_values = [
+    ModeDegree(value=1, alter=-1),
+    ModeDegree(value=1, alter=0),
+    ModeDegree(value=2, alter=-1),
+    ModeDegree(value=2, alter=0),
+    ModeDegree(value=3, alter=-1),
+    ModeDegree(value=3, alter=0),
+    ModeDegree(value=4, alter=0),
+    ModeDegree(value=5, alter=0),
+    ModeDegree(value=6, alter=-1),
+    ModeDegree(value=6, alter=0),
+    ModeDegree(value=7, alter=-1),
+    ModeDegree(value=7, alter=0),
+]
