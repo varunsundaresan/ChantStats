@@ -19,8 +19,7 @@ class BaseTendencies:
         # self.df_condprobs_v2 = 100 * self.df_pair_counts.div(sums_per_col, axis="columns")  # each column sums up to 100
 
     @classmethod
-    def from_pairs(cls, pairs, *, label_first, label_second):
-        first_items, second_items = zip(*pairs)
+    def from_pairs(cls, first_items, second_items, *, label_first, label_second):
         df = pd.DataFrame({label_first: first_items, label_second: second_items, "count": 1}).dropna()
         cls_first = first_items[0].__class__
         cls_second = second_items[0].__class__
