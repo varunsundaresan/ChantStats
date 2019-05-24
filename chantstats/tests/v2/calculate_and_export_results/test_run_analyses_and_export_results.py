@@ -25,7 +25,6 @@ def test_run_analyses_and_export_results(tmpdir, diff_reporter):
     results_pc_tendencies = calculate_results(
         repertoire_and_genre,
         analysis="pc_tendencies",
-        units=["pcs"],
         cfg=cfg,
         min_length_monomodal_sections=min_length_monomodal_sections,
     )
