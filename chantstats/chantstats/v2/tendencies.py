@@ -43,3 +43,10 @@ class PCTendencies(BaseTendencies):
         first_pcs = item.pitch_classes[:-1]
         second_pcs = item.pitch_classes[1:]
         super().__init__(first_pcs, second_pcs, label_first="pc1", label_second="pc2")
+
+
+class ModeDegreeTendencies(BaseTendencies):
+    def __init__(cls, item):
+        first_pcs = item.mode_degrees[:-1]
+        second_pcs = item.mode_degrees[1:]
+        super().__init__(first_pcs, second_pcs, label_first="pc1", label_second="pc2")

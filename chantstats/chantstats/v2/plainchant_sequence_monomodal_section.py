@@ -32,6 +32,7 @@ class MonomodalSection:
         self.pitch_classes = sum([p.pitch_classes for p in self.phrases], [])
         # self.pc_pairs = sum([p.pc_pairs for p in self.phrases], [])
         self.note_pairs = sum([p.note_pairs for p in self.phrases], [])
+        self.mode_degrees = sum([p.mode_degrees for p in self.phrases], [])
         self.mode_degree_pairs = sum([p.mode_degree_pairs for p in self.phrases], [])
 
     def __len__(self):

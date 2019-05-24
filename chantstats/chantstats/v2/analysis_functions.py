@@ -1,6 +1,6 @@
 from enum import Enum
 from .freqs import PCFreqs, ModeDegreeFreqs
-from .tendencies import PCTendencies
+from .tendencies import PCTendencies, ModeDegreeTendencies
 
 __all__ = ["AnalysisType", "get_analysis_function"]
 
@@ -29,8 +29,7 @@ def calculate_pc_tendencies(item, unit, *, using="condprobs_v1"):
     if unit == "pcs":
         tendencies = PCTendencies(item)
     elif unit == "mode_degrees":
-        # freqs = ModeDegreeFreqs.from_notes_and_final(item.notes, item.note_of_final)
-        raise NotImplementedError()
+        tendencies = ModeDegreeTendencies(item)
     else:
         raise NotImplementedError()
 
