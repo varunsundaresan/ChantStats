@@ -1,5 +1,7 @@
 import pandas as pd
 
+# from .note_pair import NotePair
+
 __all__ = ["BaseTendencies"]
 
 
@@ -25,13 +27,13 @@ class BaseTendencies:
         # sums_per_row = self.df_pair_counts.sum(axis="columns", skipna=False)
         # self.df_condprobs_v2 = 100 * self.df_pair_counts.div(sums_per_col, axis="columns")  # each column sums up to 100
 
-    def as_series(self, which):
-        if which == "counts":
+    def as_series(self, using):
+        if using == "counts":
             res = self.df_pair_counts
-        elif which == "condprobs_v1":
+        elif using == "condprobs_v1":
             res = self.df_condprobs_v1
         else:
-            raise ValueError(f"Invalid value: '{which}'. Must be one of ['counts', 'condprobs_v1'].")
+            raise ValueError(f"Invalid value: '{using}'. Must be one of ['counts', 'condprobs_v1'].")
 
         return res.unstack()  # same as the dataframe, but as a series with a hierarchical index
 
