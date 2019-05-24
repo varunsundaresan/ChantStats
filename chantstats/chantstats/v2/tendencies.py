@@ -1,12 +1,12 @@
 import pandas as pd
+from .note_pair import NotePair
 
-# from .note_pair import NotePair
-
-__all__ = ["BaseTendencies"]
+__all__ = ["BaseTendencies", "PCTendencies", "PCApproaches"]
 
 
 class BaseTendencies:
-    def __init__(self, first_items, second_items, *, label_first, label_second):
+    def __init__(self, pairs, *, label_first, label_second):
+        first_items, second_items = zip(*pairs)
         df = pd.DataFrame({label_first: first_items, label_second: second_items, "count": 1}).dropna()
         cls_first = first_items[0].__class__
         cls_second = second_items[0].__class__
@@ -40,13 +40,17 @@ class BaseTendencies:
 
 class PCTendencies(BaseTendencies):
     def __init__(cls, item):
-        first_pcs = item.pitch_classes[:-1]
-        second_pcs = item.pitch_classes[1:]
-        super().__init__(first_pcs, second_pcs, label_first="pc1", label_second="pc2")
+        super().__init__(item.pc_pairs, label_first="pc1", label_second="pc2")
 
 
 class ModeDegreeTendencies(BaseTendencies):
     def __init__(cls, item):
-        first_pcs = item.mode_degrees[:-1]
-        second_pcs = item.mode_degrees[1:]
-        super().__init__(first_pcs, second_pcs, label_first="pc1", label_second="pc2")
+        super().__init__(item.mode_degree_pairs, label_first="pc1", label_second="pc2")
+
+
+class PCApproaches(BaseTendencies):
+    def __init__(cls, item):
+        second_pcs = [pc2 for (_, pc2) in item.pc_pairs]
+        approach_interval_types = [NotePair(n1, n2).interval_type_v1 for (n1, n2) in item.note_pairs]
+        pairs = zip(second_pcs, approach_interval_types)
+        super().__init__(pairs, label_first="pc2", label_second="approach")
