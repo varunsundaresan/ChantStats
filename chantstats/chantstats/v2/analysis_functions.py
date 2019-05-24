@@ -1,5 +1,6 @@
 from enum import Enum
 from .freqs import PCFreqs, ModeDegreeFreqs
+from .tendencies import PCTendencies
 
 __all__ = ["AnalysisType", "get_analysis_function"]
 
@@ -15,17 +16,25 @@ class AnalysisType(str, Enum):
 
 def calculate_relative_pc_freqs(item, unit):
     if unit == "pcs":
-        # freqs = PCFreqs(analysis_input.pc)
-        # freqs = analysis_input.pc_freqs.rel_freqs
         freqs = PCFreqs.from_notes(item.notes)
     elif unit == "mode_degrees":
-        # freqs = ModeDegreeFreqs(analysis_input.mode_degrees)
-        # freqs = analysis_input.mode_degree_freqs.rel_freqs
         freqs = ModeDegreeFreqs.from_notes_and_final(item.notes, item.note_of_final)
     else:
         raise NotImplementedError()
 
     return freqs.rel_freqs
+
+
+def calculate_pc_tendencies(item, unit, *, using="condprobs_v1"):
+    if unit == "pcs":
+        tendencies = PCTendencies(item)
+    elif unit == "mode_degrees":
+        # freqs = ModeDegreeFreqs.from_notes_and_final(item.notes, item.note_of_final)
+        raise NotImplementedError()
+    else:
+        raise NotImplementedError()
+
+    return tendencies.as_series(using=using)
 
 
 def get_analysis_function(analysis):
@@ -34,6 +43,6 @@ def get_analysis_function(analysis):
     if analysis == "pc_freqs":
         return calculate_relative_pc_freqs
     elif analysis == "pc_tendencies":
-        raise NotImplementedError()
+        return calculate_pc_tendencies
     else:
         raise NotImplementedError()
