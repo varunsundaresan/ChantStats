@@ -68,7 +68,14 @@ class Dendrogram:
         self.root_node, self.all_cluster_nodes = to_tree(self.L, rd=True)
         self.leaf_ids = self.root_node.pre_order(lambda x: x.id)
         self.all_cluster_nodes = [
-            DendrogramNode(df, cn, analysis=self.analysis, all_leaf_ids=self.leaf_ids) for cn in self.all_cluster_nodes
+            DendrogramNode(
+                df,
+                cn,
+                analysis=self.analysis,
+                all_leaf_ids=self.leaf_ids,
+                cols_with_globally_nonzero_entries=cols_with_nonzero_entries,
+            )
+            for cn in self.all_cluster_nodes
         ]
         self.leaf_nodes = [n for n in self.all_cluster_nodes if n.is_leaf]
         self.root_node = [n for n in self.all_cluster_nodes if n.cluster_node is self.root_node][

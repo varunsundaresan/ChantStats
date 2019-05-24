@@ -4,10 +4,11 @@ __all__ = ["DendrogramNode"]
 
 
 class DendrogramNode:
-    def __init__(self, df_full, cluster_node, *, analysis, all_leaf_ids):
+    def __init__(self, df_full, cluster_node, *, analysis, all_leaf_ids, cols_with_globally_nonzero_entries):
         assert isinstance(cluster_node, ClusterNode)
         self.analysis = analysis  # self.analysis = AnalysisType(analysis)
         self.df_full = df_full
+        self.cols_with_globally_nonzero_entries = cols_with_globally_nonzero_entries
         self.cluster_node = cluster_node
         self.id = self.cluster_node.get_id()
         self.dist = self.cluster_node.dist
