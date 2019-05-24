@@ -26,7 +26,7 @@ class PlainchantSequencePhrase:
 
         self.pitch_classes = [PC.from_note(n) for n in self.notes]
         self.mode_degrees = [ModeDegree.from_note_pair(note=n, base_note=self.note_of_final) for n in self.notes]
-        # self.pc_pairs = list(zip(self.pitch_classes, self.pitch_classes[1:]))
+        self.pc_pairs = list(zip(self.pitch_classes, self.pitch_classes[1:]))
         self.note_pairs = list(zip(self.notes, self.notes[1:]))
         self.mode_degree_pairs = list(zip(self.mode_degrees, self.mode_degrees[1:]))
 
