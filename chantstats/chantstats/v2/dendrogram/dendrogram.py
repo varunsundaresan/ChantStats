@@ -58,12 +58,12 @@ class Dendrogram:
     def __init__(self, df, *, analysis, optimal_ordering=True):
         self.df_orig = df
         self.analysis = AnalysisType(analysis)
-        self.cols_with_nonzero_entries = df.columns[(df != 0).any()]
-        if sorted(self.cols_with_nonzero_entries) != sorted(df.columns):
-            missing_columns = sorted([x.value for x in set(df.columns).difference(self.cols_with_nonzero_entries)])
-            logger.debug(f"Removed zero-values columns from dataframe: {missing_columns}")
-        self.df = self.df_orig[self.cols_with_nonzero_entries]
-        self.L = calculate_linkage_matrix_in_python_format(df, optimal_ordering=optimal_ordering)
+        cols_with_nonzero_entries = df.columns[(df != 0).any()]
+        if sorted(cols_with_nonzero_entries) != sorted(df.columns):
+            missing_columns = sorted([x for x in set(df.columns).difference(cols_with_nonzero_entries)])
+            logger.debug(f"Removed zero-valued columns from dataframe: {missing_columns}")
+        self.df = df[cols_with_nonzero_entries]
+        self.L = calculate_linkage_matrix_in_python_format(self.df, optimal_ordering=optimal_ordering)
         self.R = dendrogram(self.L, no_plot=True)
         self.root_node, self.all_cluster_nodes = to_tree(self.L, rd=True)
         self.leaf_ids = self.root_node.pre_order(lambda x: x.id)
@@ -154,11 +154,17 @@ class Dendrogram:
         return fig
 
 
-def calculate_dendrogram(modal_category, *, analysis, unit):
+def calculate_dendrogram(modal_category, *, analysis, unit, analysis_func=None, replace_nan_values_with_zeros=True):
     unit = UnitType(unit)
     analysis = AnalysisType(analysis)
-    analysis_func = get_analysis_function(analysis)
+    analysis_func = analysis_func or get_analysis_function(analysis)
+
     df = modal_category.make_results_dataframe(analysis_func=analysis_func, unit=unit)
-    # df = df[[col for col in df.columns[(df != 0).any()]]]  # remove columns where all values are zero
+    if replace_nan_values_with_zeros:
+        if df.isnull().values.any():
+            logger.warning("Replacing NaN values with zeros in dendrogram dataframe.")
+        # df = df[df.notna().all(axis=0)]  # drop any columns with
+        df = df.fillna(0)
+
     dendrogram = Dendrogram(df, analysis=analysis)
     return dendrogram
