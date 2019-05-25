@@ -40,11 +40,11 @@ class ModalCategoryType(str, Enum):
 
     def get_output_path_stub_2(self, key):
         if self == "final":
-            return f"{key}_final"
+            return f"final_{key}"
         elif self == "final_and_ambitus":
             final = key[0]
             ambitus = AmbitusType(key[1])
-            return f"{final}_{ambitus}"
+            return f"{ambitus}_{final}"
         else:  # pragma: no cover
             raise NotImplementedError(f"Unexpected grouping type: {self}")
 
