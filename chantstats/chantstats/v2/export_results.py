@@ -34,7 +34,7 @@ def export_stacked_bar_charts_for_pc_tendencies(nodes_below_cutoff, output_dir, 
     plt.close(fig)
 
 
-def export_results(results, output_root_dir, p_cutoff=0.7, overwrite=False):
+def export_results(results, output_root_dir, p_cutoff=0.4, overwrite=False):
     """
     Export analysis results as dendrogram plots and stacked bar charts
     into a folder hierarchy underneath output_root_dir.

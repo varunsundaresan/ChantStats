@@ -30,7 +30,7 @@ def test_run_analyses_and_export_results(tmpdir, diff_reporter):
     )
 
     # Export all results
-    for p_cutoff in [0.7, 0.15]:
+    for p_cutoff in [0.4]:
         export_results(results_pc_freqs, output_root_dir, p_cutoff=p_cutoff)
         export_results(results_pc_tendencies, output_root_dir, p_cutoff=p_cutoff)
 
