@@ -163,7 +163,7 @@ def plot_pc_tendency_distributions(
     # df = dendrogram_node.distribution.values
     df = dendrogram_node.avg_distribution.unstack(level=0)
     series = [df[col] for col in df.columns]
-    title = f"PC Tendencies for {dendrogram_node.descr}"
+    title = f"Tendency for {dendrogram_node.descr}"
 
     plot_multiple_pandas_series_as_stacked_bar_chart(
         series,

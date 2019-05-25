@@ -26,8 +26,8 @@ def test_run_analyses_and_export_results(tmpdir, diff_reporter):
         min_num_notes_per_monomodal_section=min_num_notes_per_monomodal_section,
     )
 
-    # Calculate results for PC tendencies
-    results_pc_tendencies = calculate_results(
+    # Calculate results for PC tendency
+    results_pc_tendency = calculate_results(
         repertoire_and_genre,
         analysis="pc_tendency",
         cfg=cfg,
@@ -38,7 +38,7 @@ def test_run_analyses_and_export_results(tmpdir, diff_reporter):
     # Export all results
     for p_cutoff in [0.4]:
         export_results(results_pc_freqs, output_root_dir, p_cutoff=p_cutoff)
-        export_results(results_pc_tendencies, output_root_dir, p_cutoff=p_cutoff)
+        export_results(results_pc_tendency, output_root_dir, p_cutoff=p_cutoff)
 
     exported_files = list_directory_tree(output_root_dir)
     verify(exported_files, diff_reporter)

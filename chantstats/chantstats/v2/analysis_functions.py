@@ -26,27 +26,27 @@ def calculate_relative_pc_freqs(item, unit):
     return freqs.rel_freqs
 
 
-def calculate_pc_tendencies(item, unit, *, using="condprobs_v1"):
+def calculate_pc_tendency(item, unit, *, using="condprobs_v1"):
     if unit == "pcs":
-        tendencies = PCTendency(item)
+        tendency = PCTendency(item)
     elif unit == "mode_degrees":
-        tendencies = ModeDegreeTendency(item)
+        tendency = ModeDegreeTendency(item)
     else:
         raise NotImplementedError()
 
-    return tendencies.as_series(using=using)
+    return tendency.as_series(using=using)
 
 
 def calculate_approaches(item, unit, *, using="condprobs_v1"):
     if unit == "pcs":
-        tendencies = PCApproaches(item)
+        tendency = PCApproaches(item)
     elif unit == "mode_degrees":
-        # tendencies = ModeDegreeApproaches(item)
+        # tendency = ModeDegreeApproaches(item)
         raise NotImplementedError()
     else:
         raise NotImplementedError()
 
-    return tendencies.as_series(using=using)
+    return tendency.as_series(using=using)
 
 
 def get_analysis_function(analysis):
@@ -55,7 +55,7 @@ def get_analysis_function(analysis):
     if analysis == "pc_freqs":
         return calculate_relative_pc_freqs
     elif analysis == "pc_tendency":
-        return calculate_pc_tendencies
+        return calculate_pc_tendency
     elif analysis == "approaches":
         return calculate_approaches
     else:

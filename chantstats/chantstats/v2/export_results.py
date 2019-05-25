@@ -19,7 +19,7 @@ def export_stacked_bar_charts_for_pc_freqs(nodes_below_cutoff, output_dir, unit)
     plt.close(fig)
 
 
-def export_stacked_bar_charts_for_pc_tendencies(nodes_below_cutoff, output_dir, unit, height_per_axes=2.5):
+def export_stacked_bar_charts_for_pc_tendency(nodes_below_cutoff, output_dir, unit, height_per_axes=2.5):
     assert len(nodes_below_cutoff) > 0
     color_palette = get_color_palette_for_unit(unit)
     fig, axes = plt.subplots(
@@ -96,6 +96,6 @@ def export_results(results, output_root_dir, p_cutoff=0.4, overwrite=False):
         if analysis_name == "pc_freqs":
             export_stacked_bar_charts_for_pc_freqs(nodes_below_cutoff, output_dir, unit)
         elif analysis_name == "pc_tendency":
-            export_stacked_bar_charts_for_pc_tendencies(nodes_below_cutoff, output_dir, unit)
+            export_stacked_bar_charts_for_pc_tendency(nodes_below_cutoff, output_dir, unit)
         else:
             raise NotImplementedError()
