@@ -144,6 +144,9 @@ class Dendrogram:
         size_nodes_below_cutoff = 20
         size_other_nodes = 10
 
+        # Add horizontal line at p_cutoff
+        ax.axhline(y=p_cutoff, linewidth=0.5, linestyle=":", color="gray")
+
         # Draw dots to indicate the dendrogram nodes which are not leaves
         for n in self.all_cluster_nodes:
             if not n.is_leaf and not n in nodes_below_cutoff:
