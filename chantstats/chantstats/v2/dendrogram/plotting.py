@@ -72,8 +72,14 @@ def plot_single_pandas_series_as_stacked_bar(values, *, ax, xpos, color_palette,
     if sort_freqs_ascending:
         df_s = df_s.sort_values("value", ascending=False)
     df_s["value_cum"] = df_s["value"].cumsum().shift(fill_value=0)
-    for value, color, bottom in df_s.itertuples(index=False):
-        ax.bar(xpos, value, bottom=bottom, width=bar_width, color=color)
+    for value, color, bar_bottom in df_s.itertuples(index=False):
+        ax.bar(xpos, value, bottom=bar_bottom, width=bar_width, color=color)
+        if value >= 4.0:
+            xy_text = (xpos, bar_bottom + 0.5 * value)
+            horizontalalignment = "center"
+            # xy_text = (xpos + 0.5 * bar_width, bar_bottom + 0.5 * value)
+            # horizontalalignment = "left"
+            ax.annotate(f"{value:.1f}", xy=xy_text, horizontalalignment=horizontalalignment, verticalalignment="center")
 
 
 def plot_multiple_pandas_series_as_stacked_bar_chart(
