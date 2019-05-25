@@ -16,7 +16,9 @@ class MonomodalSection:
         self.idx_end = idx_end
         self.phrases = piece.phrases[idx_start - 1 : idx_end]
         self.notes = sum([p.notes for p in self.phrases], [])
-        self.length = len(self.phrases)
+        # self.length = len(self.phrases)
+        self.num_phrases = len(self.phrases)
+        self.num_notes = len(self.notes)
         if len(set(p.phrase_final for p in self.phrases)) != 1:
             error_msg = (
                 f"Non-unique phrase final: {set(p.phrase_final for p in self.phrases)}"
@@ -35,15 +37,12 @@ class MonomodalSection:
         self.mode_degrees = sum([p.mode_degrees for p in self.phrases], [])
         self.mode_degree_pairs = sum([p.mode_degree_pairs for p in self.phrases], [])
 
-    def __len__(self):
-        return len(self.phrases)
-
     def __repr__(self):
         s = (
             f"<MonomodalSection: '{self.piece.filename_short}', "
             f"phrase-final '{self.final}', "
             f"phrases {self.idx_start}-{self.idx_end} "
-            f"(length {len(self)}), "
+            f"({self.num_phrases} phrases, {self.num_notes} notes), "
             f"ambitus={self.ambitus.value!r}>"
         )
         return s
