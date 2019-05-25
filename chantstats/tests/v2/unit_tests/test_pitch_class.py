@@ -6,7 +6,7 @@ from chantstats.v2.pitch_class import PC
 
 def test_pitch_class():
     assert "A" == PC.A == PC("A")
-    assert "E-" == PC.E_FLAT == PC("E-")
+    assert "B-" == PC.B_FLAT == PC("B-")
     assert "C" == PC.C == PC("C")
 
 
