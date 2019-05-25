@@ -38,7 +38,7 @@ def add_color_palette_legend(ax, *, labels, color_palette):
     ax.legend(handles=legend_elements, loc="right")
 
 
-def plot_single_pandas_series_as_stacked_bar(values, *, ax, xpos, color_palette, bar_width, sort_freqs_ascending=False):
+def plot_single_pandas_series_as_stacked_bar(values, *, ax, xpos, color_palette, bar_width, sort_freqs_ascending=True):
     """
     Plot pandas series as a single stacked bar (as part of a full stacked bar chart).
 
@@ -56,7 +56,7 @@ def plot_single_pandas_series_as_stacked_bar(values, *, ax, xpos, color_palette,
         Width of the bar.
     sort_freqs_ascending : bool
         If True, sort the relative frequency values in ascending order before assembling
-        them into the stacked bar (default: False).
+        them into the stacked bar (default: True).
     """
     assert isinstance(values, pd.Series)
     assert not isinstance(values.index, pd.MultiIndex)
@@ -77,7 +77,7 @@ def plot_single_pandas_series_as_stacked_bar(values, *, ax, xpos, color_palette,
 
 
 def plot_multiple_pandas_series_as_stacked_bar_chart(
-    series, *, xlabels, ax, color_palette, title, bar_width, sort_freqs_ascending=False
+    series, *, xlabels, ax, color_palette, title, bar_width, sort_freqs_ascending=True
 ):
     """
     Plot a collection of pandas series as a stacked bar chart (with one stacked bar per series).
@@ -96,7 +96,7 @@ def plot_multiple_pandas_series_as_stacked_bar_chart(
         Width of the bar.
     sort_freqs_ascending : bool
         If True, sort the relative frequency values in ascending order before assembling
-        them into the stacked bar (default: False).
+        them into the stacked bar (default: True).
     """
     prepare_axes_for_stacked_bar_chart(ax, num_bars=len(series))
 
@@ -126,7 +126,7 @@ def plot_multiple_pandas_series_as_stacked_bar_chart(
 
 
 def plot_pc_freq_distributions(
-    dendrogram_nodes, *, color_palette=None, bar_width=0.6, sort_freqs_ascending=False, figsize=(20, 4)
+    dendrogram_nodes, *, color_palette=None, bar_width=0.6, sort_freqs_ascending=True, figsize=(20, 4)
 ):
     """
     Create a stacked bar chart from the PC frequency distributions of the given dendrogram nodes.
@@ -151,7 +151,7 @@ def plot_pc_freq_distributions(
 
 
 def plot_pc_tendency_distributions(
-    dendrogram_node, *, color_palette, ax=None, bar_width=0.6, sort_freqs_ascending=False, figsize=(20, 4)
+    dendrogram_node, *, color_palette, ax=None, bar_width=0.6, sort_freqs_ascending=True, figsize=(20, 4)
 ):
     """
     Create a stacked bar chart from the PC tendency distributions of the given dendrogram node.
