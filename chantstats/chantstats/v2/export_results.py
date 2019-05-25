@@ -14,8 +14,8 @@ class MissingDendrogramNodesError(Exception):
 def export_empty_figure(output_dir, unit):
     raise NotImplementedError("TODO: implement this if required")
     # fig, ax = plt.subplots(figsize=(20, 4))
-    # msg = "This plot is deliberately empty figure because there is no data to export."
-    # fig.text(0.5, 0.5, msg, fontsize=50, color="gray", ha="center", va="center", alpha=0.5)
+    # msg = "This plot is deliberately empty\nbecause there is no data to export."
+    # fig.text(0.5, 0.5, msg, fontsize=30, color='gray', ha='center', va='center', alpha=0.5)
     # fig.savefig(os.path.join(output_dir, "stacked_bar_chart.png"))
     # plt.close(fig)
     # return fig
@@ -44,7 +44,7 @@ def export_stacked_bar_charts_for_tendency(nodes_below_cutoff, output_dir, unit,
     plt.close(fig)
 
 
-def export_results(results, output_root_dir, p_cutoff=0.4, overwrite=False):
+def export_results(results, output_root_dir, p_cutoff=0.4, include_leaf_nodes_in_clusters=True, overwrite=False):
     """
     Export analysis results as dendrogram plots and stacked bar charts
     into a folder hierarchy underneath output_root_dir.
@@ -57,6 +57,9 @@ def export_results(results, output_root_dir, p_cutoff=0.4, overwrite=False):
         Path to the root directory under which the results will be exported.
     p_cutoff : float
         Cutoff value that determines which dendrogram nodes are exported.
+    include_leaf_nodes_in_clusters : bool
+        If True, include all clusters in the results, even those containing only contain a single
+        leaf node. Otherwise include only proper clusters (with at least two leaf nodes). Default: True.
     overwrite : bool
         If True, delete the output root folder (if it exists) before exporting results. Default: False.
     """
@@ -95,7 +98,9 @@ def export_results(results, output_root_dir, p_cutoff=0.4, overwrite=False):
         fig.savefig(os.path.join(output_dir, "dendrogram.png"))
 
         # Export stacked bar chart(s)
-        nodes_below_cutoff = dendrogram.get_nodes_below_cutoff(p_cutoff)
+        nodes_below_cutoff = dendrogram.get_nodes_below_cutoff(
+            p_cutoff, include_leaf_nodes=include_leaf_nodes_in_clusters
+        )
         if nodes_below_cutoff == []:
             msg = f"Exporting empty figure because no dendrogram nodes are below p_cutoff={p_cutoff} {path_stubs}."
             logger.warning(msg)

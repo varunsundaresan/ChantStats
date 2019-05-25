@@ -91,12 +91,14 @@ class Dendrogram:
                 n.right.parent = n
         self.root_node.parent = None
 
-    def get_nodes_below_cutoff(self, p_cutoff):
+    def get_nodes_below_cutoff(self, p_cutoff, include_leaf_nodes):
+        proper_cluster_condition = lambda node: True if include_leaf_nodes else not node.is_leaf
+
         return sorted(
             [
                 n
                 for n in self.all_cluster_nodes
-                if not n.is_leaf
+                if proper_cluster_condition(n)
                 and n.dist < p_cutoff
                 and (n.parent is None or (n.parent is not None and n.parent.dist > p_cutoff))
             ],
@@ -137,7 +139,8 @@ class Dendrogram:
         )
         set_link_color_palette(None)  # reset to default
 
-        nodes_below_cutoff = self.get_nodes_below_cutoff(p_cutoff)
+        # Calculate the "proper" clusters (containing at least two leaf nodes) below p_cutoff
+        nodes_below_cutoff = self.get_nodes_below_cutoff(p_cutoff, include_leaf_nodes=False)
         size_nodes_below_cutoff = 20
         size_other_nodes = 10
 
