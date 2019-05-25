@@ -5,191 +5,213 @@
         │   └── sequences
         │       ├── mode_degrees
         │       │   ├── authentic_modes
-        │       │   │   ├── A_authentic
+        │       │   │   ├── authentic_A
         │       │   │   │   ├── dendrogram.png
         │       │   │   │   └── stacked_bar_chart.png
-        │       │   │   ├── B_authentic
+        │       │   │   ├── authentic_B
         │       │   │   │   ├── dendrogram.png
         │       │   │   │   └── stacked_bar_chart.png
-        │       │   │   ├── C_authentic
+        │       │   │   ├── authentic_C
         │       │   │   │   ├── dendrogram.png
         │       │   │   │   └── stacked_bar_chart.png
-        │       │   │   ├── D_authentic
+        │       │   │   ├── authentic_D
         │       │   │   │   ├── dendrogram.png
         │       │   │   │   └── stacked_bar_chart.png
-        │       │   │   ├── E_authentic
-        │       │   │   │   └── dendrogram.png
-        │       │   │   └── G_authentic
+        │       │   │   ├── authentic_E
+        │       │   │   │   ├── dendrogram.png
+        │       │   │   │   └── stacked_bar_chart.png
+        │       │   │   └── authentic_G
         │       │   │       ├── dendrogram.png
         │       │   │       └── stacked_bar_chart.png
         │       │   ├── by_final
-        │       │   │   ├── A_final
+        │       │   │   ├── final_A
         │       │   │   │   ├── dendrogram.png
         │       │   │   │   └── stacked_bar_chart.png
-        │       │   │   ├── B_final
+        │       │   │   ├── final_B
         │       │   │   │   ├── dendrogram.png
         │       │   │   │   └── stacked_bar_chart.png
-        │       │   │   ├── C_final
+        │       │   │   ├── final_C
         │       │   │   │   ├── dendrogram.png
         │       │   │   │   └── stacked_bar_chart.png
-        │       │   │   ├── D_final
+        │       │   │   ├── final_D
         │       │   │   │   ├── dendrogram.png
         │       │   │   │   └── stacked_bar_chart.png
-        │       │   │   ├── E_final
-        │       │   │   │   └── dendrogram.png
-        │       │   │   └── G_final
+        │       │   │   ├── final_E
+        │       │   │   │   ├── dendrogram.png
+        │       │   │   │   └── stacked_bar_chart.png
+        │       │   │   └── final_G
         │       │   │       ├── dendrogram.png
         │       │   │       └── stacked_bar_chart.png
         │       │   └── plagal_modes
-        │       │       ├── A_plagal
+        │       │       ├── plagal_A
         │       │       │   ├── dendrogram.png
         │       │       │   └── stacked_bar_chart.png
-        │       │       ├── C_plagal
+        │       │       ├── plagal_C
         │       │       │   ├── dendrogram.png
         │       │       │   └── stacked_bar_chart.png
-        │       │       ├── D_plagal
+        │       │       ├── plagal_D
         │       │       │   ├── dendrogram.png
         │       │       │   └── stacked_bar_chart.png
-        │       │       └── G_plagal
+        │       │       └── plagal_G
         │       │           ├── dendrogram.png
         │       │           └── stacked_bar_chart.png
         │       └── pcs
         │           ├── authentic_modes
-        │           │   ├── A_authentic
+        │           │   ├── authentic_A
         │           │   │   ├── dendrogram.png
         │           │   │   └── stacked_bar_chart.png
-        │           │   ├── B_authentic
+        │           │   ├── authentic_B
         │           │   │   ├── dendrogram.png
         │           │   │   └── stacked_bar_chart.png
-        │           │   ├── C_authentic
+        │           │   ├── authentic_C
         │           │   │   ├── dendrogram.png
         │           │   │   └── stacked_bar_chart.png
-        │           │   ├── D_authentic
+        │           │   ├── authentic_D
         │           │   │   ├── dendrogram.png
         │           │   │   └── stacked_bar_chart.png
-        │           │   ├── E_authentic
-        │           │   │   └── dendrogram.png
-        │           │   └── G_authentic
+        │           │   ├── authentic_E
+        │           │   │   ├── dendrogram.png
+        │           │   │   └── stacked_bar_chart.png
+        │           │   └── authentic_G
         │           │       ├── dendrogram.png
         │           │       └── stacked_bar_chart.png
         │           ├── by_final
-        │           │   ├── A_final
+        │           │   ├── final_A
         │           │   │   ├── dendrogram.png
         │           │   │   └── stacked_bar_chart.png
-        │           │   ├── B_final
+        │           │   ├── final_B
         │           │   │   ├── dendrogram.png
         │           │   │   └── stacked_bar_chart.png
-        │           │   ├── C_final
+        │           │   ├── final_C
         │           │   │   ├── dendrogram.png
         │           │   │   └── stacked_bar_chart.png
-        │           │   ├── D_final
+        │           │   ├── final_D
         │           │   │   ├── dendrogram.png
         │           │   │   └── stacked_bar_chart.png
-        │           │   ├── E_final
-        │           │   │   └── dendrogram.png
-        │           │   └── G_final
+        │           │   ├── final_E
+        │           │   │   ├── dendrogram.png
+        │           │   │   └── stacked_bar_chart.png
+        │           │   └── final_G
         │           │       ├── dendrogram.png
         │           │       └── stacked_bar_chart.png
         │           └── plagal_modes
-        │               ├── A_plagal
+        │               ├── plagal_A
         │               │   ├── dendrogram.png
         │               │   └── stacked_bar_chart.png
-        │               ├── C_plagal
+        │               ├── plagal_C
         │               │   ├── dendrogram.png
         │               │   └── stacked_bar_chart.png
-        │               ├── D_plagal
+        │               ├── plagal_D
         │               │   ├── dendrogram.png
         │               │   └── stacked_bar_chart.png
-        │               └── G_plagal
+        │               └── plagal_G
         │                   ├── dendrogram.png
         │                   └── stacked_bar_chart.png
         └── tendency
             └── sequences
                 ├── mode_degrees
                 │   ├── authentic_modes
-                │   │   ├── A_authentic
-                │   │   │   └── dendrogram.png
-                │   │   ├── B_authentic
+                │   │   ├── authentic_A
                 │   │   │   ├── dendrogram.png
                 │   │   │   └── stacked_bar_chart.png
-                │   │   ├── C_authentic
-                │   │   │   └── dendrogram.png
-                │   │   ├── D_authentic
+                │   │   ├── authentic_B
                 │   │   │   ├── dendrogram.png
                 │   │   │   └── stacked_bar_chart.png
-                │   │   ├── E_authentic
-                │   │   │   └── dendrogram.png
-                │   │   └── G_authentic
+                │   │   ├── authentic_C
+                │   │   │   ├── dendrogram.png
+                │   │   │   └── stacked_bar_chart.png
+                │   │   ├── authentic_D
+                │   │   │   ├── dendrogram.png
+                │   │   │   └── stacked_bar_chart.png
+                │   │   ├── authentic_E
+                │   │   │   ├── dendrogram.png
+                │   │   │   └── stacked_bar_chart.png
+                │   │   └── authentic_G
                 │   │       ├── dendrogram.png
                 │   │       └── stacked_bar_chart.png
                 │   ├── by_final
-                │   │   ├── A_final
-                │   │   │   └── dendrogram.png
-                │   │   ├── B_final
+                │   │   ├── final_A
                 │   │   │   ├── dendrogram.png
                 │   │   │   └── stacked_bar_chart.png
-                │   │   ├── C_final
-                │   │   │   └── dendrogram.png
-                │   │   ├── D_final
+                │   │   ├── final_B
                 │   │   │   ├── dendrogram.png
                 │   │   │   └── stacked_bar_chart.png
-                │   │   ├── E_final
-                │   │   │   └── dendrogram.png
-                │   │   └── G_final
+                │   │   ├── final_C
+                │   │   │   ├── dendrogram.png
+                │   │   │   └── stacked_bar_chart.png
+                │   │   ├── final_D
+                │   │   │   ├── dendrogram.png
+                │   │   │   └── stacked_bar_chart.png
+                │   │   ├── final_E
+                │   │   │   ├── dendrogram.png
+                │   │   │   └── stacked_bar_chart.png
+                │   │   └── final_G
                 │   │       ├── dendrogram.png
                 │   │       └── stacked_bar_chart.png
                 │   └── plagal_modes
-                │       ├── A_plagal
-                │       │   └── dendrogram.png
-                │       ├── C_plagal
-                │       │   └── dendrogram.png
-                │       ├── D_plagal
-                │       │   └── dendrogram.png
-                │       └── G_plagal
+                │       ├── plagal_A
+                │       │   ├── dendrogram.png
+                │       │   └── stacked_bar_chart.png
+                │       ├── plagal_C
+                │       │   ├── dendrogram.png
+                │       │   └── stacked_bar_chart.png
+                │       ├── plagal_D
+                │       │   ├── dendrogram.png
+                │       │   └── stacked_bar_chart.png
+                │       └── plagal_G
                 │           ├── dendrogram.png
                 │           └── stacked_bar_chart.png
                 └── pcs
                     ├── authentic_modes
-                    │   ├── A_authentic
-                    │   │   └── dendrogram.png
-                    │   ├── B_authentic
+                    │   ├── authentic_A
                     │   │   ├── dendrogram.png
                     │   │   └── stacked_bar_chart.png
-                    │   ├── C_authentic
-                    │   │   └── dendrogram.png
-                    │   ├── D_authentic
+                    │   ├── authentic_B
                     │   │   ├── dendrogram.png
                     │   │   └── stacked_bar_chart.png
-                    │   ├── E_authentic
-                    │   │   └── dendrogram.png
-                    │   └── G_authentic
+                    │   ├── authentic_C
+                    │   │   ├── dendrogram.png
+                    │   │   └── stacked_bar_chart.png
+                    │   ├── authentic_D
+                    │   │   ├── dendrogram.png
+                    │   │   └── stacked_bar_chart.png
+                    │   ├── authentic_E
+                    │   │   ├── dendrogram.png
+                    │   │   └── stacked_bar_chart.png
+                    │   └── authentic_G
                     │       ├── dendrogram.png
                     │       └── stacked_bar_chart.png
                     ├── by_final
-                    │   ├── A_final
-                    │   │   └── dendrogram.png
-                    │   ├── B_final
+                    │   ├── final_A
                     │   │   ├── dendrogram.png
                     │   │   └── stacked_bar_chart.png
-                    │   ├── C_final
-                    │   │   └── dendrogram.png
-                    │   ├── D_final
+                    │   ├── final_B
                     │   │   ├── dendrogram.png
                     │   │   └── stacked_bar_chart.png
-                    │   ├── E_final
-                    │   │   └── dendrogram.png
-                    │   └── G_final
+                    │   ├── final_C
+                    │   │   ├── dendrogram.png
+                    │   │   └── stacked_bar_chart.png
+                    │   ├── final_D
+                    │   │   ├── dendrogram.png
+                    │   │   └── stacked_bar_chart.png
+                    │   ├── final_E
+                    │   │   ├── dendrogram.png
+                    │   │   └── stacked_bar_chart.png
+                    │   └── final_G
                     │       ├── dendrogram.png
                     │       └── stacked_bar_chart.png
                     └── plagal_modes
-                        ├── A_plagal
-                        │   └── dendrogram.png
-                        ├── C_plagal
-                        │   └── dendrogram.png
-                        ├── D_plagal
-                        │   └── dendrogram.png
-                        └── G_plagal
+                        ├── plagal_A
+                        │   ├── dendrogram.png
+                        │   └── stacked_bar_chart.png
+                        ├── plagal_C
+                        │   ├── dendrogram.png
+                        │   └── stacked_bar_chart.png
+                        ├── plagal_D
+                        │   ├── dendrogram.png
+                        │   └── stacked_bar_chart.png
+                        └── plagal_G
                             ├── dendrogram.png
                             └── stacked_bar_chart.png
 
-86 directories, 106 files
+86 directories, 128 files
