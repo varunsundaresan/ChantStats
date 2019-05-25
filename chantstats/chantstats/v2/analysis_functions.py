@@ -7,7 +7,7 @@ __all__ = ["AnalysisType", "get_analysis_function"]
 
 class AnalysisType(str, Enum):
     PC_FREQS = "pc_freqs"
-    PC_TENDENCY = "pc_tendency"
+    TENDENCY = "tendency"
     APPROACHES = "approaches"
 
     @property
@@ -26,7 +26,7 @@ def calculate_relative_pc_freqs(item, unit):
     return freqs.rel_freqs
 
 
-def calculate_pc_tendency(item, unit, *, using="condprobs_v1"):
+def calculate_tendency(item, unit, *, using="condprobs_v1"):
     if unit == "pcs":
         tendency = PCTendency(item)
     elif unit == "mode_degrees":
@@ -54,8 +54,8 @@ def get_analysis_function(analysis):
 
     if analysis == "pc_freqs":
         return calculate_relative_pc_freqs
-    elif analysis == "pc_tendency":
-        return calculate_pc_tendency
+    elif analysis == "tendency":
+        return calculate_tendency
     elif analysis == "approaches":
         return calculate_approaches
     else:

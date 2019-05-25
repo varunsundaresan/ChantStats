@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import os
 import shutil
-from .dendrogram.plotting import get_color_palette_for_unit, plot_pc_freq_distributions, plot_pc_tendency_distributions
+from .dendrogram.plotting import get_color_palette_for_unit, plot_pc_freq_distributions, plot_tendency_distributions
 from .logging import logger
 
 
@@ -19,7 +19,7 @@ def export_stacked_bar_charts_for_pc_freqs(nodes_below_cutoff, output_dir, unit)
     plt.close(fig)
 
 
-def export_stacked_bar_charts_for_pc_tendency(nodes_below_cutoff, output_dir, unit, height_per_axes=2.5):
+def export_stacked_bar_charts_for_tendency(nodes_below_cutoff, output_dir, unit, height_per_axes=2.5):
     assert len(nodes_below_cutoff) > 0
     color_palette = get_color_palette_for_unit(unit)
     fig, axes = plt.subplots(
@@ -28,7 +28,7 @@ def export_stacked_bar_charts_for_pc_tendency(nodes_below_cutoff, output_dir, un
     if len(nodes_below_cutoff) == 1:
         axes = [axes]
     for ax, node in zip(axes, nodes_below_cutoff):
-        plot_pc_tendency_distributions(node, ax=ax, color_palette=color_palette)
+        plot_tendency_distributions(node, ax=ax, color_palette=color_palette)
     fig.tight_layout()
     fig.savefig(os.path.join(output_dir, "stacked_bar_chart.png"))
     plt.close(fig)
@@ -62,7 +62,7 @@ def export_results(results, output_root_dir, p_cutoff=0.4, overwrite=False):
     for path_stubs in results.keys():
         analysis_name = path_stubs.analysis
         unit = path_stubs.unit
-        assert analysis_name in ["pc_freqs", "pc_tendency"]
+        assert analysis_name in ["pc_freqs", "tendency"]
 
         path_stub_p_cutoff = f"p_cutoff_{p_cutoff:.2f}"
         extra_path_stubs = [path_stub_p_cutoff]
@@ -95,7 +95,7 @@ def export_results(results, output_root_dir, p_cutoff=0.4, overwrite=False):
 
         if analysis_name == "pc_freqs":
             export_stacked_bar_charts_for_pc_freqs(nodes_below_cutoff, output_dir, unit)
-        elif analysis_name == "pc_tendency":
-            export_stacked_bar_charts_for_pc_tendency(nodes_below_cutoff, output_dir, unit)
+        elif analysis_name == "tendency":
+            export_stacked_bar_charts_for_tendency(nodes_below_cutoff, output_dir, unit)
         else:
             raise NotImplementedError()

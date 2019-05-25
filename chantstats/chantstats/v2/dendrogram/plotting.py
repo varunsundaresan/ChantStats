@@ -5,7 +5,7 @@ from matplotlib.patches import Patch
 from ..unit import UnitType
 from ..utils import is_close_to_zero_or_100
 
-__all__ = ["plot_pc_freq_distributions", "plot_pc_tendency_distributions"]
+__all__ = ["plot_pc_freq_distributions", "plot_tendency_distributions"]
 
 
 def get_color_palette_for_unit(unit):
@@ -150,14 +150,12 @@ def plot_pc_freq_distributions(
     return fig
 
 
-def plot_pc_tendency_distributions(
+def plot_tendency_distributions(
     dendrogram_node, *, color_palette, ax=None, bar_width=0.6, sort_freqs_ascending=True, figsize=(20, 4)
 ):
     """
     Create a stacked bar chart from the PC tendency distributions of the given dendrogram node.
     """
-    # assert isinstance(dendrogram_node.avg_pc_tendency_distribution, PCTendencyDistribution)
-
     fig, ax = plt.subplots(figsize=figsize) if ax is None else (ax.figure, ax)
 
     # df = dendrogram_node.distribution.values
