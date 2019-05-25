@@ -47,7 +47,7 @@ class PlainchantSequencePiece:
     def __repr__(self):
         return f"<Piece '{self.filename_short}'>"
 
-    def get_monomodal_sections(self, *, enforce_same_phrase_ambitus, min_length=3):
+    def get_monomodal_sections(self, *, enforce_same_phrase_ambitus, min_num_phrases=3):
         """
         Extract monomodal sections (= sections of consecutive phrases
         with the same phrase-final, and optionally the same ambitus).
@@ -59,7 +59,7 @@ class PlainchantSequencePiece:
         enforce_same_phrase_ambitus: boolean
             If True, all phrases in the monomodal section must have
             the same ambitus (in addition to the same phrase-final).
-        min_length : int
+        min_num_phrases : int
             Minimum length for a section to be included in the result
             (any phrase sections with fewer phrases are discarded).
 
@@ -68,7 +68,7 @@ class PlainchantSequencePiece:
         list of MonomodalSection
         """
         return extract_monomodal_sections_from_piece(
-            self, enforce_same_phrase_ambitus=enforce_same_phrase_ambitus, min_length=min_length
+            self, enforce_same_phrase_ambitus=enforce_same_phrase_ambitus, min_num_phrases=min_num_phrases
         )
 
 
@@ -130,10 +130,12 @@ class PlainchantSequencePieces:
         pieces = load_plainchant_sequence_pieces(musicxml_path, pattern=filename_pattern)
         return cls(pieces)
 
-    def get_analysis_inputs(self, mode, min_length_monomodal_sections=3):
+    def get_analysis_inputs(self, mode, min_num_phrases_per_monomodal_section=3):
         mode = ModalCategoryType(mode)
         return extract_monomodal_sections(
-            self.pieces, enforce_same_phrase_ambitus=mode.enforce_same_ambitus, min_length=min_length_monomodal_sections
+            self.pieces,
+            enforce_same_phrase_ambitus=mode.enforce_same_ambitus,
+            min_num_phrases=min_num_phrases_per_monomodal_section,
         )
 
 

@@ -87,7 +87,9 @@ def calculate_results(
     units = units or list(UnitType)
 
     for mode in modes:
-        analysis_inputs = pieces.get_analysis_inputs(mode, min_length_monomodal_sections=min_length_monomodal_sections)
+        analysis_inputs = pieces.get_analysis_inputs(
+            mode, min_num_phrases_per_monomodal_section=min_length_monomodal_sections
+        )
         grouping = GroupingByModalCategory(analysis_inputs, group_by=mode)
         for modal_category in grouping.groups.values():
             logger.info(f"Calculating {analysis_name} results for {modal_category}")

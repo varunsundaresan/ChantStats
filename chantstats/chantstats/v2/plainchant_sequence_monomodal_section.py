@@ -49,7 +49,7 @@ class MonomodalSection:
         return s
 
 
-def extract_monomodal_sections_from_piece(piece, *, enforce_same_phrase_ambitus, min_length=3):
+def extract_monomodal_sections_from_piece(piece, *, enforce_same_phrase_ambitus, min_num_phrases=3):
     """
     Extract monomodal sections (= sections of consecutive phrases with the same phrase-final).
 
@@ -60,7 +60,7 @@ def extract_monomodal_sections_from_piece(piece, *, enforce_same_phrase_ambitus,
     enforce_same_phrase_ambitus: boolean
         If True, all phrases in the monomodal section must have
         the same ambitus (in addition to the same phrase-final).
-    min_length : int
+    min_num_phrases : int
         Minimum length for a section to be included in the result
         (any phrase sections with fewer phrases are discarded).
 
@@ -79,14 +79,16 @@ def extract_monomodal_sections_from_piece(piece, *, enforce_same_phrase_ambitus,
     items = [key_func(p) for p in piece.phrases]
     grps = [(x, list(grp)) for x, grp in groupby(enumerate(items, start=1), key=itemgetter(1))]
     monomodal_sections = [MonomodalSection(piece, get_idx_start(g), get_idx_end(g)) for g in grps]
-    return [x for x in monomodal_sections if len(x) >= min_length]
+    return [x for x in monomodal_sections if len(x) >= min_num_phrases]
 
 
-def extract_monomodal_sections(pieces, *, enforce_same_phrase_ambitus, min_length=3):
+def extract_monomodal_sections(pieces, *, enforce_same_phrase_ambitus, min_num_phrases=3):
     assert isinstance(pieces, (list, tuple))
     return sum(
         [
-            p.get_monomodal_sections(enforce_same_phrase_ambitus=enforce_same_phrase_ambitus, min_length=min_length)
+            p.get_monomodal_sections(
+                enforce_same_phrase_ambitus=enforce_same_phrase_ambitus, min_num_phrases=min_num_phrases
+            )
             for p in pieces
         ],
         [],

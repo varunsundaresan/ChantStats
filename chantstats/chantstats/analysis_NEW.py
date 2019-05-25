@@ -86,7 +86,9 @@ class AnalysisResultCollection:
         self._load_pieces_if_needed(repertoire_and_genre)
 
         pieces = self.all_pieces[repertoire_and_genre]
-        analysis_inputs = pieces.get_analysis_inputs(mode, min_length_monomodal_sections=min_length_monomodal_sections)
+        analysis_inputs = pieces.get_analysis_inputs(
+            mode, min_num_phrases_per_monomodal_section=min_length_monomodal_sections
+        )
 
         grouping = GroupingByModalCategory(analysis_inputs, group_by=mode)
         logger.debug(f"Calculating results for {grouping}")
