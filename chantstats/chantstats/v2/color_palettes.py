@@ -6,9 +6,8 @@ import palettable
 # color_palette = ["#ef8ead", "#ec957e", "#cda563", "#9db46b", "#61bc91", "#00bec3", "#28b8e9", "#89abf2", "#cd99da"]
 
 ## Tableau-based color palette
-# color_palette = palettable.tableau.TableauMedium_10.hex_colors
-# color_palette = ['#729ECE', '#67BF5C', '#ED665D', '#AD8BC9', '#A8786E', '#ED97CA', '#A2A2A2', '#6DCCDA']  # same as TableauMedium_10, but with two bright colours removed
-tableau_medium_10 = [
+tableau_medium_10 = palettable.tableau.TableauMedium_10.hex_colors
+tableau_medium_10_8 = [
     "#729ECE",
     #'#FF9E4A',
     "#67BF5C",
@@ -23,7 +22,7 @@ tableau_medium_10 = [
 
 ## Matplotlib Viridis
 # viridis_15 = palettable.matplotlib.Viridis_15.hex_colors
-viridis_15 = [
+viridis_15_8 = [
     #'#440154',
     #'#481B6D',
     #'#46327E',
@@ -40,9 +39,26 @@ viridis_15 = [
     #'#D0E11C',
     #'#FDE725'
 ]
+viridis_15_12 = [
+    #'#440154',
+    #'#481B6D',
+    "#46327E",
+    "#3F4889",
+    "#365C8D",
+    "#2E6E8E",
+    "#277F8E",
+    "#21918C",
+    "#1FA187",
+    "#2DB27D",
+    "#4AC16D",
+    "#70CF57",
+    "#A0DA39",
+    "#D0E11C",
+    #'#FDE725'
+]
 
-# viridis_12 = palettable.matplotlib.Viridis_12.hex_colors
-viridis_12 = [
+viridis_12 = palettable.matplotlib.Viridis_12.hex_colors
+viridis_12_8 = [
     #'#440154',
     #'#482173',
     "#433E85",
@@ -59,7 +75,7 @@ viridis_12 = [
 
 ## Matplotlib Plasma
 plasma_15 = palettable.matplotlib.Plasma_15.hex_colors
-plasma_15 = [
+plasma_15_8 = [
     #'#0D0887',
     #'#350498',
     #'#5302A3',
@@ -78,7 +94,7 @@ plasma_15 = [
 ]
 
 plasma_12 = palettable.matplotlib.Plasma_12.hex_colors
-plasma_12 = [
+plasma_12_8 = [
     #'#0D0887',
     #'#3E049C',
     # "#6300A7",
@@ -93,7 +109,7 @@ plasma_12 = [
     #'#F0F921'
 ]
 
-# inferno_12 = [
+# inferno_12_8 = [
 #     #'#000004',
 #     #'#140B34',
 #     "#390963",
@@ -109,5 +125,5 @@ plasma_12 = [
 # ]
 
 
-# color_palette_pc_freqs = plasma_12
-color_palette_pc_freqs = tableau_medium_10
+# color_palette_pc_freqs = plasma_12_8
+color_palette_pc_freqs = tableau_medium_10_8
