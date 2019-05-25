@@ -1,7 +1,8 @@
 import matplotlib.pyplot as plt
 import os
 import shutil
-from .dendrogram.plotting import get_color_palette_for_unit, plot_pc_freq_distributions, plot_tendency_distributions
+from .color_palettes import get_color_palette_for_unit
+from .dendrogram.plotting import plot_pc_freq_distributions, plot_tendency_distributions
 from .logging import logger
 
 

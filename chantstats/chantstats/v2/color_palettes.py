@@ -1,4 +1,5 @@
 import palettable
+from .unit import UnitType
 
 ## The following are based on the "Categorical color scale generator (HCL)" (http://bl.ocks.org/nitaku/8566245)
 # color_palette = ["#ed5e93", "#e76b4f", "#ba881d", "#779d2c", "#00a76a", "#00aab3", "#00a3ec", "#4191f9", "#bf73d5"]
@@ -125,5 +126,19 @@ plasma_12_8 = [
 # ]
 
 
-# color_palette_pc_freqs = plasma_12_8
-color_palette_pc_freqs = tableau_medium_10_8
+def get_color_palette_for_unit(unit):
+    unit = UnitType(unit)
+    if unit.value == "pcs":
+        # # return palettable.cartocolors.qualitative.Vivid_8.hex_colors
+        # return palettable.cartocolors.qualitative.Vivid_9.hex_colors
+        # return plasma_12_8
+        return tableau_medium_10_8
+    elif unit.value == "mode_degrees":
+        # # return palettable.cartocolors.qualitative.Pastel_10.hex_colors
+        # return palettable.colorbrewer.qualitative.Set3_12.hex_colors
+        # # return palettable.matplotlib.Viridis_12.hex_colors
+        # # return palettable.tableau.PurpleGray_12.hex_colors
+        # # return sns.color_palette("muted", 12).as_hex()  # WARNING: this contains only 10 distinct colors!!!
+        return viridis_15_12
+    else:
+        raise ValueError(f"Unexpected value: {unit.value}")
