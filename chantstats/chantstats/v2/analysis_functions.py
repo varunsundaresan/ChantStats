@@ -1,6 +1,6 @@
 from enum import Enum
 from .freqs import PCFreqs, ModeDegreeFreqs
-from .tendencies import PCTendencies, ModeDegreeTendencies, PCApproaches
+from .tendency import PCTendencies, ModeDegreeTendencies, PCApproaches
 
 __all__ = ["AnalysisType", "get_analysis_function"]
 
