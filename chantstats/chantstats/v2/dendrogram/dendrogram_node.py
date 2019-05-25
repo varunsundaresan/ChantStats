@@ -11,6 +11,11 @@ class DendrogramNode:
         self.cols_with_globally_nonzero_entries = cols_with_globally_nonzero_entries
         self.cluster_node = cluster_node
         self.id = self.cluster_node.get_id()
+        self.cluster_id = (
+            # FIXME: this is currently the same as the internal id, but it should be a more intuitive number
+            # (e.g. starting at 1 for the cluster with the most leaf nodes)
+            self.id
+        )
         self.dist = self.cluster_node.dist
         self.ypos = self.dist  # alias
         self.is_leaf = self.cluster_node.is_leaf()

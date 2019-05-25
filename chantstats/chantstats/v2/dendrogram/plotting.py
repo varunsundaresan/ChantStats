@@ -131,8 +131,15 @@ def plot_pc_freq_distributions(
     """
     Create a stacked bar chart from the PC frequency distributions of the given dendrogram nodes.
     """
+
+    def make_xlabel_for_cluster_node(node):
+        if node.num_leaves > 1:
+            return f"#{node.cluster_id}\n({node.num_leaves} leaves)"
+        else:
+            return f"Leaf node:\n{node.descr}"
+
     series = [n.avg_distribution for n in dendrogram_nodes]
-    xlabels = [n.descr for n in dendrogram_nodes]
+    xlabels = [make_xlabel_for_cluster_node(n) for n in dendrogram_nodes]
     title = "Mode profiles"
 
     fig, ax = plt.subplots(figsize=figsize)
@@ -145,7 +152,7 @@ def plot_pc_freq_distributions(
         bar_width=bar_width,
         sort_freqs_ascending=sort_freqs_ascending,
     )
-    ax.set_xlabel("Clusters")
+    ax.set_xlabel("Clusters", labelpad=15)
     ax.set_ylabel("Probability of occurrence (in percent)", rotation="vertical")
     plt.close(fig)
 
