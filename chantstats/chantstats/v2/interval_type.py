@@ -8,5 +8,9 @@ class IntervalType(str, Enum):
     STEP = "step"
     LEAP = "leap"
 
+    @property
+    def str_value(self):
+        return self.value
+
 
 IntervalType.allowed_values = list(IntervalType)
