@@ -48,7 +48,7 @@ class MonomodalSection:
         return s
 
 
-def extract_monomodal_sections_from_piece(piece, *, enforce_same_phrase_ambitus, min_num_phrases=3):
+def extract_monomodal_sections_from_piece(piece, *, enforce_same_phrase_ambitus, min_num_phrases=3, min_num_notes=80):
     """
     Extract monomodal sections (= sections of consecutive phrases with the same phrase-final).
 
@@ -60,8 +60,11 @@ def extract_monomodal_sections_from_piece(piece, *, enforce_same_phrase_ambitus,
         If True, all phrases in the monomodal section must have
         the same ambitus (in addition to the same phrase-final).
     min_num_phrases : int
-        Minimum length for a section to be included in the result
-        (any phrase sections with fewer phrases are discarded).
+        Minimum number of phrases for a section to be included in the
+        result (any phrase sections with fewer phrases are discarded).
+    min_num_notes : int
+        Minimum number of notes for a section to be included in the
+        result (any phrase sections with fewer notes are discarded).
 
     Returns
     -------
@@ -78,15 +81,20 @@ def extract_monomodal_sections_from_piece(piece, *, enforce_same_phrase_ambitus,
     items = [key_func(p) for p in piece.phrases]
     grps = [(x, list(grp)) for x, grp in groupby(enumerate(items, start=1), key=itemgetter(1))]
     monomodal_sections = [MonomodalSection(piece, get_idx_start(g), get_idx_end(g)) for g in grps]
-    return [x for x in monomodal_sections if len(x) >= min_num_phrases]
+    monomodal_sections_filtered = [
+        x for x in monomodal_sections if x.num_phrases >= min_num_phrases and x.num_notes >= min_num_notes
+    ]
+    return monomodal_sections_filtered
 
 
-def extract_monomodal_sections(pieces, *, enforce_same_phrase_ambitus, min_num_phrases=3):
+def extract_monomodal_sections(pieces, *, enforce_same_phrase_ambitus, min_num_phrases=3, min_num_notes=80):
     assert isinstance(pieces, (list, tuple))
     return sum(
         [
             p.get_monomodal_sections(
-                enforce_same_phrase_ambitus=enforce_same_phrase_ambitus, min_num_phrases=min_num_phrases
+                enforce_same_phrase_ambitus=enforce_same_phrase_ambitus,
+                min_num_phrases=min_num_phrases,
+                min_num_notes=min_num_notes,
             )
             for p in pieces
         ],

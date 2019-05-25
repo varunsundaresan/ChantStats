@@ -47,7 +47,7 @@ class PlainchantSequencePiece:
     def __repr__(self):
         return f"<Piece '{self.filename_short}'>"
 
-    def get_monomodal_sections(self, *, enforce_same_phrase_ambitus, min_num_phrases=3):
+    def get_monomodal_sections(self, *, enforce_same_phrase_ambitus, min_num_phrases=3, min_num_notes=80):
         """
         Extract monomodal sections (= sections of consecutive phrases
         with the same phrase-final, and optionally the same ambitus).
@@ -60,15 +60,21 @@ class PlainchantSequencePiece:
             If True, all phrases in the monomodal section must have
             the same ambitus (in addition to the same phrase-final).
         min_num_phrases : int
-            Minimum length for a section to be included in the result
-            (any phrase sections with fewer phrases are discarded).
+            Minimum number of phrases for a section to be included in the
+            result (any phrase sections with fewer phrases are discarded).
+        min_num_notes : int
+            Minimum number of notes for a section to be included in the
+            result (any phrase sections with fewer notes are discarded).
 
         Returns
         -------
         list of MonomodalSection
         """
         return extract_monomodal_sections_from_piece(
-            self, enforce_same_phrase_ambitus=enforce_same_phrase_ambitus, min_num_phrases=min_num_phrases
+            self,
+            enforce_same_phrase_ambitus=enforce_same_phrase_ambitus,
+            min_num_phrases=min_num_phrases,
+            min_num_notes=min_num_notes,
         )
 
 
@@ -130,12 +136,15 @@ class PlainchantSequencePieces:
         pieces = load_plainchant_sequence_pieces(musicxml_path, pattern=filename_pattern)
         return cls(pieces)
 
-    def get_analysis_inputs(self, mode, min_num_phrases_per_monomodal_section=3):
+    def get_analysis_inputs(
+        self, mode, min_num_phrases_per_monomodal_section=3, min_num_notes_per_monomodal_section=80
+    ):
         mode = ModalCategoryType(mode)
         return extract_monomodal_sections(
             self.pieces,
             enforce_same_phrase_ambitus=mode.enforce_same_ambitus,
             min_num_phrases=min_num_phrases_per_monomodal_section,
+            min_num_notes=min_num_notes_per_monomodal_section,
         )
 
 

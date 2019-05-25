@@ -15,6 +15,7 @@ def test_run_analyses_and_export_results(tmpdir, diff_reporter):
     cfg = ChantStatsConfig.from_env()
     repertoire_and_genre = "plainchant_sequences"
     min_num_phrases_per_monomodal_section = 3
+    min_num_notes_per_monomodal_section = 80
 
     # Calculate results for PC frequencies
     results_pc_freqs = calculate_results(
@@ -22,6 +23,7 @@ def test_run_analyses_and_export_results(tmpdir, diff_reporter):
         analysis="pc_freqs",
         cfg=cfg,
         min_num_phrases_per_monomodal_section=min_num_phrases_per_monomodal_section,
+        min_num_notes_per_monomodal_section=min_num_notes_per_monomodal_section,
     )
 
     # Calculate results for PC tendencies
@@ -30,6 +32,7 @@ def test_run_analyses_and_export_results(tmpdir, diff_reporter):
         analysis="pc_tendencies",
         cfg=cfg,
         min_num_phrases_per_monomodal_section=min_num_phrases_per_monomodal_section,
+        min_num_notes_per_monomodal_section=min_num_notes_per_monomodal_section,
     )
 
     # Export all results

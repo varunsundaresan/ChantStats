@@ -37,7 +37,14 @@ class PathStubs(tuple):
 
 
 def calculate_results(
-    repertoire_and_genre, analysis, cfg, pieces=None, min_num_phrases_per_monomodal_section=3, modes=None, units=None
+    repertoire_and_genre,
+    analysis,
+    cfg,
+    pieces=None,
+    min_num_phrases_per_monomodal_section=3,
+    min_num_notes_per_monomodal_section=80,
+    modes=None,
+    units=None,
 ):
     results = {}
 
@@ -47,7 +54,9 @@ def calculate_results(
 
     for mode in modes:
         analysis_inputs = pieces.get_analysis_inputs(
-            mode, min_num_phrases_per_monomodal_section=min_num_phrases_per_monomodal_section
+            mode,
+            min_num_phrases_per_monomodal_section=min_num_phrases_per_monomodal_section,
+            min_num_notes_per_monomodal_section=min_num_notes_per_monomodal_section,
         )
         grouping = GroupingByModalCategory(analysis_inputs, group_by=mode)
         for modal_category in grouping.groups.values():
