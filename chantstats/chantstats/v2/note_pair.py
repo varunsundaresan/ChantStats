@@ -4,6 +4,12 @@ from .interval_type import IntervalType
 from .logging import logger
 
 
+class LargeIntervalError(Exception):
+    """
+    Indicates unexpectedly large intervals between consecutive notes.
+    """
+
+
 class NotePair:
     def __init__(self, note1, note2):
         assert isinstance(note1, Note)
@@ -34,10 +40,11 @@ class NotePair:
         elif self.semitones <= 11:
             return IntervalType.LEAP
         elif self.semitones == 12:
-            # logger.warning(f'Interval is an octave: note1={self.note1}, note2={self.note2}.')
-            raise RuntimeError(f"Interval is an octave: note1={self.note1}, note2={self.note2}.")
+            logger.warning(f"Interval is an octave: note1={self.note1}, note2={self.note2}.")
+            # raise LargeIntervalError(f"Interval is an octave: note1={self.note1}, note2={self.note2}.")
+            return IntervalType.LEAP
         else:
-            raise RuntimeError(
+            raise LargeIntervalError(
                 f"Interval larger than an octave: note1={self.note1}, note2={self.note2}. Please investigate!"
             )
 
