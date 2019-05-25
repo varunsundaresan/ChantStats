@@ -21,15 +21,15 @@ def export_empty_figure(output_dir, unit):
     # return fig
 
 
-def export_stacked_bar_charts_for_pc_freqs(nodes_below_cutoff, output_dir, unit):
+def export_stacked_bar_charts_for_pc_freqs(nodes_below_cutoff, path_stubs, output_dir, unit):
     assert len(nodes_below_cutoff) > 0
     color_palette = get_color_palette_for_unit(unit)
-    fig = plot_pc_freq_distributions(nodes_below_cutoff, color_palette=color_palette)
+    fig = plot_pc_freq_distributions(nodes_below_cutoff, path_stubs=path_stubs, color_palette=color_palette)
     fig.savefig(os.path.join(output_dir, "stacked_bar_chart.png"))
     plt.close(fig)
 
 
-def export_stacked_bar_charts_for_tendency(nodes_below_cutoff, output_dir, unit, height_per_axes=2.5):
+def export_stacked_bar_charts_for_tendency(nodes_below_cutoff, path_stubs, output_dir, unit, height_per_axes=2.5):
     assert len(nodes_below_cutoff) > 0
     color_palette = get_color_palette_for_unit(unit)
     fig, axes = plt.subplots(
@@ -108,8 +108,8 @@ def export_results(results, output_root_dir, p_cutoff=0.4, include_leaf_nodes_in
             continue
 
         if analysis_name == "pc_freqs":
-            export_stacked_bar_charts_for_pc_freqs(nodes_below_cutoff, output_dir, unit)
+            export_stacked_bar_charts_for_pc_freqs(nodes_below_cutoff, path_stubs, output_dir, unit)
         elif analysis_name == "tendency":
-            export_stacked_bar_charts_for_tendency(nodes_below_cutoff, output_dir, unit)
+            export_stacked_bar_charts_for_tendency(nodes_below_cutoff, path_stubs, output_dir, unit)
         else:
             raise NotImplementedError()

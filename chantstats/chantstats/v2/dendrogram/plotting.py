@@ -126,7 +126,7 @@ def plot_multiple_pandas_series_as_stacked_bar_chart(
 
 
 def plot_pc_freq_distributions(
-    dendrogram_nodes, *, color_palette, bar_width=0.6, sort_freqs_ascending=True, figsize=(20, 4)
+    dendrogram_nodes, *, path_stubs, color_palette, bar_width=0.6, sort_freqs_ascending=True, figsize=(20, 4)
 ):
     """
     Create a stacked bar chart from the PC frequency distributions of the given dendrogram nodes.
@@ -140,7 +140,9 @@ def plot_pc_freq_distributions(
 
     series = [n.avg_distribution for n in dendrogram_nodes]
     xlabels = [make_xlabel_for_cluster_node(n) for n in dendrogram_nodes]
-    title = "Mode profiles"
+    analysis = path_stubs.analysis
+    modal_category = path_stubs.modal_category
+    title = f"{analysis.description}: {modal_category.descr} (unit: {path_stubs.unit})"
 
     fig, ax = plt.subplots(figsize=figsize)
     plot_multiple_pandas_series_as_stacked_bar_chart(
