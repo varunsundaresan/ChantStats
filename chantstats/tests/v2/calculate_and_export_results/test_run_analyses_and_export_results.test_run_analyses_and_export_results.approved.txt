@@ -103,7 +103,7 @@
         │               └── G_plagal
         │                   ├── dendrogram.png
         │                   └── stacked_bar_chart.png
-        └── pc_tendencies
+        └── tendency
             └── sequences
                 ├── mode_degrees
                 │   ├── authentic_modes
