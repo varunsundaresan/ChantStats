@@ -1,10 +1,10 @@
 import pandas as pd
 from .note_pair import NotePair
 
-__all__ = ["BaseTendencies", "PCTendencies", "PCApproaches"]
+__all__ = ["BaseTendency", "PCTendency", "PCApproaches"]
 
 
-class BaseTendencies:
+class BaseTendency:
     def __init__(self, pairs, *, label_first, label_second):
         first_items, second_items = zip(*pairs)
         df = pd.DataFrame({label_first: first_items, label_second: second_items, "count": 1}).dropna()
@@ -38,17 +38,17 @@ class BaseTendencies:
         return res.unstack()  # same as the dataframe, but as a series with a hierarchical index
 
 
-class PCTendencies(BaseTendencies):
+class PCTendency(BaseTendency):
     def __init__(cls, item):
         super().__init__(item.pc_pairs, label_first="pc1", label_second="pc2")
 
 
-class ModeDegreeTendencies(BaseTendencies):
+class ModeDegreeTendency(BaseTendency):
     def __init__(cls, item):
         super().__init__(item.mode_degree_pairs, label_first="pc1", label_second="pc2")
 
 
-class PCApproaches(BaseTendencies):
+class PCApproaches(BaseTendency):
     def __init__(cls, item):
         second_pcs = [pc2 for (_, pc2) in item.pc_pairs]
         approach_interval_types = [NotePair(n1, n2).interval_type_v1 for (n1, n2) in item.note_pairs]
