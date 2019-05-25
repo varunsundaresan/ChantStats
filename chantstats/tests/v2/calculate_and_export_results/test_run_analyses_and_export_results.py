@@ -29,7 +29,7 @@ def test_run_analyses_and_export_results(tmpdir, diff_reporter):
     # Calculate results for PC tendencies
     results_pc_tendencies = calculate_results(
         repertoire_and_genre,
-        analysis="pc_tendencies",
+        analysis="pc_tendency",
         cfg=cfg,
         min_num_phrases_per_monomodal_section=min_num_phrases_per_monomodal_section,
         min_num_notes_per_monomodal_section=min_num_notes_per_monomodal_section,

@@ -7,7 +7,7 @@ __all__ = ["AnalysisType", "get_analysis_function"]
 
 class AnalysisType(str, Enum):
     PC_FREQS = "pc_freqs"
-    PC_TENDENCIES = "pc_tendencies"
+    PC_TENDENCY = "pc_tendency"
     APPROACHES = "approaches"
 
     @property
@@ -54,7 +54,7 @@ def get_analysis_function(analysis):
 
     if analysis == "pc_freqs":
         return calculate_relative_pc_freqs
-    elif analysis == "pc_tendencies":
+    elif analysis == "pc_tendency":
         return calculate_pc_tendencies
     elif analysis == "approaches":
         return calculate_approaches

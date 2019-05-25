@@ -62,7 +62,7 @@ def export_results(results, output_root_dir, p_cutoff=0.4, overwrite=False):
     for path_stubs in results.keys():
         analysis_name = path_stubs.analysis
         unit = path_stubs.unit
-        assert analysis_name in ["pc_freqs", "pc_tendencies"]
+        assert analysis_name in ["pc_freqs", "pc_tendency"]
 
         path_stub_p_cutoff = f"p_cutoff_{p_cutoff:.2f}"
         extra_path_stubs = [path_stub_p_cutoff]
@@ -95,7 +95,7 @@ def export_results(results, output_root_dir, p_cutoff=0.4, overwrite=False):
 
         if analysis_name == "pc_freqs":
             export_stacked_bar_charts_for_pc_freqs(nodes_below_cutoff, output_dir, unit)
-        elif analysis_name == "pc_tendencies":
+        elif analysis_name == "pc_tendency":
             export_stacked_bar_charts_for_pc_tendencies(nodes_below_cutoff, output_dir, unit)
         else:
             raise NotImplementedError()
