@@ -81,7 +81,7 @@ plasma_12 = palettable.matplotlib.Plasma_12.hex_colors
 plasma_12 = [
     #'#0D0887',
     #'#3E049C',
-    "#6300A7",
+    # "#6300A7",
     "#8707A6",
     "#A62098",
     "#C03A83",
@@ -89,24 +89,25 @@ plasma_12 = [
     "#E76F5A",
     "#F58C46",
     "#FDAE32",
-    #'#FCD225',
+    "#FCD225",
     #'#F0F921'
 ]
 
-inferno_12 = [
-    #'#000004',
-    #'#140B34',
-    "#390963",
-    "#61136E",
-    "#85216B",
-    "#A92E5E",
-    "#CB4149",
-    "#E65D2F",
-    "#F78212",
-    "#FCAE12",
-    #'#F5DB4C',
-    #'#FCFFA4'
-]
+# inferno_12 = [
+#     #'#000004',
+#     #'#140B34',
+#     "#390963",
+#     "#61136E",
+#     "#85216B",
+#     "#A92E5E",
+#     "#CB4149",
+#     "#E65D2F",
+#     "#F78212",
+#     "#FCAE12",
+#     #'#F5DB4C',
+#     #'#FCFFA4'
+# ]
 
 
-color_palette_pc_freqs = plasma_12
+# color_palette_pc_freqs = plasma_12
+color_palette_pc_freqs = tableau_medium_10
