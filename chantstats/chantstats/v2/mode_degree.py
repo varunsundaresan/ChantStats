@@ -10,7 +10,7 @@ class ModeDegree:
         self.alter = alter
         self.prefix = "flat-" if self.alter == -1.0 else ""
         self.descr = f"{self.prefix}{self.value}"
-        self.str_value = self.descr
+        self.str_value = f"{self.prefix}{self.value}\u0302"  # same as 'descr', but with a hat symbol over the number
 
     @classmethod
     def from_note_pair(self, *, note, base_note):
