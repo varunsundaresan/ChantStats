@@ -11,6 +11,16 @@ class MissingDendrogramNodesError(Exception):
     """
 
 
+def export_empty_figure(output_dir, unit):
+    raise NotImplementedError("TODO: implement this if required")
+    # fig, ax = plt.subplots(figsize=(20, 4))
+    # msg = "This plot is deliberately empty figure because there is no data to export."
+    # fig.text(0.5, 0.5, msg, fontsize=50, color="gray", ha="center", va="center", alpha=0.5)
+    # fig.savefig(os.path.join(output_dir, "stacked_bar_chart.png"))
+    # plt.close(fig)
+    # return fig
+
+
 def export_stacked_bar_charts_for_pc_freqs(nodes_below_cutoff, output_dir, unit):
     assert len(nodes_below_cutoff) > 0
     color_palette = get_color_palette_for_unit(unit)
@@ -87,10 +97,9 @@ def export_results(results, output_root_dir, p_cutoff=0.4, overwrite=False):
         # Export stacked bar chart(s)
         nodes_below_cutoff = dendrogram.get_nodes_below_cutoff(p_cutoff)
         if nodes_below_cutoff == []:
-            msg = (
-                f"Not exporting stacked bar charts since no dendrogram nodes are below p_cutoff={p_cutoff} {path_stubs}"
-            )
+            msg = f"Exporting empty figure because no dendrogram nodes are below p_cutoff={p_cutoff} {path_stubs}."
             logger.warning(msg)
+            export_empty_figure(output_dir, unit)
             continue
 
         if analysis_name == "pc_freqs":
