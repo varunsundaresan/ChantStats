@@ -8,15 +8,15 @@ class PC(str, Enum):
     Represents occurring pitch classes.
     """
 
+    D = ("D", "D")
+    # E_FLAT = ("E-", "E♭")
+    E = ("E", "E")
+    F = ("F", "F")
+    G = ("G", "G")
     A = ("A", "A")
     B_FLAT = ("B-", "B♭")
     B = ("B", "B")
     C = ("C", "C")
-    D = ("D", "D")
-    E_FLAT = ("E-", "E♭")
-    E = ("E", "E")
-    F = ("F", "F")
-    G = ("G", "G")
 
     def __new__(cls, name, str_value, **kwargs):
         obj = str.__new__(cls, name)
