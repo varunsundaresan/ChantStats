@@ -23,15 +23,16 @@ class ResultDescriptor:
         return os.path.join(output_root_dir, self.output_dirname)
 
     def get_output_filename(self, filename_prefix, filename_suffix, filetype=".png"):
-        output_filename = self.sep.join(
-            [
-                filename_prefix,
-                # self.modal_category.output_path_stub_1,
-                self.modal_category.output_path_stub_2,
-                filename_suffix + filetype,
-            ]
-        )
-        return output_filename
+        output_filename_parts = [
+            filename_prefix,
+            # self.modal_category.output_path_stub_1,
+            self.modal_category.output_path_stub_2,
+        ]
+        if filename_suffix != "":
+            output_filename_parts.append(filename_suffix)
+
+        output_filename_without_filetype_suffix = self.sep.join(output_filename_parts)
+        return output_filename_without_filetype_suffix + filetype
 
     def get_full_output_path(self, output_root_dir, *, filename_prefix, filename_suffix, filetype=".png"):
         output_dir = self.get_output_dir(output_root_dir)

@@ -11,12 +11,12 @@ def test_result_descriptor():
     assert rd.get_output_dir(output_root_dir) == "/tmp/foo/chant/pc_freqs/sequences/pcs"
     assert rd.get_output_dir(output_root_dir) == "/tmp/foo/chant/pc_freqs/sequences/pcs"
     assert (
-        rd.get_full_output_path(output_root_dir, "dendrogram.png")
-        == "/tmp/foo/chant/pc_freqs/sequences/pcs/final_G__dendrogram.png"
+        rd.get_full_output_path(output_root_dir, filename_prefix="dendrogram", filename_suffix="")
+        == "/tmp/foo/chant/pc_freqs/sequences/pcs/dendrogram_final_G.png"
     )
     assert (
-        rd.get_full_output_path(output_root_dir, "quux.png")
-        == "/tmp/foo/chant/pc_freqs/sequences/pcs/final_G__quux.png"
+        rd.get_full_output_path(output_root_dir, filename_prefix="quux", filename_suffix="")
+        == "/tmp/foo/chant/pc_freqs/sequences/pcs/quux_final_G.png"
     )
 
     output_root_dir = "/quux/bar"
@@ -24,10 +24,10 @@ def test_result_descriptor():
     rd = ResultDescriptor("plainchant_sequences", "tendency", "mode_degrees", modal_category)
     assert rd.output_dirname == "chant/tendency/sequences/mode_degrees"
     assert (
-        rd.get_full_output_path(output_root_dir, "dendrogram.png")
-        == "/quux/bar/chant/tendency/sequences/mode_degrees/plagal_C__dendrogram.png"
+        rd.get_full_output_path(output_root_dir, filename_prefix="dendrogram", filename_suffix="")
+        == "/quux/bar/chant/tendency/sequences/mode_degrees/dendrogram_plagal_C.png"
     )
     assert (
-        rd.get_full_output_path(output_root_dir, "foobar.png")
-        == "/quux/bar/chant/tendency/sequences/mode_degrees/plagal_C__foobar.png"
+        rd.get_full_output_path(output_root_dir, filename_prefix="foobar", filename_suffix="04")
+        == "/quux/bar/chant/tendency/sequences/mode_degrees/foobar_plagal_C_04.png"
     )
