@@ -47,6 +47,9 @@ class MonomodalSection:
         )
         return s
 
+    def __lt__(self, other):
+        return (self.piece.number, self.idx_start) < (other.piece.number, other.idx_start)
+
 
 def extract_monomodal_sections_from_piece(piece, *, enforce_same_phrase_ambitus, min_num_phrases=3, min_num_notes=80):
     """
