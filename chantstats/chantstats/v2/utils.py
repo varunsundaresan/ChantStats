@@ -1,3 +1,4 @@
+import matplotlib.pyplot as plt
 import numpy as np
 import os
 import sh
@@ -5,7 +6,7 @@ import shutil
 from enum import Enum
 from .logging import logger
 
-__all__ = ["EnumWithDescription", "remove_file_or_folder_if_exists"]
+__all__ = ["EnumWithDescription", "remove_file_or_folder_if_exists", "plot_empty_figure"]
 
 
 def is_close_to_zero_or_100(x):
@@ -88,3 +89,10 @@ def get_subsample(values, fraction, seed, sort_key=None):
         perm = np.random.permutation(num_values)
         sample_indices = sorted(perm[:sample_size])
         return sorted(np.take(values, sample_indices), key=sort_key)
+
+
+def plot_empty_figure(msg_text, fontsize=20, figsize=(20, 4)):
+    fig, ax = plt.subplots(figsize=figsize)
+    fig.text(0.5, 0.5, msg_text, fontsize=fontsize, color="gray", ha="center", va="center", alpha=0.5)
+    plt.close(fig)
+    return fig
