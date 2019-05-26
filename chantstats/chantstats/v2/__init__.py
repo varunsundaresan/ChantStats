@@ -1,5 +1,6 @@
 from .calculate_results import calculate_results
 from .config import ChantStatsConfig
+from .dendrogram import calculate_dendrogram
 from .export_results import export_results
 from .logging import logger
 from .plainchant_sequence_piece import load_pieces
