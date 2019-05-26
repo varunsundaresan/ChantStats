@@ -40,11 +40,16 @@ class ModalCategoryType(str, Enum):
 
     def get_output_path_stub_2(self, key):
         if self == "final":
-            return f"final_{key}"
+            return f"1_final_{key}"
         elif self == "final_and_ambitus":
             final = key[0]
             ambitus = AmbitusType(key[1])
-            return f"{ambitus}_{final}"
+            if ambitus == "authentic":
+                return f"2_authentic_{final}"
+            elif ambitus == "plagal":
+                return f"3_plagal_{final}"
+            else:
+                raise NotImplementedError(f"Unexpected ambitus: {ambitus}")
         else:  # pragma: no cover
             raise NotImplementedError(f"Unexpected grouping type: {self}")
 

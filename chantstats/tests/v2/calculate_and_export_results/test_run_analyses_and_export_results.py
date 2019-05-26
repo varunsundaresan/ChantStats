@@ -32,9 +32,9 @@ def test_folder_structure_for_exported_results(tmpdir, diff_reporter):
         sampling_seed=None,
         min_num_phrases_per_monomodal_section=3,
         min_num_notes_per_monomodal_section=80,
-        modes=["final"],
+        modes=["final_and_ambitus"],
         units=["pcs", "mode_degrees"],
-        modal_category_keys=["C"],
+        modal_category_keys=[("C", "authentic")],
     )
     export_results(results_pc_freqs, output_root_dir, p_cutoff=0.4)
     export_results(results_tendency, output_root_dir, p_cutoff=0.4)
