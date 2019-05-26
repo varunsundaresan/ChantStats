@@ -3,12 +3,28 @@ import pytest
 from approvaltests.approvals import verify
 
 from .context import chantstats
-from chantstats.v2 import ChantStatsConfig, calculate_results, export_results, logger
+from chantstats.v2 import ChantStatsConfig, calculate_results, export_results, logger, load_pieces
 from chantstats.v2.utils import list_directory_tree
 
 
 @pytest.mark.slow
-def test_run_analyses_and_export_results(tmpdir, diff_reporter):
+def test_folder_structure_for_exported_results(tmpdir, diff_reporter):
+    output_root_dir = str(tmpdir)
+    logger.info(f"Using output root dir: '{output_root_dir}'")
+
+    cfg = ChantStatsConfig.from_env()
+    pieces = load_pieces("plainchant_sequences", cfg)
+    results_pc_freqs = calculate_results(
+        pieces=pieces, analysis="pc_freqs", modes=["final"], units=["pcs", "mode_degrees"]
+    )
+    export_results(results_pc_freqs, output_root_dir, p_cutoff=0.4)
+
+    exported_files = list_directory_tree(output_root_dir)
+    verify(exported_files, diff_reporter)
+
+
+@pytest.mark.slow
+def test_run_analyses_and_export_results(tmpdir):
     output_root_dir = os.getenv("CHANTSTATS_OUTPUT_ROOT_DIR", str(tmpdir))
     logger.info(f"Using output root dir: '{output_root_dir}'")
 
@@ -16,29 +32,18 @@ def test_run_analyses_and_export_results(tmpdir, diff_reporter):
     repertoire_and_genre = "plainchant_sequences"
     min_num_phrases_per_monomodal_section = 3
     min_num_notes_per_monomodal_section = 80
+    p_cutoff = 0.4
 
-    # Calculate results for PC frequencies
-    results_pc_freqs = calculate_results(
-        repertoire_and_genre,
-        analysis="pc_freqs",
-        cfg=cfg,
-        min_num_phrases_per_monomodal_section=min_num_phrases_per_monomodal_section,
-        min_num_notes_per_monomodal_section=min_num_notes_per_monomodal_section,
-    )
+    pieces = load_pieces(repertoire_and_genre, cfg)
 
-    # Calculate results for PC tendency
-    results_tendency = calculate_results(
-        repertoire_and_genre,
-        analysis="tendency",
-        cfg=cfg,
-        min_num_phrases_per_monomodal_section=min_num_phrases_per_monomodal_section,
-        min_num_notes_per_monomodal_section=min_num_notes_per_monomodal_section,
-    )
+    for analysis in ["pc_freqs", "tendency"]:
+        logger.info(f"Calculating results for analysis '{analysis}'")
+        results = calculate_results(
+            pieces=pieces,
+            analysis=analysis,
+            min_num_phrases_per_monomodal_section=min_num_phrases_per_monomodal_section,
+            min_num_notes_per_monomodal_section=min_num_notes_per_monomodal_section,
+        )
 
-    # Export all results
-    for p_cutoff in [0.4]:
-        export_results(results_pc_freqs, output_root_dir, p_cutoff=p_cutoff)
-        export_results(results_tendency, output_root_dir, p_cutoff=p_cutoff)
-
-    exported_files = list_directory_tree(output_root_dir)
-    verify(exported_files, diff_reporter)
+        logger.info(f"Exporting results for analysis '{analysis}'")
+        export_results(results, output_root_dir, p_cutoff=p_cutoff)
