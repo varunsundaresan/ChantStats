@@ -4,22 +4,22 @@
         |-- pc_freqs
         |   `-- sequences
         |       |-- mode_degrees
-        |       |   |-- final_C\ |\ dendrogram.png
-        |       |   `-- final_C\ |\ stacked_bar_chart.png
+        |       |   |-- final_C__dendrogram.png
+        |       |   `-- final_C__stacked_bar_chart.png
         |       `-- pcs
-        |           |-- final_C\ |\ dendrogram.png
-        |           `-- final_C\ |\ stacked_bar_chart.png
+        |           |-- final_C__dendrogram.png
+        |           `-- final_C__stacked_bar_chart.png
         `-- tendency
             `-- sequences
                 |-- mode_degrees
-                |   |-- final_C\ |\ dendrogram.png
-                |   |-- final_C\ |\ stacked_bar_chart_01.png
-                |   |-- final_C\ |\ stacked_bar_chart_02.png
-                |   `-- final_C\ |\ stacked_bar_chart_03.png
+                |   |-- final_C__dendrogram.png
+                |   |-- final_C__stacked_bar_chart_01.png
+                |   |-- final_C__stacked_bar_chart_02.png
+                |   `-- final_C__stacked_bar_chart_03.png
                 `-- pcs
-                    |-- final_C\ |\ dendrogram.png
-                    |-- final_C\ |\ stacked_bar_chart_01.png
-                    |-- final_C\ |\ stacked_bar_chart_02.png
-                    `-- final_C\ |\ stacked_bar_chart_03.png
+                    |-- final_C__dendrogram.png
+                    |-- final_C__stacked_bar_chart_01.png
+                    |-- final_C__stacked_bar_chart_02.png
+                    `-- final_C__stacked_bar_chart_03.png
 
 10 directories, 12 files
