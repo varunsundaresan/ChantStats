@@ -31,23 +31,22 @@ def list_directory_tree(root_dir):
 
 
 def remove_file_or_folder_if_exists(path, force=False):
+    if os.path.isfile(path):
+        file_or_folder = "file"
+        func_remove = os.remove
+    elif os.path.isdir(path):
+        file_or_folder = "folder"
+        func_remove = shutil.rmtree
+    else:
+        raise NotImplementedError(f"Path is neither a file nor a folder: {path}")
+
     if os.path.exists(path):
-        if os.path.isdir(path):
-            if force:
-                logger.warn(f"Removing existing folder: {path}")
-                shutil.rmtree(path)
-            else:
-                logger.warning(f"Aborting because folder already exists: {path}")
-                return
-        elif os.path.isfile(path):
-            if force:
-                logger.warn(f"Removing existing file: {path}")
-                os.remove(path)
-            else:
-                logger.warning(f"Aborting because file already exists: {path}")
-                return
+        if force:
+            logger.warn(f"Removing existing {file_or_folder}: {path}")
+            func_remove(path)
         else:
-            raise NotImplementedError(f"Path is neither a file nor a folder: {path}")
+            logger.warning(f"Aborting because {file_or_folder} already exists: {path}")
+            return
 
 
 class EnumWithDescription(str, Enum):
