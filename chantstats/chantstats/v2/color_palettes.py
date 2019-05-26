@@ -168,7 +168,8 @@ def get_color_palette_for_unit(unit):
         # # return palettable.cartocolors.qualitative.Vivid_8.hex_colors
         # return palettable.cartocolors.qualitative.Vivid_9.hex_colors
         # return plasma_12_8
-        return tableau_medium_10_8
+        # return tableau_medium_10_8
+        return palettable.cartocolors.qualitative.Vivid_9.hex_colors
     elif unit.value == "mode_degrees":
         # # return palettable.cartocolors.qualitative.Pastel_10.hex_colors
         # return palettable.colorbrewer.qualitative.Set3_12.hex_colors
