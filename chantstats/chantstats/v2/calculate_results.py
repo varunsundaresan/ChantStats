@@ -2,8 +2,9 @@ from .analysis_functions import AnalysisType
 from .dendrogram import calculate_dendrogram
 from .logging import logger
 from .modal_category import ModalCategoryType, GroupingByModalCategory
-from .plainchant_sequence_piece import load_pieces
+from .plainchant_sequence_piece import load_pieces, PlainchantSequencePieces
 from .repertoire_and_genre import RepertoireAndGenreType
+from .result_descriptor import ResultDescriptor
 from .unit import UnitType
 
 __all__ = ["calculate_results"]
@@ -65,5 +66,37 @@ def calculate_results(
                 dendrogram = calculate_dendrogram(modal_category, analysis=analysis, unit=unit)
                 path_stubs = PathStubs(repertoire_and_genre, analysis, unit, modal_category)
                 results[path_stubs] = {"dendrogram": dendrogram}
+
+    return results
+
+
+def calculate_results_NEW(
+    *,
+    pieces,
+    analysis,
+    min_num_phrases_per_monomodal_section=3,
+    min_num_notes_per_monomodal_section=80,
+    modes=None,
+    units=None,
+):
+    assert isinstance(pieces, PlainchantSequencePieces)
+    modes = modes or list(ModalCategoryType)
+    units = units or list(UnitType)
+
+    results = {}
+    for mode in modes:
+        analysis_inputs = pieces.get_analysis_inputs(
+            mode,
+            min_num_phrases_per_monomodal_section=min_num_phrases_per_monomodal_section,
+            min_num_notes_per_monomodal_section=min_num_notes_per_monomodal_section,
+        )
+        grouping = GroupingByModalCategory(analysis_inputs, group_by=mode)
+        for modal_category in grouping.groups.values():
+            logger.info(f"Calculating {analysis} results for {modal_category}")
+            for unit in units:
+                dendrogram = calculate_dendrogram(modal_category, analysis=analysis, unit=unit)
+                # path_stubs = PathStubs(repertoire_and_genre, analysis, unit, modal_category)
+                result_descriptor = ResultDescriptor(pieces.repertoire_and_genre, analysis, unit, modal_category)
+                results[result_descriptor] = {"dendrogram": dendrogram}
 
     return results
