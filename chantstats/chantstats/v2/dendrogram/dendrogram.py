@@ -12,9 +12,9 @@ from .dendrogram_node import DendrogramNode
 __all__ = ["calculate_dendrogram"]
 
 
-class DendrogramError(Exception):
+class EmptyDendrogramError(Exception):
     """
-    Indicates an error in the dendrogram calculation.
+    Indicates an error in the dendrogram calculation due to an insufficient number of input nodes.
     """
 
 
@@ -45,7 +45,7 @@ def calculate_distribution_distance(freqs1, freqs2):
 
 def calculate_linkage_matrix_in_python_format(df_freq_distributions, *, optimal_ordering=True):
     if len(df_freq_distributions) <= 1:
-        raise DendrogramError("Cannot produce dendrogram for a single item (nothing to cluster).")
+        raise EmptyDendrogramError("Cannot produce dendrogram for a single item (nothing to cluster).")
     Z = linkage(
         pdist(df_freq_distributions.values, metric=calculate_distribution_distance),
         method="complete",
@@ -91,7 +91,7 @@ class Dendrogram:
                 n.right.parent = n
         self.root_node.parent = None
 
-    def get_nodes_below_cutoff(self, p_cutoff, include_leaf_nodes):
+    def get_nodes_below_cutoff(self, p_cutoff, *, include_leaf_nodes):
         proper_cluster_condition = lambda node: True if include_leaf_nodes else not node.is_leaf
 
         return sorted(
@@ -167,6 +167,29 @@ class Dendrogram:
         return fig
 
 
+class EmptyDendrogram:
+    """
+    Stub class representing an empty dendrogram (with just enough functionality
+    so that code which interacts with regular dendrograms still works).
+    """
+
+    def __init__(self, df, *, analysis):
+        self.df = df
+        self.analysis = AnalysisType(analysis)
+        if len(self.df) != 1:
+            raise RuntimeError(f"Unexpected size of input data frame: {len(df)}.\n\n{df}")
+
+    def plot_dendrogram(self, p_cutoff, *, figsize=(20, 4)):
+        fig, ax = plt.subplots(figsize=figsize)
+        msg = "This dendrogram plot is deliberately empty\nbecause there is only a single input item."
+        fig.text(0.5, 0.5, msg, fontsize=20, color="gray", ha="center", va="center", alpha=0.5)
+        plt.close(fig)
+        return fig
+
+    def get_nodes_below_cutoff(self, p_cutoff, *, include_leaf_nodes):
+        return []
+
+
 def calculate_dendrogram(modal_category, *, analysis, unit, analysis_func=None, replace_nan_values_with_zeros=True):
     unit = UnitType(unit)
     analysis = AnalysisType(analysis)
@@ -179,5 +202,9 @@ def calculate_dendrogram(modal_category, *, analysis, unit, analysis_func=None, 
         # df = df[df.notna().all(axis=0)]  # drop any columns with
         df = df.fillna(0)
 
-    dendrogram = Dendrogram(df, analysis=analysis)
+    try:
+        dendrogram = Dendrogram(df, analysis=analysis)
+    except EmptyDendrogramError:
+        dendrogram = EmptyDendrogram(df, analysis=analysis)
+
     return dendrogram
