@@ -21,8 +21,20 @@ class ModeDegree:
         diatonic_distance = (note.pitch.diatonicNoteNum - base_note.pitch.diatonicNoteNum) % 7 + 1
         alter = note.pitch.alter
 
+        # special case
+        if base_note.name == "B-":
+            if note.name == "B-":
+                alter = 0
+            elif note.name == "B":
+                raise NotImplementedError()
+            else:
+                # all other cases are covered
+                pass
+
         if alter not in [0, -1.0]:  # pragma: no cover
-            raise NotImplementedError(f"Unexpected alteration of note: '{note.nameWithOctave}'")
+            raise NotImplementedError(
+                f"Unexpected alteration of note '{note.nameWithOctave}' compared to base note '{base_note.nameWithOctave}'"
+            )
 
         return ModeDegree(value=diatonic_distance, alter=alter)
 
