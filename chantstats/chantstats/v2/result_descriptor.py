@@ -11,7 +11,7 @@ class ResultDescriptor:
         self.unit = UnitType(unit)
         self.modal_category = modal_category
 
-        self.sep = "__"
+        self.sep = "_"
         self.output_dirname = os.path.join(
             self.rep_and_genre.output_path_stub_1,
             self.analysis.output_path_stub,
