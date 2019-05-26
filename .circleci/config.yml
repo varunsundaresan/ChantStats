@@ -29,7 +29,7 @@ jobs:
             cd chantstats
             pipenv run pytest --cov=chantstats --cov-report=term-missing -svx tests/v2/unit_tests/
       - run:
-          name: "Calculate and export results"
+          name: "Run slow tests; calculate and export results"
           command: |
             cd chantstats
             pipenv run pytest -svx --runslow --cov=chantstats --cov-report=term-missing tests/v2/calculate_and_export_results/
