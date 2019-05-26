@@ -45,6 +45,7 @@ def calculate_results(
     min_num_notes_per_monomodal_section=80,
     modes=None,
     units=None,
+    modal_category_keys=None,
 ):
     assert isinstance(pieces, PlainchantSequencePieces)
     modes = modes or list(ModalCategoryType)
@@ -58,7 +59,8 @@ def calculate_results(
             min_num_notes_per_monomodal_section=min_num_notes_per_monomodal_section,
         )
         grouping = GroupingByModalCategory(analysis_inputs, group_by=mode)
-        for modal_category in grouping.groups.values():
+        for key in modal_category_keys:
+            modal_category = grouping[key]
             logger.info(f"Calculating {analysis} results for {modal_category}")
             for unit in units:
                 dendrogram = calculate_dendrogram(modal_category, analysis=analysis, unit=unit)
