@@ -1,33 +1,25 @@
 .
 `-- p_cutoff_0.40
     `-- chant
-        `-- pc_freqs
+        |-- pc_freqs
+        |   `-- sequences
+        |       |-- mode_degrees
+        |       |   |-- final_C\ |\ dendrogram.png
+        |       |   `-- final_C\ |\ stacked_bar_chart.png
+        |       `-- pcs
+        |           |-- final_C\ |\ dendrogram.png
+        |           `-- final_C\ |\ stacked_bar_chart.png
+        `-- tendency
             `-- sequences
                 |-- mode_degrees
-                |   |-- final_A\ |\ dendrogram.png
-                |   |-- final_A\ |\ stacked_bar_chart.png
-                |   |-- final_B\ |\ dendrogram.png
-                |   |-- final_B\ |\ stacked_bar_chart.png
                 |   |-- final_C\ |\ dendrogram.png
-                |   |-- final_C\ |\ stacked_bar_chart.png
-                |   |-- final_D\ |\ dendrogram.png
-                |   |-- final_D\ |\ stacked_bar_chart.png
-                |   |-- final_E\ |\ dendrogram.png
-                |   |-- final_E\ |\ stacked_bar_chart.png
-                |   |-- final_G\ |\ dendrogram.png
-                |   `-- final_G\ |\ stacked_bar_chart.png
+                |   |-- final_C\ |\ stacked_bar_chart_01.png
+                |   |-- final_C\ |\ stacked_bar_chart_02.png
+                |   `-- final_C\ |\ stacked_bar_chart_03.png
                 `-- pcs
-                    |-- final_A\ |\ dendrogram.png
-                    |-- final_A\ |\ stacked_bar_chart.png
-                    |-- final_B\ |\ dendrogram.png
-                    |-- final_B\ |\ stacked_bar_chart.png
                     |-- final_C\ |\ dendrogram.png
-                    |-- final_C\ |\ stacked_bar_chart.png
-                    |-- final_D\ |\ dendrogram.png
-                    |-- final_D\ |\ stacked_bar_chart.png
-                    |-- final_E\ |\ dendrogram.png
-                    |-- final_E\ |\ stacked_bar_chart.png
-                    |-- final_G\ |\ dendrogram.png
-                    `-- final_G\ |\ stacked_bar_chart.png
+                    |-- final_C\ |\ stacked_bar_chart_01.png
+                    |-- final_C\ |\ stacked_bar_chart_02.png
+                    `-- final_C\ |\ stacked_bar_chart_03.png
 
-6 directories, 24 files
+10 directories, 12 files

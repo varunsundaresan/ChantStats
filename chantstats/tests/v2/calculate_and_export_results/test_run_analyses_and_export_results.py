@@ -15,9 +15,13 @@ def test_folder_structure_for_exported_results(tmpdir, diff_reporter):
     cfg = ChantStatsConfig.from_env()
     pieces = load_pieces("plainchant_sequences", cfg)
     results_pc_freqs = calculate_results(
-        pieces=pieces, analysis="pc_freqs", modes=["final"], units=["pcs", "mode_degrees"]
+        pieces=pieces, analysis="pc_freqs", modes=["final"], units=["pcs", "mode_degrees"], modal_category_keys=["C"]
+    )
+    results_tendency = calculate_results(
+        pieces=pieces, analysis="tendency", modes=["final"], units=["pcs", "mode_degrees"], modal_category_keys=["C"]
     )
     export_results(results_pc_freqs, output_root_dir, p_cutoff=0.4)
+    export_results(results_tendency, output_root_dir, p_cutoff=0.4)
 
     exported_files = list_directory_tree(output_root_dir)
     verify(exported_files, diff_reporter)
