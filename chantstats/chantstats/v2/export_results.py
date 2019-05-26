@@ -16,7 +16,9 @@ def export_empty_figure(output_root_dir, result_descriptor):
     # raise NotImplementedError("TODO: implement this if required")
     msg_text = "This plot is deliberately empty\nbecause there is no data to export."
     fig = plot_empty_figure(msg_text, figsize=(20, 4))
-    outfilename = result_descriptor.get_full_output_path(output_root_dir, "stacked_bar_chart.png")
+    outfilename = result_descriptor.get_full_output_path(
+        output_root_dir, filename_prefix="stacked_bar_chart", filename_suffix=""
+    )
     fig.savefig(outfilename)
     return fig
 
@@ -25,7 +27,9 @@ def export_stacked_bar_chart_for_pc_freqs(nodes_below_cutoff, output_root_dir, r
     assert len(nodes_below_cutoff) > 0
     color_palette = get_color_palette_for_unit(result_descriptor.unit)
     fig = plot_pc_freq_distributions(nodes_below_cutoff, path_stubs=result_descriptor, color_palette=color_palette)
-    outfilename = result_descriptor.get_full_output_path(output_root_dir, "stacked_bar_chart.png")
+    outfilename = result_descriptor.get_full_output_path(
+        output_root_dir, filename_prefix="stacked_bar_chart", filename_suffix=""
+    )
     fig.savefig(outfilename)
     plt.close(fig)
 
@@ -41,7 +45,9 @@ def export_stacked_bar_chart_for_tendency(nodes_below_cutoff, output_root_dir, r
     for ax, node in zip(axes, nodes_below_cutoff):
         plot_tendency_distributions(node, ax=ax, color_palette=color_palette)
     fig.tight_layout()
-    outfilename = result_descriptor.get_full_output_path(output_root_dir, "stacked_bar_chart.png")
+    outfilename = result_descriptor.get_full_output_path(
+        output_root_dir, filename_prefix="stacked_bar_chart", filename_suffix=""
+    )
     fig.savefig(outfilename)
     plt.close(fig)
 
@@ -52,7 +58,9 @@ def export_individual_stacked_bar_charts_for_tendency(nodes_below_cutoff, output
     for idx, node in enumerate(nodes_below_cutoff, start=1):
         fig = plot_tendency_distributions(node, color_palette=color_palette)
         fig.tight_layout()
-        outfilename = result_descriptor.get_full_output_path(output_root_dir, f"stacked_bar_chart_{idx:02d}.png")
+        outfilename = result_descriptor.get_full_output_path(
+            output_root_dir, filename_prefix="stacked_bar_chart", filename_suffix=f"{idx:02d}"
+        )
         fig.savefig(outfilename)
         plt.close(fig)
 
@@ -88,7 +96,9 @@ def export_results(results, output_root_dir, p_cutoff=0.4, include_leaf_nodes_in
         # Export dendrogram
         os.makedirs(output_dir, exist_ok=True)
         fig = dendrogram.plot_dendrogram(p_cutoff=p_cutoff)
-        outfilename = result_descriptor.get_full_output_path(output_root_dir, "dendrogram.png")
+        outfilename = result_descriptor.get_full_output_path(
+            output_root_dir, filename_prefix="dendrogram", filename_suffix=""
+        )
         fig.savefig(outfilename)
 
         # Export stacked bar chart(s)
