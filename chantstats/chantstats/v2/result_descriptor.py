@@ -19,7 +19,8 @@ class ResultDescriptor:
             self.unit.output_path_stub,
         )
 
-    def get_full_output_path(self, filename_suffix):
+    def get_full_output_path(self, output_root_dir, filename_suffix, *, extra_path_stubs=None):
+        extra_path_stubs = extra_path_stubs or ()
         output_filename = self.sep.join(
             [
                 # self.modal_category.output_path_stub_1,
@@ -27,7 +28,7 @@ class ResultDescriptor:
                 filename_suffix,
             ]
         )
-        return os.path.join(self.output_dirname, output_filename)
+        return os.path.join(output_root_dir, *extra_path_stubs, self.output_dirname, output_filename)
 
     def __repr__(self):
         result_descriptor_stubs = (
