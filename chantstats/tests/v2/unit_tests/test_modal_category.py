@@ -20,7 +20,7 @@ def test_modal_category_type():
     assert "final" == ModalCategoryType.FINAL == t
     assert t.enforce_same_ambitus == False
     assert t.get_output_path_stub_1("A") == "by_final"
-    assert t.get_output_path_stub_2("A") == "final_A"
+    assert t.get_output_path_stub_2("A") == "1_final_A"
     assert t.get_descr("A") == "A-final"
     assert t.grouping_func(Mock(final="D")) == "D"
 
@@ -29,12 +29,12 @@ def test_modal_category_type():
     assert t.enforce_same_ambitus == True
 
     assert t.get_output_path_stub_1(("B-", "plagal")) == "plagal_modes"
-    assert t.get_output_path_stub_2(("B-", "plagal")) == "plagal_B-"
+    assert t.get_output_path_stub_2(("B-", "plagal")) == "3_plagal_B-"
     assert t.get_descr(("B-", "plagal")) == "B--plagal"
     assert t.grouping_func(Mock(final="G", ambitus="plagal")) == ("G", "plagal")
 
     assert t.get_output_path_stub_1(("C", "authentic")) == "authentic_modes"
-    assert t.get_output_path_stub_2(("C", "authentic")) == "authentic_C"
+    assert t.get_output_path_stub_2(("C", "authentic")) == "2_authentic_C"
     assert t.get_descr(("C", "authentic")) == "C-authentic"
     assert t.grouping_func(Mock(final="F", ambitus="authentic")) == ("F", "authentic")
 
