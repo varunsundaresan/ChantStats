@@ -38,39 +38,6 @@ class PathStubs(tuple):
 
 
 def calculate_results(
-    repertoire_and_genre,
-    analysis,
-    cfg,
-    pieces=None,
-    min_num_phrases_per_monomodal_section=3,
-    min_num_notes_per_monomodal_section=80,
-    modes=None,
-    units=None,
-):
-    results = {}
-
-    pieces = pieces or load_pieces(repertoire_and_genre, cfg)
-    modes = modes or list(ModalCategoryType)
-    units = units or list(UnitType)
-
-    for mode in modes:
-        analysis_inputs = pieces.get_analysis_inputs(
-            mode,
-            min_num_phrases_per_monomodal_section=min_num_phrases_per_monomodal_section,
-            min_num_notes_per_monomodal_section=min_num_notes_per_monomodal_section,
-        )
-        grouping = GroupingByModalCategory(analysis_inputs, group_by=mode)
-        for modal_category in grouping.groups.values():
-            logger.info(f"Calculating {analysis} results for {modal_category}")
-            for unit in units:
-                dendrogram = calculate_dendrogram(modal_category, analysis=analysis, unit=unit)
-                path_stubs = PathStubs(repertoire_and_genre, analysis, unit, modal_category)
-                results[path_stubs] = {"dendrogram": dendrogram}
-
-    return results
-
-
-def calculate_results_NEW(
     *,
     pieces,
     analysis,
@@ -95,7 +62,6 @@ def calculate_results_NEW(
             logger.info(f"Calculating {analysis} results for {modal_category}")
             for unit in units:
                 dendrogram = calculate_dendrogram(modal_category, analysis=analysis, unit=unit)
-                # path_stubs = PathStubs(repertoire_and_genre, analysis, unit, modal_category)
                 result_descriptor = ResultDescriptor(pieces.repertoire_and_genre, analysis, unit, modal_category)
                 results[result_descriptor] = {"dendrogram": dendrogram}
 

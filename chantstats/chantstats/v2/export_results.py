@@ -1,6 +1,5 @@
 import matplotlib.pyplot as plt
 import os
-import shutil
 from .color_palettes import get_color_palette_for_unit
 from .dendrogram.plotting import plot_pc_freq_distributions, plot_tendency_distributions
 from .logging import logger
@@ -12,7 +11,7 @@ class MissingDendrogramNodesError(Exception):
     """
 
 
-def export_empty_figure(output_dir, unit):
+def export_empty_figure(output_dir, result_descriptor):
     raise NotImplementedError("TODO: implement this if required")
     # fig, ax = plt.subplots(figsize=(20, 4))
     # msg = "This plot is deliberately empty\nbecause there is no data to export."
@@ -22,17 +21,18 @@ def export_empty_figure(output_dir, unit):
     # return fig
 
 
-def export_stacked_bar_charts_for_pc_freqs(nodes_below_cutoff, path_stubs, output_dir, unit):
+def export_stacked_bar_charts_for_pc_freqs(nodes_below_cutoff, output_root_dir, result_descriptor):
     assert len(nodes_below_cutoff) > 0
-    color_palette = get_color_palette_for_unit(unit)
-    fig = plot_pc_freq_distributions(nodes_below_cutoff, path_stubs=path_stubs, color_palette=color_palette)
-    fig.savefig(os.path.join(output_dir, "stacked_bar_chart.png"))
+    color_palette = get_color_palette_for_unit(result_descriptor.unit)
+    fig = plot_pc_freq_distributions(nodes_below_cutoff, path_stubs=result_descriptor, color_palette=color_palette)
+    outfilename = result_descriptor.get_full_output_path(output_root_dir, "stacked_bar_chart.png")
+    fig.savefig(outfilename)
     plt.close(fig)
 
 
-def export_stacked_bar_charts_for_tendency(nodes_below_cutoff, path_stubs, output_dir, unit, height_per_axes=2.5):
+def export_stacked_bar_charts_for_tendency(nodes_below_cutoff, output_root_dir, result_descriptor, height_per_axes=2.5):
     assert len(nodes_below_cutoff) > 0
-    color_palette = get_color_palette_for_unit(unit)
+    color_palette = get_color_palette_for_unit(result_descriptor.unit)
     fig, axes = plt.subplots(
         nrows=len(nodes_below_cutoff), ncols=1, figsize=(7, len(nodes_below_cutoff) * height_per_axes)
     )
@@ -41,7 +41,8 @@ def export_stacked_bar_charts_for_tendency(nodes_below_cutoff, path_stubs, outpu
     for ax, node in zip(axes, nodes_below_cutoff):
         plot_tendency_distributions(node, ax=ax, color_palette=color_palette)
     fig.tight_layout()
-    fig.savefig(os.path.join(output_dir, "stacked_bar_chart.png"))
+    outfilename = result_descriptor.get_full_output_path(output_root_dir, "stacked_bar_chart.png")
+    fig.savefig(outfilename)
     plt.close(fig)
 
 
@@ -64,53 +65,36 @@ def export_results(results, output_root_dir, p_cutoff=0.4, include_leaf_nodes_in
     overwrite : bool
         If True, delete the output root folder (if it exists) before exporting results. Default: False.
     """
-    # if os.path.exists(output_root_dir):
-    #     if not overwrite:
-    #         logger.warn(f"Aborting because output root dir already exists: '{output_root_dir}'")
-    #         logger.warn(f"Use 'overwrite=True' to overwrite existing results.")
-    #         return
-    #     else:
-    #         logger.warn(f"Removing existing output root dir: {output_root_dir}")
-    #         shutil.rmtree(output_root_dir)
+    # Tweak output root folder
+    p_cutoff_path_stub = f"p_cutoff_{p_cutoff:.2f}"
+    output_root_dir = os.path.join(output_root_dir, p_cutoff_path_stub)
 
-    for path_stubs in results.keys():
-        analysis_name = path_stubs.analysis
-        unit = path_stubs.unit
-        assert analysis_name in ["pc_freqs", "tendency"]
-
-        path_stub_p_cutoff = f"p_cutoff_{p_cutoff:.2f}"
-        extra_path_stubs = [path_stub_p_cutoff]
-        output_dir = os.path.join(output_root_dir, *extra_path_stubs, *path_stubs)
-
-        if os.path.exists(output_dir):
-            if overwrite:
-                logger.warn(f"Removing existing output folder: {output_dir}")
-                shutil.rmtree(output_dir)
-            else:
-                logger.warning(f"Aborting because output folder already exists: {output_dir}")
-                return
-
+    for result_descriptor in results.keys():
+        output_dir = result_descriptor.get_output_dir(output_root_dir)
         logger.info(f"Exporting results to folder: {output_dir}")
-        dendrogram = results[path_stubs]["dendrogram"]
+        dendrogram = results[result_descriptor]["dendrogram"]
 
         # Export dendrogram
         os.makedirs(output_dir, exist_ok=True)
         fig = dendrogram.plot_dendrogram(p_cutoff=p_cutoff)
-        fig.savefig(os.path.join(output_dir, "dendrogram.png"))
+        outfilename = result_descriptor.get_full_output_path(output_root_dir, "dendrogram.png")
+        fig.savefig(outfilename)
 
         # Export stacked bar chart(s)
         nodes_below_cutoff = dendrogram.get_nodes_below_cutoff(
             p_cutoff, include_leaf_nodes=include_leaf_nodes_in_clusters
         )
         if nodes_below_cutoff == []:
-            msg = f"Exporting empty figure because no dendrogram nodes are below p_cutoff={p_cutoff} {path_stubs}."
+            msg = (
+                f"Exporting empty figure because no dendrogram nodes are below p_cutoff={p_cutoff} {result_descriptor}."
+            )
             logger.warning(msg)
-            export_empty_figure(output_dir, unit)
+            export_empty_figure(output_dir, result_descriptor)
             continue
 
-        if analysis_name == "pc_freqs":
-            export_stacked_bar_charts_for_pc_freqs(nodes_below_cutoff, path_stubs, output_dir, unit)
-        elif analysis_name == "tendency":
-            export_stacked_bar_charts_for_tendency(nodes_below_cutoff, path_stubs, output_dir, unit)
+        if result_descriptor.analysis == "pc_freqs":
+            export_stacked_bar_charts_for_pc_freqs(nodes_below_cutoff, output_root_dir, result_descriptor)
+        elif result_descriptor.analysis == "tendency":
+            export_stacked_bar_charts_for_tendency(nodes_below_cutoff, output_root_dir, result_descriptor)
         else:
             raise NotImplementedError()
