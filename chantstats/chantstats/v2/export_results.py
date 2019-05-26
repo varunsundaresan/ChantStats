@@ -46,6 +46,17 @@ def export_stacked_bar_charts_for_tendency(nodes_below_cutoff, output_root_dir, 
     plt.close(fig)
 
 
+def export_individual_stacked_bar_charts_for_tendency(nodes_below_cutoff, output_root_dir, result_descriptor):
+    assert len(nodes_below_cutoff) > 0
+    color_palette = get_color_palette_for_unit(result_descriptor.unit)
+    for idx, node in enumerate(nodes_below_cutoff, start=1):
+        fig = plot_tendency_distributions(node, color_palette=color_palette)
+        fig.tight_layout()
+        outfilename = result_descriptor.get_full_output_path(output_root_dir, f"stacked_bar_chart_{idx:02d}.png")
+        fig.savefig(outfilename)
+        plt.close(fig)
+
+
 def export_results(results, output_root_dir, p_cutoff=0.4, include_leaf_nodes_in_clusters=True, overwrite=False):
     """
     Export analysis results as dendrogram plots and stacked bar charts
@@ -95,6 +106,7 @@ def export_results(results, output_root_dir, p_cutoff=0.4, include_leaf_nodes_in
         if result_descriptor.analysis == "pc_freqs":
             export_stacked_bar_charts_for_pc_freqs(nodes_below_cutoff, output_root_dir, result_descriptor)
         elif result_descriptor.analysis == "tendency":
-            export_stacked_bar_charts_for_tendency(nodes_below_cutoff, output_root_dir, result_descriptor)
+            # export_stacked_bar_charts_for_tendency(nodes_below_cutoff, output_root_dir, result_descriptor)
+            export_individual_stacked_bar_charts_for_tendency(nodes_below_cutoff, output_root_dir, result_descriptor)
         else:
             raise NotImplementedError()
