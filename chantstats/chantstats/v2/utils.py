@@ -25,7 +25,7 @@ def list_directory_tree(root_dir):
         return
     cwd = os.getcwd()
     os.chdir(root_dir)
-    res = sh.tree().stdout.decode("utf-8")
+    res = sh.tree(_env={}).stdout.decode("utf-8")
     os.chdir(cwd)
     return res
 
