@@ -74,11 +74,17 @@ def get_subsample(values, fraction, seed, sort_key=None):
     Return a sub-sample of the given input values.
     """
     assert 0.0 <= fraction <= 1.0
-    if fraction < 1.0 and seed is None:
-        raise ValueError("Must provide a sampling seed.")
+    if fraction == 1.0:
+        logger.info("Not doing any sub-sampling.")
+        return values
+    else:
+        if seed is None:
+            raise ValueError("Must provide a sampling seed.")
 
-    np.random.seed(seed)
-    sample_size = int(len(values) * fraction)
-    perm = np.random.permutation(len(values))
-    sample_indices = sorted(perm[:sample_size])
-    return sorted(np.take(values, sample_indices), key=sort_key)
+        np.random.seed(seed)
+        num_values = len(values)
+        sample_size = int(len(values) * fraction)
+        logger.info(f"Extracting sub-sample using {sample_size} out of {num_values} values (seed={seed}).")
+        perm = np.random.permutation(num_values)
+        sample_indices = sorted(perm[:sample_size])
+        return sorted(np.take(values, sample_indices), key=sort_key)
