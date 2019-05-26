@@ -20,7 +20,7 @@ def export_empty_figure(output_dir, result_descriptor):
     return fig
 
 
-def export_stacked_bar_charts_for_pc_freqs(nodes_below_cutoff, output_root_dir, result_descriptor):
+def export_stacked_bar_chart_for_pc_freqs(nodes_below_cutoff, output_root_dir, result_descriptor):
     assert len(nodes_below_cutoff) > 0
     color_palette = get_color_palette_for_unit(result_descriptor.unit)
     fig = plot_pc_freq_distributions(nodes_below_cutoff, path_stubs=result_descriptor, color_palette=color_palette)
@@ -29,7 +29,7 @@ def export_stacked_bar_charts_for_pc_freqs(nodes_below_cutoff, output_root_dir, 
     plt.close(fig)
 
 
-def export_stacked_bar_charts_for_tendency(nodes_below_cutoff, output_root_dir, result_descriptor, height_per_axes=2.5):
+def export_stacked_bar_chart_for_tendency(nodes_below_cutoff, output_root_dir, result_descriptor, height_per_axes=2.5):
     assert len(nodes_below_cutoff) > 0
     color_palette = get_color_palette_for_unit(result_descriptor.unit)
     fig, axes = plt.subplots(
@@ -103,7 +103,7 @@ def export_results(results, output_root_dir, p_cutoff=0.4, include_leaf_nodes_in
             continue
 
         if result_descriptor.analysis == "pc_freqs":
-            export_stacked_bar_charts_for_pc_freqs(nodes_below_cutoff, output_root_dir, result_descriptor)
+            export_stacked_bar_chart_for_pc_freqs(nodes_below_cutoff, output_root_dir, result_descriptor)
         elif result_descriptor.analysis == "tendency":
             # export_stacked_bar_charts_for_tendency(nodes_below_cutoff, output_root_dir, result_descriptor)
             export_individual_stacked_bar_charts_for_tendency(nodes_below_cutoff, output_root_dir, result_descriptor)
