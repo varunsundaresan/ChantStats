@@ -172,11 +172,11 @@ def get_color_palette_for_unit(unit):
     elif unit.value == "mode_degrees":
         # # return palettable.cartocolors.qualitative.Pastel_10.hex_colors
         # return palettable.colorbrewer.qualitative.Set3_12.hex_colors
-        # return set3_12_with_colors_swapped
+        return set3_12_with_colors_swapped
         # # return palettable.matplotlib.Viridis_12.hex_colors
         # # return palettable.tableau.PurpleGray_12.hex_colors
         # # return sns.color_palette("muted", 12).as_hex()  # WARNING: this contains only 10 distinct colors!!!
         # return viridis_15_12
-        return plasma_16_12
+        # return plasma_16_12
     else:
         raise ValueError(f"Unexpected value: {unit.value}")
