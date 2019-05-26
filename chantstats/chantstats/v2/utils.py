@@ -93,6 +93,6 @@ def get_subsample(values, fraction, seed, sort_key=None):
 
 def plot_empty_figure(msg_text, fontsize=20, figsize=(20, 4)):
     fig, ax = plt.subplots(figsize=figsize)
-    fig.text(0.5, 0.5, msg_text, fontsize=fontsize, color="gray", ha="center", va="center", alpha=0.5)
+    fig.text(0.5, 0.5, msg_text, fontsize=fontsize, color="gray", ha="center", va="center", alpha=1.0)
     plt.close(fig)
     return fig
