@@ -59,8 +59,8 @@ def calculate_results(
             min_num_notes_per_monomodal_section=min_num_notes_per_monomodal_section,
         )
         grouping = GroupingByModalCategory(analysis_inputs, group_by=mode)
-        modal_category_keys = modal_category_keys or grouping.keys
-        for key in modal_category_keys:
+        keys = modal_category_keys or grouping.keys
+        for key in keys:
             modal_category = grouping[key]
             logger.info(f"Calculating {analysis} results for {modal_category}")
             for unit in units:
