@@ -2,10 +2,11 @@ from .analysis_functions import AnalysisType
 from .dendrogram import calculate_dendrogram
 from .logging import logger
 from .modal_category import ModalCategoryType, GroupingByModalCategory
-from .plainchant_sequence_piece import load_pieces, PlainchantSequencePieces
+from .plainchant_sequence_piece import PlainchantSequencePieces
 from .repertoire_and_genre import RepertoireAndGenreType
 from .result_descriptor import ResultDescriptor
 from .unit import UnitType
+from .utils import get_subsample
 
 __all__ = ["calculate_results"]
 
@@ -43,10 +44,15 @@ def calculate_results(
     analysis,
     min_num_phrases_per_monomodal_section=3,
     min_num_notes_per_monomodal_section=80,
+    sampling_fraction=0.7,
+    sampling_seed=None,
     modes=None,
     units=None,
     modal_category_keys=None,
 ):
+    if sampling_seed is None:
+        raise ValueError("Must provide a sampling seed.")
+
     assert isinstance(pieces, PlainchantSequencePieces)
     modes = modes or list(ModalCategoryType)
     units = units or list(UnitType)
@@ -58,7 +64,9 @@ def calculate_results(
             min_num_phrases_per_monomodal_section=min_num_phrases_per_monomodal_section,
             min_num_notes_per_monomodal_section=min_num_notes_per_monomodal_section,
         )
-        grouping = GroupingByModalCategory(analysis_inputs, group_by=mode)
+        analysis_inputs_subsample = get_subsample(analysis_inputs, sampling_fraction, seed=sampling_seed)
+
+        grouping = GroupingByModalCategory(analysis_inputs_subsample, group_by=mode)
         keys = modal_category_keys or grouping.keys
         for key in keys:
             modal_category = grouping[key]
