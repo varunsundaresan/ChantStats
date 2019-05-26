@@ -3,6 +3,7 @@ import os
 from .color_palettes import get_color_palette_for_unit
 from .dendrogram.plotting import plot_pc_freq_distributions, plot_tendency_distributions
 from .logging import logger
+from .utils import plot_empty_figure
 
 
 class MissingDendrogramNodesError(Exception):
@@ -12,13 +13,11 @@ class MissingDendrogramNodesError(Exception):
 
 
 def export_empty_figure(output_dir, result_descriptor):
-    raise NotImplementedError("TODO: implement this if required")
-    # fig, ax = plt.subplots(figsize=(20, 4))
-    # msg = "This plot is deliberately empty\nbecause there is no data to export."
-    # fig.text(0.5, 0.5, msg, fontsize=30, color='gray', ha='center', va='center', alpha=0.5)
-    # fig.savefig(os.path.join(output_dir, "stacked_bar_chart.png"))
-    # plt.close(fig)
-    # return fig
+    # raise NotImplementedError("TODO: implement this if required")
+    msg_text = "This plot is deliberately empty\nbecause there is no data to export."
+    fig = plot_empty_figure(msg_text, figsize=(20, 4))
+    fig.savefig(os.path.join(output_dir, "stacked_bar_chart.png"))
+    return fig
 
 
 def export_stacked_bar_charts_for_pc_freqs(nodes_below_cutoff, output_root_dir, result_descriptor):
