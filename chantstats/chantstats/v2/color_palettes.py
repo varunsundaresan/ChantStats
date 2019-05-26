@@ -74,6 +74,7 @@ viridis_12_8 = [
     #'#FDE725'
 ]
 
+
 ## Matplotlib Plasma
 plasma_15 = palettable.matplotlib.Plasma_15.hex_colors
 plasma_15_8 = [
@@ -92,6 +93,25 @@ plasma_15_8 = [
     #'#FEBD2A',
     #'#FADA24',
     #'#F0F921'
+]
+plasma_16 = palettable.matplotlib.Plasma_16.hex_colors
+plasma_16_12 = [
+    # "#0D0887",
+    # "#330597",
+    # "#5002A2",
+    "#6A00A8",
+    "#8405A7",
+    "#9C179E",
+    "#B12A90",
+    "#C33D80",
+    "#D35171",
+    "#E16462",
+    "#ED7953",
+    "#F68F44",
+    "#FCA636",
+    "#FEC029",
+    "#F9DC24",
+    # "#F0F921",
 ]
 
 plasma_12 = palettable.matplotlib.Plasma_12.hex_colors
@@ -152,10 +172,11 @@ def get_color_palette_for_unit(unit):
     elif unit.value == "mode_degrees":
         # # return palettable.cartocolors.qualitative.Pastel_10.hex_colors
         # return palettable.colorbrewer.qualitative.Set3_12.hex_colors
-        return set3_12_with_colors_swapped
+        # return set3_12_with_colors_swapped
         # # return palettable.matplotlib.Viridis_12.hex_colors
         # # return palettable.tableau.PurpleGray_12.hex_colors
         # # return sns.color_palette("muted", 12).as_hex()  # WARNING: this contains only 10 distinct colors!!!
         # return viridis_15_12
+        return plasma_16_12
     else:
         raise ValueError(f"Unexpected value: {unit.value}")
