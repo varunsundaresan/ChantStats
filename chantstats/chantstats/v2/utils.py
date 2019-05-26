@@ -67,3 +67,15 @@ class EnumWithDescription(str, Enum):
             Long form description of this enum suitable for use in plot titles etc.
         """
         return self._description
+
+
+def get_subsample(values, fraction, seed, sort_key=None):
+    """
+    Return a sub-sample of the given input values.
+    """
+    assert 0.0 <= fraction <= 1.0
+    np.random.seed(seed)
+    sample_size = int(len(values) * fraction)
+    perm = np.random.permutation(len(values))
+    sample_indices = sorted(perm[:sample_size])
+    return sorted(np.take(values, sample_indices), key=sort_key)
