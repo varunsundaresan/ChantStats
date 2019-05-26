@@ -42,17 +42,14 @@ def calculate_results(
     *,
     pieces,
     analysis,
+    sampling_fraction,
+    sampling_seed,
     min_num_phrases_per_monomodal_section=3,
     min_num_notes_per_monomodal_section=80,
-    sampling_fraction=0.7,
-    sampling_seed=None,
     modes=None,
     units=None,
     modal_category_keys=None,
 ):
-    if sampling_seed is None:
-        raise ValueError("Must provide a sampling seed.")
-
     assert isinstance(pieces, PlainchantSequencePieces)
     modes = modes or list(ModalCategoryType)
     units = units or list(UnitType)

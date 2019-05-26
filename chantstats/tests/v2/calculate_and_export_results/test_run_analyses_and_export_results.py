@@ -15,10 +15,26 @@ def test_folder_structure_for_exported_results(tmpdir, diff_reporter):
     cfg = ChantStatsConfig.from_env()
     pieces = load_pieces("plainchant_sequences", cfg)
     results_pc_freqs = calculate_results(
-        pieces=pieces, analysis="pc_freqs", modes=["final"], units=["pcs", "mode_degrees"], modal_category_keys=["C"]
+        pieces=pieces,
+        analysis="pc_freqs",
+        sampling_fraction=1.0,
+        sampling_seed=None,
+        min_num_phrases_per_monomodal_section=3,
+        min_num_notes_per_monomodal_section=80,
+        modes=["final"],
+        units=["pcs", "mode_degrees"],
+        modal_category_keys=["C"],
     )
     results_tendency = calculate_results(
-        pieces=pieces, analysis="tendency", modes=["final"], units=["pcs", "mode_degrees"], modal_category_keys=["C"]
+        pieces=pieces,
+        analysis="tendency",
+        sampling_fraction=1.0,
+        sampling_seed=None,
+        min_num_phrases_per_monomodal_section=3,
+        min_num_notes_per_monomodal_section=80,
+        modes=["final"],
+        units=["pcs", "mode_degrees"],
+        modal_category_keys=["C"],
     )
     export_results(results_pc_freqs, output_root_dir, p_cutoff=0.4)
     export_results(results_tendency, output_root_dir, p_cutoff=0.4)
@@ -34,9 +50,11 @@ def test_run_analyses_and_export_results(tmpdir):
 
     cfg = ChantStatsConfig.from_env()
     repertoire_and_genre = "plainchant_sequences"
+    p_cutoff = 0.4
+    sampling_fraction = 0.7
+    sampling_seed = 99999
     min_num_phrases_per_monomodal_section = 3
     min_num_notes_per_monomodal_section = 80
-    p_cutoff = 0.4
 
     pieces = load_pieces(repertoire_and_genre, cfg)
 
@@ -45,6 +63,8 @@ def test_run_analyses_and_export_results(tmpdir):
         results = calculate_results(
             pieces=pieces,
             analysis=analysis,
+            sampling_fraction=sampling_fraction,
+            sampling_seed=sampling_seed,
             min_num_phrases_per_monomodal_section=min_num_phrases_per_monomodal_section,
             min_num_notes_per_monomodal_section=min_num_notes_per_monomodal_section,
         )
