@@ -19,12 +19,12 @@ class ResultDescriptor:
             self.unit.output_path_stub,
         )
 
-    def get_output_dir(self, output_root_dir, *, extra_path_stubs=None):
-        extra_path_stubs = extra_path_stubs or ()
-        return os.path.join(output_root_dir, *extra_path_stubs, self.output_dirname)
+    def get_output_dir(self, output_root_dir, *, p_cutoff):
+        path_stub_p_cutoff = f"p_cutoff_{p_cutoff:.2f}"
+        return os.path.join(output_root_dir, path_stub_p_cutoff, self.output_dirname)
 
-    def get_full_output_path(self, output_root_dir, filename_suffix, *, extra_path_stubs=None):
-        output_dir = self.get_output_dir(output_root_dir, extra_path_stubs=extra_path_stubs)
+    def get_full_output_path(self, output_root_dir, filename_suffix, *, p_cutoff):
+        output_dir = self.get_output_dir(output_root_dir, p_cutoff=p_cutoff)
         output_filename = self.sep.join(
             [
                 # self.modal_category.output_path_stub_1,
