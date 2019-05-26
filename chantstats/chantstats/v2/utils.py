@@ -1,10 +1,11 @@
 import numpy as np
 import os
 import sh
+import shutil
 from enum import Enum
 from .logging import logger
 
-__all__ = ["EnumWithDescription"]
+__all__ = ["EnumWithDescription", "remove_file_or_folder_if_exists"]
 
 
 def is_close_to_zero_or_100(x):
@@ -27,6 +28,26 @@ def list_directory_tree(root_dir):
     res = sh.tree().stdout.decode("utf-8")
     os.chdir(cwd)
     return res
+
+
+def remove_file_or_folder_if_exists(path, force=False):
+    if os.path.exists(path):
+        if os.path.isdir(path):
+            if force:
+                logger.warn(f"Removing existing folder: {path}")
+                shutil.rmtree(path)
+            else:
+                logger.warning(f"Aborting because folder already exists: {path}")
+                return
+        elif os.path.isfile(path):
+            if force:
+                logger.warn(f"Removing existing file: {path}")
+                os.remove(path)
+            else:
+                logger.warning(f"Aborting because file already exists: {path}")
+                return
+        else:
+            raise NotImplementedError(f"Path is neither a file nor a folder: {path}")
 
 
 class EnumWithDescription(str, Enum):
