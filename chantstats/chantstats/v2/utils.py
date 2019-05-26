@@ -45,8 +45,10 @@ def remove_file_or_folder_if_exists(path, force=False):
             logger.warn(f"Removing existing {file_or_folder}: {path}")
             func_remove(path)
         else:
-            logger.warning(f"Aborting because {file_or_folder} already exists: {path}")
-            return
+            # logger.warning(f"Aborting because {file_or_folder} already exists: {path}")
+            raise IOError(
+                f"Aborting because {file_or_folder} already exists: {path} (use `force=True` to remove anyway)"
+            )
 
 
 class EnumWithDescription(str, Enum):
