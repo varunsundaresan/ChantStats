@@ -8,6 +8,11 @@ def test_result_descriptor():
     modal_category = ModalCategory(items=None, modal_category_type="final", key="G")
     rd = ResultDescriptor("plainchant_sequences", "pc_freqs", "pcs", modal_category)
     assert rd.output_dirname == "chant/pc_freqs/sequences/pcs"
+    assert rd.get_output_dir(output_root_dir) == "/tmp/foo/chant/pc_freqs/sequences/pcs"
+    assert (
+        rd.get_output_dir(output_root_dir, extra_path_stubs=["lala", "lolo"])
+        == "/tmp/foo/lala/lolo/chant/pc_freqs/sequences/pcs"
+    )
     assert (
         rd.get_full_output_path(output_root_dir, "dendrogram.png")
         == "/tmp/foo/chant/pc_freqs/sequences/pcs/final_G|dendrogram.png"
