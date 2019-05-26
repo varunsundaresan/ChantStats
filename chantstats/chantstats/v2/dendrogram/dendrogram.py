@@ -7,6 +7,7 @@ from scipy.spatial.distance import pdist
 from ..analysis_functions import get_analysis_function, AnalysisType
 from ..logging import logger
 from ..unit import UnitType
+from ..utils import plot_empty_figure
 from .dendrogram_node import DendrogramNode
 
 __all__ = ["calculate_dendrogram"]
@@ -180,10 +181,8 @@ class EmptyDendrogram:
             raise RuntimeError(f"Unexpected size of input data frame: {len(df)}.\n\n{df}")
 
     def plot_dendrogram(self, p_cutoff, *, figsize=(20, 4)):
-        fig, ax = plt.subplots(figsize=figsize)
-        msg = "This dendrogram plot is deliberately empty\nbecause there is only a single input item."
-        fig.text(0.5, 0.5, msg, fontsize=20, color="gray", ha="center", va="center", alpha=0.5)
-        plt.close(fig)
+        msg_text = "This dendrogram plot is deliberately empty\nbecause there is only a single input item."
+        fig = plot_empty_figure(msg_text, figsize=figsize)
         return fig
 
     def get_nodes_below_cutoff(self, p_cutoff, *, include_leaf_nodes):
