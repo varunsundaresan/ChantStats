@@ -74,6 +74,9 @@ def get_subsample(values, fraction, seed, sort_key=None):
     Return a sub-sample of the given input values.
     """
     assert 0.0 <= fraction <= 1.0
+    if fraction < 1.0 and seed is None:
+        raise ValueError("Must provide a sampling seed.")
+
     np.random.seed(seed)
     sample_size = int(len(values) * fraction)
     perm = np.random.permutation(len(values))
