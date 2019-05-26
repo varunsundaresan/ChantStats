@@ -17,21 +17,28 @@ class ResultDescriptor:
             self.analysis.output_path_stub,
             self.rep_and_genre.output_path_stub_2,
             self.unit.output_path_stub,
+            self.modal_category.output_path_stub_1,
+            self.modal_category.output_path_stub_2,
         )
 
     def get_output_dir(self, output_root_dir, *, p_cutoff):
         path_stub_p_cutoff = f"p_cutoff_{p_cutoff:.2f}"
         return os.path.join(output_root_dir, path_stub_p_cutoff, self.output_dirname)
 
+    def get_output_filename(self, filename_suffix):
+        # output_filename = self.sep.join(
+        #     [
+        #         # self.modal_category.output_path_stub_1,
+        #         self.modal_category.output_path_stub_2,
+        #         filename_suffix,
+        #     ]
+        # )
+        output_filename = filename_suffix
+        return output_filename
+
     def get_full_output_path(self, output_root_dir, filename_suffix, *, p_cutoff):
         output_dir = self.get_output_dir(output_root_dir, p_cutoff=p_cutoff)
-        output_filename = self.sep.join(
-            [
-                # self.modal_category.output_path_stub_1,
-                self.modal_category.output_path_stub_2,
-                filename_suffix,
-            ]
-        )
+        output_filename = self.get_output_filename(filename_suffix)
         return os.path.join(output_dir, output_filename)
 
     def __repr__(self):
