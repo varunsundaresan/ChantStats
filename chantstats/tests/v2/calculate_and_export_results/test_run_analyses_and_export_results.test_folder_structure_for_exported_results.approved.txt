@@ -1,6 +1,11 @@
 .
 `-- p_cutoff_0.40
     `-- chant
+        |-- leaps_and_melodic_outlines_L5M5
+        |   `-- sequences
+        |       `-- pcs
+        |           |-- dendrogram__2.authentic_2.E.png
+        |           `-- stacked_bar_chart__2.authentic_2.E.png
         |-- pc_freqs
         |   `-- sequences
         |       |-- mode_degrees
@@ -20,4 +25,4 @@
                     |-- stacked_bar_chart__2.authentic_2.E__01.png
                     `-- stacked_bar_chart__2.authentic_2.E__02.png
 
-10 directories, 10 files
+13 directories, 12 files

@@ -84,3 +84,18 @@ def test_run_analyses_and_export_results(tmpdir):
 
         logger.info(f"Exporting results for analysis '{analysis}'")
         export_results(results, output_root_dir, p_cutoff=p_cutoff)
+
+    for analysis in ["leaps_and_melodic_outlines_L5M5"]:
+        logger.info(f"Calculating results for analysis '{analysis}'")
+        results = calculate_results(
+            pieces=pieces,
+            analysis=analysis,
+            sampling_fraction=sampling_fraction,
+            sampling_seed=sampling_seed,
+            min_num_phrases_per_monomodal_section=min_num_phrases_per_monomodal_section,
+            min_num_notes_per_monomodal_section=min_num_notes_per_monomodal_section,
+            units=["pcs"],
+        )
+
+        logger.info(f"Exporting results for analysis '{analysis}'")
+        export_results(results, output_root_dir, p_cutoff=p_cutoff)
