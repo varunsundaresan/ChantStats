@@ -150,6 +150,10 @@ def plot_pc_freq_distributions(
     return fig
 
 
+# TODO: can we use exactly the same function here?!?
+plot_LMO_freq_distributions = plot_pc_freq_distributions
+
+
 def plot_tendency_distributions(
     dendrogram_node,
     *,

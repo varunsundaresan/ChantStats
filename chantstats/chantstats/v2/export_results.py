@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import os
 from .color_palettes import get_color_palette_for_unit
-from .dendrogram.plotting import plot_pc_freq_distributions, plot_tendency_distributions
+from .dendrogram.plotting import plot_pc_freq_distributions, plot_tendency_distributions, plot_LMO_freq_distributions
 from .logging import logger
 from .utils import plot_empty_figure
 
@@ -67,6 +67,19 @@ def export_individual_stacked_bar_charts_for_tendency(nodes_below_cutoff, output
         plt.close(fig)
 
 
+def export_stacked_bar_chart_for_leaps_and_melodic_outlines(nodes_below_cutoff, output_root_dir, result_descriptor):
+    assert len(nodes_below_cutoff) > 0
+    color_palette = get_color_palette_for_unit(result_descriptor.unit)
+    fig = plot_LMO_freq_distributions(
+        nodes_below_cutoff, result_descriptor=result_descriptor, color_palette=color_palette
+    )
+    outfilename = result_descriptor.get_full_output_path(
+        output_root_dir, filename_prefix="stacked_bar_chart", filename_suffix=""
+    )
+    fig.savefig(outfilename)
+    plt.close(fig)
+
+
 def export_results(results, output_root_dir, p_cutoff=0.4, include_leaf_nodes_in_clusters=True, overwrite=False):
     """
     Export analysis results as dendrogram plots and stacked bar charts
@@ -120,5 +133,9 @@ def export_results(results, output_root_dir, p_cutoff=0.4, include_leaf_nodes_in
         elif result_descriptor.analysis == "tendency":
             # export_stacked_bar_charts_for_tendency(nodes_below_cutoff, output_root_dir, result_descriptor)
             export_individual_stacked_bar_charts_for_tendency(nodes_below_cutoff, output_root_dir, result_descriptor)
+        elif result_descriptor.analysis == "leaps_and_melodic_outlines_L5M5":
+            export_stacked_bar_chart_for_leaps_and_melodic_outlines(
+                nodes_below_cutoff, output_root_dir, result_descriptor
+            )
         else:
             raise NotImplementedError()
