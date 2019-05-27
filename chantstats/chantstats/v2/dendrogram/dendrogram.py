@@ -58,13 +58,29 @@ def calculate_linkage_matrix_in_python_format(df_freq_distributions, *, optimal_
 
 class Dendrogram:
     def __init__(self, df, *, analysis, optimal_ordering=True):
+        if df.isnull().any(axis=None):
+            raise RuntimeError(
+                "Dataframe contains NaN values. Please filter them out before calculating the dendrogram"
+            )
+
         self.df_orig = df
         self.analysis = AnalysisType(analysis)
         cols_with_nonzero_entries = df.columns[(df != 0).any()]
         if sorted(cols_with_nonzero_entries) != sorted(df.columns):
             missing_columns = sorted([x for x in set(df.columns).difference(cols_with_nonzero_entries)])
             logger.debug(f"Removed zero-valued columns from dataframe: {missing_columns}")
+
         self.df = df[cols_with_nonzero_entries]
+        if any((df == 0).all(axis=1)):
+            logger.warning(
+                "Dataframe contains rows with all-zero entries (which previously may have been all-NaN values). "
+                "Currently these are dropped as part of the dendrogram calculation!"
+            )
+            logger.warning(
+                "The following rows have been dropped: " + ", ".join(self.df[(self.df == 0).all(axis=1)].index)
+            )
+            self.df = self.df[(self.df != 0).any(axis=1)]
+
         self.L = calculate_linkage_matrix_in_python_format(self.df, optimal_ordering=optimal_ordering)
         self.R = dendrogram(self.L, no_plot=True)
         self.root_node, self.all_cluster_nodes = to_tree(self.L, rd=True)
