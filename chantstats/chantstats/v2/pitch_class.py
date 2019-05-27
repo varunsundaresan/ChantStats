@@ -32,6 +32,15 @@ class PC(str, Enum):
     def str_value(self):
         return self._str_value
 
+    @property
+    def _number_prefix(self):
+        # index of this PC in the list of occurring pitch classes
+        return self.allowed_values.index(self) + 1
+
+    @property
+    def value_with_number_prefix(self):
+        return f"{self._number_prefix}.{self.value}"
+
     @classmethod
     def from_note(cls, note):
         return cls(note.name)

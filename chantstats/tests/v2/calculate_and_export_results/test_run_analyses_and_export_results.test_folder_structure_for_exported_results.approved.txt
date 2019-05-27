@@ -4,22 +4,22 @@
         |-- pc_freqs
         |   `-- sequences
         |       |-- mode_degrees
-        |       |   |-- dendrogram__1_final_C.png
-        |       |   `-- stacked_bar_chart__1_final_C.png
+        |       |   |-- dendrogram__1.final_8.C.png
+        |       |   `-- stacked_bar_chart__1.final_8.C.png
         |       `-- pcs
-        |           |-- dendrogram__1_final_C.png
-        |           `-- stacked_bar_chart__1_final_C.png
+        |           |-- dendrogram__1.final_8.C.png
+        |           `-- stacked_bar_chart__1.final_8.C.png
         `-- tendency
             `-- sequences
                 |-- mode_degrees
-                |   |-- dendrogram__2_authentic_C.png
-                |   |-- stacked_bar_chart__2_authentic_C__01.png
-                |   |-- stacked_bar_chart__2_authentic_C__02.png
-                |   `-- stacked_bar_chart__2_authentic_C__03.png
+                |   |-- dendrogram__2.authentic_8.C.png
+                |   |-- stacked_bar_chart__2.authentic_8.C__01.png
+                |   |-- stacked_bar_chart__2.authentic_8.C__02.png
+                |   `-- stacked_bar_chart__2.authentic_8.C__03.png
                 `-- pcs
-                    |-- dendrogram__2_authentic_C.png
-                    |-- stacked_bar_chart__2_authentic_C__01.png
-                    |-- stacked_bar_chart__2_authentic_C__02.png
-                    `-- stacked_bar_chart__2_authentic_C__03.png
+                    |-- dendrogram__2.authentic_8.C.png
+                    |-- stacked_bar_chart__2.authentic_8.C__01.png
+                    |-- stacked_bar_chart__2.authentic_8.C__02.png
+                    `-- stacked_bar_chart__2.authentic_8.C__03.png
 
 10 directories, 12 files

@@ -2,6 +2,7 @@ import pandas as pd
 from collections import defaultdict
 from enum import Enum
 from .ambitus import AmbitusType
+from .pitch_class import PC
 from .unit import UnitType
 
 __all__ = ["ModalCategoryType"]
@@ -40,14 +41,15 @@ class ModalCategoryType(str, Enum):
 
     def get_output_path_stub_2(self, key):
         if self == "final":
-            return f"1_final_{key}"
+            final = PC(key)
+            return f"1.final_{final.value_with_number_prefix}"
         elif self == "final_and_ambitus":
-            final = key[0]
+            final = PC(key[0])
             ambitus = AmbitusType(key[1])
             if ambitus == "authentic":
-                return f"2_authentic_{final}"
+                return f"2.authentic_{final.value_with_number_prefix}"
             elif ambitus == "plagal":
-                return f"3_plagal_{final}"
+                return f"3.plagal_{final.value_with_number_prefix}"
             else:
                 raise NotImplementedError(f"Unexpected ambitus: {ambitus}")
         else:  # pragma: no cover
