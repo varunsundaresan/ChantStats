@@ -1,4 +1,4 @@
-from music21.interval import Interval
+from music21.interval import Interval, Direction
 from music21.note import Note
 from .interval_type import IntervalType
 from .logging import logger
@@ -21,6 +21,12 @@ class NotePair:
         self.pc2 = self.note2.name
         self.direction = self.interval.direction.value
         self.semitones = abs(self.interval.semitones)
+        if self.interval.direction == Direction.ASCENDING:
+            self.bottom_pc = self.pc1
+            self.top_pc = self.pc2
+        else:
+            self.bottom_pc = self.pc2
+            self.top_pc = self.pc1
 
     def __repr__(self):
         return f"<NotePair: ({self.note1}, {self.note2})>"
