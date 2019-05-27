@@ -1,6 +1,6 @@
 from enum import Enum
 from .freqs import PCFreqs, ModeDegreeFreqs
-from .tendency import PCTendency, ModeDegreeTendency, PCApproaches
+from .tendency import PCTendency, ModeDegreeTendency
 
 __all__ = ["AnalysisType", "get_analysis_function"]
 
@@ -8,7 +8,7 @@ __all__ = ["AnalysisType", "get_analysis_function"]
 class AnalysisType(str, Enum):
     PC_FREQS = ("pc_freqs", "Mode profiles", "MP", "Analysis 1 Mode Profiles: ")
     TENDENCY = ("tendency", "Tendency", "T", "Analysis 2 Tendency: ")
-    APPROACHES = ("approaches", "Leaps and Melodic Outlines", "L+M", "Analysis 3 L&M: ")
+    # APPROACHES = ("approaches", "Leaps and Melodic Outlines", "L+M", "Analysis 3 L&M: ")
 
     def __new__(cls, value, desc, desc_short, plot_title_descr, **kwargs):
         obj = str.__new__(cls, value)
@@ -57,16 +57,16 @@ def calculate_tendency(item, unit, *, using="condprobs_v1"):
     return tendency.as_series(using=using)
 
 
-def calculate_approaches(item, unit, *, using="condprobs_v1"):
-    if unit == "pcs":
-        tendency = PCApproaches(item)
-    elif unit == "mode_degrees":
-        # tendency = ModeDegreeApproaches(item)
-        raise NotImplementedError()
-    else:
-        raise NotImplementedError()
-
-    return tendency.as_series(using=using)
+# def calculate_approaches(item, unit, *, using="condprobs_v1"):
+#     if unit == "pcs":
+#         tendency = PCApproaches(item)
+#     elif unit == "mode_degrees":
+#         # tendency = ModeDegreeApproaches(item)
+#         raise NotImplementedError()
+#     else:
+#         raise NotImplementedError()
+#
+#     return tendency.as_series(using=using)
 
 
 def get_analysis_function(analysis):
@@ -76,7 +76,7 @@ def get_analysis_function(analysis):
         return calculate_relative_pc_freqs
     elif analysis == "tendency":
         return calculate_tendency
-    elif analysis == "approaches":
-        return calculate_approaches
+    # elif analysis == "approaches":
+    #     return calculate_approaches
     else:
         raise NotImplementedError()

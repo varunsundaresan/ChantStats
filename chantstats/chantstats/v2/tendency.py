@@ -1,7 +1,7 @@
 import pandas as pd
 from .note_pair import NotePair
 
-__all__ = ["BaseTendency", "PCTendency", "PCApproaches"]
+__all__ = ["BaseTendency", "PCTendency"]
 
 
 class BaseTendency:
@@ -48,9 +48,9 @@ class ModeDegreeTendency(BaseTendency):
         super().__init__(item.mode_degree_pairs, label_first="pc1", label_second="pc2")
 
 
-class PCApproaches(BaseTendency):
-    def __init__(cls, item):
-        second_pcs = [pc2 for (_, pc2) in item.pc_pairs]
-        approach_interval_types = [note_pair.interval_type_v1 for note_pair in item.note_pairs]
-        pairs = zip(second_pcs, approach_interval_types)
-        super().__init__(pairs, label_first="pc2", label_second="approach")
+# class PCApproaches(BaseTendency):
+#     def __init__(cls, item):
+#         second_pcs = [pc2 for (_, pc2) in item.pc_pairs]
+#         approach_interval_types = [note_pair.interval_type_v1 for note_pair in item.note_pairs]
+#         pairs = zip(second_pcs, approach_interval_types)
+#         super().__init__(pairs, label_first="pc2", label_second="approach")
