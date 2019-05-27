@@ -44,6 +44,15 @@ class ModeDegree:
         return ModeDegree(value=diatonic_distance, alter=alter)
 
     @classmethod
+    def from_other(cls, value):
+        if isinstance(value, ModeDegree):
+            return value
+        elif isinstance(value, int):
+            return ModeDegree(value=value)
+        else:
+            raise NotImplementedError()
+
+    @classmethod
     def from_pc_pair(self, *, pc, base_pc):
         return df_mode_degrees[base_pc][pc]
 

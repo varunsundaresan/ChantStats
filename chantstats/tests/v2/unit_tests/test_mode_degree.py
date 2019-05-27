@@ -149,3 +149,19 @@ def test_mode_degrees_from_pc_pairs():
     assert 5 == ModeDegree.from_pc_pair(pc=PC("F"), base_pc=PC("B-"))
     assert 6 == ModeDegree.from_pc_pair(pc=PC("G"), base_pc=PC("B-"))
     assert 7 == ModeDegree.from_pc_pair(pc=PC("A"), base_pc=PC("B-"))
+
+
+def test_initialisation_methods():
+    md = ModeDegree.from_other(3)
+    assert md.value == 3
+    assert md.alter == 0
+
+    md1 = ModeDegree.from_pc_pair(pc="A", base_pc="E")
+    assert md1.value == 4
+    assert md1.alter == 0
+
+    md2 = ModeDegree.from_other(md1)
+    assert md2.value == 4
+    assert md2.alter == 0
+
+    assert md2 == md1
