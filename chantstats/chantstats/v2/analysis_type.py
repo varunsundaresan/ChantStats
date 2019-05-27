@@ -11,7 +11,7 @@ class AnalysisType(str, Enum):
         "leaps_and_melodic_outlines_L5M5",
         "Leaps and Melodic Outlines (L5 & M5)",
         "LMO",
-        "L&M: L5&M5: ",
+        "Analysis 3 L&M: L5&M5: ",
     )
 
     def __new__(cls, value, desc, desc_short, plot_title_descr, **kwargs):
