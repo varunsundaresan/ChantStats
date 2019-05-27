@@ -4,7 +4,8 @@ import palettable
 import scipy.stats
 from scipy.cluster.hierarchy import dendrogram, linkage, set_link_color_palette, to_tree
 from scipy.spatial.distance import pdist
-from ..analysis_functions import get_analysis_function, AnalysisType
+from ..analysis_functions import get_analysis_function
+from ..analysis_type import AnalysisType
 from ..logging import logger
 from ..unit import UnitType
 from ..utils import plot_empty_figure

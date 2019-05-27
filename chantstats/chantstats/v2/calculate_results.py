@@ -1,4 +1,4 @@
-from .analysis_functions import AnalysisType
+from .analysis_type import AnalysisType
 from .dendrogram import calculate_dendrogram
 from .logging import logger
 from .modal_category import ModalCategoryType, GroupingByModalCategory

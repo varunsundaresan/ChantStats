@@ -1,7 +1,7 @@
 import os
-from chantstats.v2.repertoire_and_genre import RepertoireAndGenreType
-from chantstats.v2.analysis_functions import AnalysisType
-from chantstats.v2.unit import UnitType
+from .repertoire_and_genre import RepertoireAndGenreType
+from .analysis_type import AnalysisType
+from .unit import UnitType
 
 
 class ResultDescriptor:
