@@ -63,6 +63,10 @@ class ModeDegree:
     def __hash__(self):
         return hash((self.value, self.alter))
 
+    @classmethod
+    def get_class_description(cls):
+        return "Mode degree"
+
 
 ModeDegree.allowed_values = [
     ModeDegree(value=1, alter=-1),

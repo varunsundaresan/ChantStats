@@ -45,5 +45,9 @@ class PC(str, Enum):
     def from_note(cls, note):
         return cls(note.name)
 
+    @classmethod
+    def get_class_description(cls):
+        return "Pitch class"
+
 
 PC.allowed_values = list(PC)
