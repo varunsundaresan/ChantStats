@@ -38,6 +38,8 @@ class BaseFreqs(metaclass=BaseFreqsMeta):
                     f"Unexpected values: {set(list_or_freqs)}. Must be a subset of allowed values: {self.ALLOWED_VALUES}"
                 )
             self.abs_freqs = pd.Series(Counter(list_or_freqs), index=self.ALLOWED_VALUES).fillna(0, downcast="infer")
+        # elif self.__class__ is list_or_freqs.__class__:
+        #     self.abs_freqs = list_or_freqs.abs_freqs
         else:  # pragma: no cover
             raise ValueError(f"Cannot instantiate {self.__class__.__name__} from object: {list_or_freqs}")
 
@@ -83,3 +85,23 @@ class LeapL5Freqs(BaseFreqs):
                 pass
 
         return cls(leaps_found)
+
+
+# def convert_pc_based_freqs_to_mode_degree_based_freqs(freqs, *, base_pc):
+#     assert isinstance(freqs, BaseFreqs)
+#     abs_freqs = freqs.abs_freqs
+#     assert set(abs_freqs.index) == set(PC.allowed_values)
+#     md_index = [pc.to_mode_degree(base_pc=base_pc) for pc in abs_freqs.index]
+#     md_abs_freqs = abs_freqs.copy()
+#     md_abs_freqs.index = md_index
+#     cls = freqs.__class__
+#     return cls(md_abs_freqs)
+
+
+def convert_pc_based_freqs_to_mode_degree_based_freqs(pc_based_freqs, *, base_pc):
+    assert isinstance(pc_based_freqs, pd.Series)
+    # assert set(pc_freqs.index) == set(PC.allowed_values)
+    md_index = [idx_value.in_mode_degrees(base_pc=base_pc) for idx_value in pc_based_freqs.index]
+    md_based_freqs = pc_based_freqs.copy()
+    md_based_freqs.index = md_index
+    return md_based_freqs
