@@ -26,7 +26,9 @@ def export_empty_figure(output_root_dir, result_descriptor):
 def export_stacked_bar_chart_for_pc_freqs(nodes_below_cutoff, output_root_dir, result_descriptor):
     assert len(nodes_below_cutoff) > 0
     color_palette = get_color_palette_for_unit(result_descriptor.unit)
-    fig = plot_pc_freq_distributions(nodes_below_cutoff, path_stubs=result_descriptor, color_palette=color_palette)
+    fig = plot_pc_freq_distributions(
+        nodes_below_cutoff, result_descriptor=result_descriptor, color_palette=color_palette
+    )
     outfilename = result_descriptor.get_full_output_path(
         output_root_dir, filename_prefix="stacked_bar_chart", filename_suffix=""
     )
