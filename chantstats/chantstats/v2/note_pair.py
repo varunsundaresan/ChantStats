@@ -31,6 +31,10 @@ class NotePair:
     def __repr__(self):
         return f"<NotePair: ({self.note1}, {self.note2})>"
 
+    def __iter__(self):
+        yield self.note1
+        yield self.note2
+
     def _classify_interval(self, version):
         if version == "v1":
             min_semitones_leap = 3
