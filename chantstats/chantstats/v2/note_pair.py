@@ -19,9 +19,9 @@ class NotePair:
         self.interval = Interval(self.note1, self.note2)
         self.pc1 = self.note1.name
         self.pc2 = self.note2.name
-        self.direction = self.interval.direction.value
         self.semitones = abs(self.interval.semitones)
-        if self.interval.direction == Direction.ASCENDING:
+        self.direction = self.interval.direction
+        if self.direction == Direction.ASCENDING:
             self.bottom_pc = self.pc1
             self.top_pc = self.pc2
         else:
