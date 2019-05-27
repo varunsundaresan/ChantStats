@@ -27,10 +27,10 @@ class LeapL5:
     def __hash__(self):
         return hash((self.bottom_pc, self.top_pc))
 
-    #     @property
-    #     def str_value(self):
-    #         return rf"pcs$\stackrel{{{self.top_pc}}}{{{self.bottom_pc}}}$_L5"
-    #         #return f"pcs${{\mathrm{{{self.top_pc}}}}}^{{\mathrm{{{self.bottom_pc}}}}}$_L5"
+    @property
+    def str_value(self):
+        return rf"pcs$\stackrel{{{self.top_pc}}}{{{self.bottom_pc}}}$_L5"
+        # return f"pcs${{\mathrm{{{self.top_pc}}}}}^{{\mathrm{{{self.bottom_pc}}}}}$_L5"
 
     @classmethod
     def from_note_pair(cls, note_pair):
@@ -78,11 +78,11 @@ class LeapL5inMD:
     def __hash__(self):
         return hash((self.bottom_md, self.top_md))
 
-    #     @property
-    #     def str_value(self):
-    #         return rf"pcs$\stackrel{{{self.top_pc}}}{{{self.bottom_pc}}}$_L5"
-    #         #return f"pcs${{\mathrm{{{self.top_pc}}}}}^{{\mathrm{{{self.bottom_pc}}}}}$_L5"
-    #
+    @property
+    def str_value(self):
+        return rf"mds$\stackrel{{{self.top_md.descr}}}{{{self.bottom_md.descr}}}$_L5"
+        # return f"pcs${{\mathrm{{{self.top_md.descr}}}}}^{{\mathrm{{{self.bottom_md.descr}}}}}$_L5"
+
     # @classmethod
     # def from_note_pair(cls, note_pair):
     #     assert isinstance(note_pair, NotePair)
