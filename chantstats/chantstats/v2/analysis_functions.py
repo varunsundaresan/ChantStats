@@ -57,5 +57,7 @@ def get_analysis_function(analysis):
         return calculate_tendency
     # elif analysis == "approaches":
     #     return calculate_approaches
+    elif analysis == "leaps_and_melodic_outlines_L5M5":
+        return calculate_relative_leap_L5_freqs
     else:
         raise NotImplementedError()

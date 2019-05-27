@@ -7,6 +7,12 @@ class AnalysisType(str, Enum):
     PC_FREQS = ("pc_freqs", "Mode profiles", "MP", "Analysis 1 Mode Profiles: ")
     TENDENCY = ("tendency", "Tendency", "T", "Analysis 2 Tendency: ")
     # APPROACHES = ("approaches", "Leaps and Melodic Outlines", "L+M", "Analysis 3 L&M: ")
+    LEAPS_AND_MELODIC_OUTLINES_L5M5 = (
+        "leaps_and_melodic_outlines_L5M5",
+        "Leaps and Melodic Outlines (L5 & M5)",
+        "LMO",
+        "L&M: L5&M5: ",
+    )
 
     def __new__(cls, value, desc, desc_short, plot_title_descr, **kwargs):
         obj = str.__new__(cls, value)
