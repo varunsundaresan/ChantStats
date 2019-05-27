@@ -1,8 +1,6 @@
 import matplotlib.pyplot as plt
-import palettable
 import pandas as pd
 from matplotlib.patches import Patch
-from ..unit import UnitType
 from ..utils import is_close_to_zero_or_100
 
 __all__ = ["plot_pc_freq_distributions", "plot_tendency_distributions"]
@@ -46,7 +44,8 @@ def plot_single_pandas_series_as_stacked_bar(values, *, ax, xpos, color_palette,
     assert isinstance(values, pd.Series)
     assert not isinstance(values.index, pd.MultiIndex)
     # assert np.isclose(values.sum(), 100.0)
-    assert is_close_to_zero_or_100(values.sum())
+    if not is_close_to_zero_or_100(values.sum()):
+        raise RuntimeError(f"Expected values close to 0 or 100 but they sum up to {values.sum()}. Values: {values}")
 
     colors = color_palette[: len(values)]
     if len(colors) < len(values):
