@@ -131,9 +131,7 @@ def plot_pc_freq_distributions(
 
     series = [n.avg_distribution for n in dendrogram_nodes]
     xlabels = [make_xlabel_for_cluster_node(n) for n in dendrogram_nodes]
-    analysis = result_descriptor.analysis
-    modal_category = result_descriptor.modal_category
-    title = f"{analysis.description}: {modal_category.descr} (unit: {result_descriptor.unit})"
+    title = result_descriptor.plot_title
 
     fig, ax = plt.subplots(figsize=figsize)
     plot_multiple_pandas_series_as_stacked_bar_chart(
@@ -153,7 +151,14 @@ def plot_pc_freq_distributions(
 
 
 def plot_tendency_distributions(
-    dendrogram_node, *, color_palette, ax=None, bar_width=0.6, sort_freqs_ascending=True, figsize=(20, 4)
+    dendrogram_node,
+    *,
+    result_descriptor,
+    color_palette,
+    ax=None,
+    bar_width=0.6,
+    sort_freqs_ascending=True,
+    figsize=(20, 4),
 ):
     """
     Create a stacked bar chart from the PC tendency distributions of the given dendrogram node.
@@ -163,7 +168,7 @@ def plot_tendency_distributions(
     # df = dendrogram_node.distribution.values
     df = dendrogram_node.avg_distribution.unstack(level=0)
     series = [df[col] for col in df.columns]
-    title = f"Tendency for {dendrogram_node.descr}"
+    title = result_descriptor.plot_title
     xlabels = [pc.str_value for pc in df.columns]
 
     plot_multiple_pandas_series_as_stacked_bar_chart(

@@ -45,7 +45,7 @@ def export_stacked_bar_chart_for_tendency(nodes_below_cutoff, output_root_dir, r
     if len(nodes_below_cutoff) == 1:
         axes = [axes]
     for ax, node in zip(axes, nodes_below_cutoff):
-        plot_tendency_distributions(node, ax=ax, color_palette=color_palette)
+        plot_tendency_distributions(node, result_descriptor=result_descriptor, ax=ax, color_palette=color_palette)
     fig.tight_layout()
     outfilename = result_descriptor.get_full_output_path(
         output_root_dir, filename_prefix="stacked_bar_chart", filename_suffix=""
@@ -58,7 +58,7 @@ def export_individual_stacked_bar_charts_for_tendency(nodes_below_cutoff, output
     assert len(nodes_below_cutoff) > 0
     color_palette = get_color_palette_for_unit(result_descriptor.unit)
     for idx, node in enumerate(nodes_below_cutoff, start=1):
-        fig = plot_tendency_distributions(node, color_palette=color_palette)
+        fig = plot_tendency_distributions(node, result_descriptor=result_descriptor, color_palette=color_palette)
         fig.tight_layout()
         outfilename = result_descriptor.get_full_output_path(
             output_root_dir, filename_prefix="stacked_bar_chart", filename_suffix=f"{idx:02d}"
@@ -97,7 +97,7 @@ def export_results(results, output_root_dir, p_cutoff=0.4, include_leaf_nodes_in
 
         # Export dendrogram
         os.makedirs(output_dir, exist_ok=True)
-        fig = dendrogram.plot_dendrogram(p_cutoff=p_cutoff)
+        fig = dendrogram.plot_dendrogram(p_cutoff=p_cutoff, result_descriptor=result_descriptor)
         outfilename = result_descriptor.get_full_output_path(
             output_root_dir, filename_prefix="dendrogram", filename_suffix=""
         )

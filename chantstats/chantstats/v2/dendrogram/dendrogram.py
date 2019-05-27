@@ -111,6 +111,7 @@ class Dendrogram:
         self,
         p_cutoff,
         *,
+        result_descriptor=None,
         ax=None,
         title=None,
         figsize=(20, 4),
@@ -161,6 +162,8 @@ class Dendrogram:
         ax.set_ylim(ylim)
         ax.axhline(y=0.0, linewidth=0.5, color="black")
 
+        if title is None and result_descriptor is not None:
+            title = result_descriptor.plot_title
         if title:
             ax.set_title(title)
         if use_tight_layout:
@@ -180,9 +183,11 @@ class EmptyDendrogram:
         if len(self.df) != 1:
             raise RuntimeError(f"Unexpected size of input data frame: {len(df)}.\n\n{df}")
 
-    def plot_dendrogram(self, p_cutoff, *, figsize=(20, 4)):
+    def plot_dendrogram(self, p_cutoff, *, result_descriptor=None, figsize=(20, 4)):
         msg_text = "This dendrogram plot is deliberately empty\nbecause there is only a single input item."
         fig = plot_empty_figure(msg_text, figsize=figsize)
+        if result_descriptor is not None:
+            fig.axes[0].set_title(result_descriptor.plot_title)
         return fig
 
     def get_nodes_below_cutoff(self, p_cutoff, *, include_leaf_nodes):
