@@ -1,4 +1,5 @@
 from scipy.cluster.hierarchy import ClusterNode
+from ..logging import logger
 
 __all__ = ["DendrogramNode"]
 
@@ -21,14 +22,17 @@ class DendrogramNode:
         self.is_leaf = self.cluster_node.is_leaf()
         self.num_leaves = self.cluster_node.get_count()
         self.leaf_ids = self.cluster_node.pre_order(lambda x: x.id)
-        self.avg_distribution = self.df_full.iloc[self.leaf_ids].mean()  #  average distribution of all leaf nodes
-
         self.df_cluster = self.df_full.iloc[self.leaf_ids]  # dataframe containig only the leaves in this cluster
+        self.df_cluster_without_zero_rows = self.df_cluster[(self.df_cluster != 0).any(axis=1)]
+        self.avg_distribution = self.df_cluster_without_zero_rows.mean()  #  average distribution of all leaf nodes
 
         if self.is_leaf:
             self.descr = self.df_full.index[self.id]
         else:
             self.descr = f"Cluster #{self.id}\n({self.num_leaves} leaves)"
+
+        if len(self.df_cluster_without_zero_rows) < len(self.df_cluster):
+            logger.warning(f"DendrogramNode dataframe contains zero rows: {self}")
 
         # The following are helpful for plotting because they determine
         # the left/right edge of the cluster.
