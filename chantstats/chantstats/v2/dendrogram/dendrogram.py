@@ -209,15 +209,19 @@ class EmptyDendrogram:
     """
 
     def __init__(self, df, *, analysis):
-        self.df = df
+        self.df_orig = df
+        self.df_trimmed = df[(df != 0).any(axis=1)]
         self.analysis = AnalysisType(analysis)
-        if len(self.df) != 1:
-            if (self.df == 0).all(axis=None):
+        if len(self.df_trimmed) > 1:
+            raise RuntimeError(
+                f"Unexpected size of trimmed input data frame: {len(self.df_trimmed)}.\n\n{self.df_trimmed}"
+            )
+        else:
+            if len(self.df_orig) > 1:
                 logger.warning(
-                    f"Plotting empty dendrogram because input dataframe (with {len(df)} rows) contains only zero values."
+                    f"Plotting empty dendrogram because input dataframe (with {len(self.df_orig)} rows) "
+                    "contains a row with only zero values."
                 )
-            else:
-                raise RuntimeError(f"Unexpected size of input data frame: {len(df)}.\n\n{df}")
 
     def plot_dendrogram(self, p_cutoff, *, result_descriptor=None, figsize=(20, 4)):
         msg_text = "This dendrogram plot is deliberately empty\nbecause there is only a single input item."
