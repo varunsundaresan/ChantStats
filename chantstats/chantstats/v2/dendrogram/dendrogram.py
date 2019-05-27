@@ -108,6 +108,11 @@ class Dendrogram:
             reverse=True,
         )
 
+    def get_cluster_node(self, cluster_id):
+        cluste_node = self.all_cluster_nodes[cluster_id]
+        assert cluste_node.id == cluster_id
+        return cluste_node
+
     def plot_dendrogram(
         self,
         p_cutoff,
@@ -119,6 +124,7 @@ class Dendrogram:
         ylim=(0.0, 1.0),
         leaf_font_size=10,
         annotate_nodes_below_cutoff=True,
+        annotate_all_nodes=False,
         link_color_palette=None,
         use_tight_layout=True,
     ):
@@ -155,8 +161,16 @@ class Dendrogram:
             if not n.is_leaf and not n in nodes_below_cutoff:
                 ax.scatter(n.xpos, n.ypos, s=size_other_nodes, zorder=2, color="gray")
 
+        if annotate_all_nodes:
+            annotate_nodes_below_cutoff = False  # avoid double annotations below
+
         if annotate_nodes_below_cutoff:
             for i, n in enumerate(nodes_below_cutoff):
+                ax.annotate(n.id, xy=(n.xpos, n.ypos), xycoords="data", xytext=(4, 4), textcoords="offset points")
+                ax.scatter(n.xpos, n.ypos, s=size_nodes_below_cutoff, zorder=2, color="gray")
+
+        if annotate_all_nodes:
+            for i, n in enumerate(self.all_cluster_nodes):
                 ax.annotate(n.id, xy=(n.xpos, n.ypos), xycoords="data", xytext=(4, 4), textcoords="offset points")
                 ax.scatter(n.xpos, n.ypos, s=size_nodes_below_cutoff, zorder=2, color="gray")
 
