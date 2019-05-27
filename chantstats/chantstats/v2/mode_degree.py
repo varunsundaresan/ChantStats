@@ -1,16 +1,21 @@
 __all__ = ["ModeDegree"]
 
+import pandas as pd
+from .pitch_class import PC
+
+__all__ = ["ModeDegree"]
+
 
 class ModeDegree:
     def __init__(self, *, value, alter=0):
         assert value in [1, 2, 3, 4, 5, 6, 7]
-        assert alter in [0, -1.0]
+        assert alter in [0, -1.0, +1.0]
 
         self.value = value
         self.alter = alter
-        self.prefix = "flat-" if self.alter == -1.0 else ""
+        self.prefix = "flat-" if self.alter == -1.0 else ("#" if self.alter == +1.0 else "")
         self.descr = f"{self.prefix}{self.value}"
-        self.str_prefix = "♭" if self.alter == -1.0 else ""
+        self.str_prefix = "♭" if self.alter == -1.0 else ("♯" if self.alter == +1.0 else "")
         # self.str_value = f"{self.str_prefix}{self.value}\u0302"  # same as 'descr', but with a hat symbol over the number
         self.str_value = (
             f"{self.str_prefix}$\widehat{self.value}$"
@@ -37,6 +42,10 @@ class ModeDegree:
             )
 
         return ModeDegree(value=diatonic_distance, alter=alter)
+
+    @classmethod
+    def from_pc_pair(self, *, pc, base_pc):
+        return df_mode_degrees[base_pc][pc]
 
     def __repr__(self):
         return f"<ModeDegree: {self.descr}>"
@@ -82,3 +91,38 @@ ModeDegree.allowed_values = [
     ModeDegree(value=7, alter=-1),
     ModeDegree(value=7, alter=0),
 ]
+
+
+def convert_to_mode_degree(x):
+    if isinstance(x, int):
+        return ModeDegree(value=x)
+    elif isinstance(x, str):
+        if x.startswith("flat-"):
+            value = int(x[-1])
+            return ModeDegree(value=value, alter=-1)
+        elif x.startswith("#"):
+            value = int(x[-1])
+            return ModeDegree(value=value, alter=+1)
+        else:
+            raise ValueError(f"Invalid mode degree: {x}")
+    else:
+        raise TypeError(f"Invalid mode degree: {x}")
+
+
+df_mode_degrees = pd.DataFrame(
+    [
+        [1, 7, 6, 5, 4, 3, 3, 2],
+        [2, 1, 7, 6, 5, 4, 4, 3],
+        [3, 2, 1, 7, 6, 5, 5, 4],
+        [4, 3, 2, 1, 7, 6, 6, 5],
+        [5, 4, 3, 2, 1, 7, 7, 6],
+        ["flat-6", "flat-5", "flat-4", "flat-3", "flat-2", 1, "flat-1", "flat-7"],
+        [6, 5, 4, 3, 2, "#1", 1, 7],
+        [7, 6, 5, 4, 3, 2, 2, 1],
+    ],
+    columns=PC.allowed_values,
+    index=PC.allowed_values,
+)
+
+
+df_mode_degrees = df_mode_degrees.applymap(convert_to_mode_degree)

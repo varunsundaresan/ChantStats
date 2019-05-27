@@ -1,4 +1,4 @@
-from chantstats.utils import EnumWithDescription
+from .utils import EnumWithDescription
 
 __all__ = ["UnitType"]
 
