@@ -39,6 +39,16 @@ class ResultDescriptor:
         output_filename = self.get_output_filename(filename_prefix, filename_suffix, filetype=filetype)
         return os.path.join(output_dir, output_filename)
 
+    @property
+    def plot_title(self):
+        return (
+            f"{self.rep_and_genre.plot_title_descr_1}"
+            + f"{self.analysis.plot_title_descr}"
+            + f"{self.rep_and_genre.plot_title_descr_2}"
+            + f"{self.unit.plot_title_descr}"
+            + f"{self.modal_category.descr}"
+        )
+
     def __repr__(self):
         result_descriptor_stubs = (
             self.rep_and_genre.output_path_stub_1,
