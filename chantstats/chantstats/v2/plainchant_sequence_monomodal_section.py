@@ -10,7 +10,8 @@ class MonomodalSection:
     """
 
     def __init__(self, piece, idx_start, idx_end):
-        assert piece.__class__.__name__ == "PlainchantSequencePiece"
+        # assert piece.__class__.__name__ == "PlainchantSequencePiece"
+        assert "PlainchantSequencePiece" in [cls.__name__ for cls in piece.__class__.__mro__]
         self.piece = piece
         self.idx_start = idx_start
         self.idx_end = idx_end
