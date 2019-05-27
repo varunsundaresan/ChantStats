@@ -49,5 +49,11 @@ class PC(str, Enum):
     def get_class_description(cls):
         return "Pitch class"
 
+    # Note: the method 'in_mode_degrees()' is dynamically added to this class in
+    # the module `mode_degree.py` (this is necessary to avoid a circular import).
+    #
+    # def in_mode_degrees(self):
+    #     raise NotImplementedError("This is implemented in mode_degree.py")
+
 
 PC.allowed_values = list(PC)

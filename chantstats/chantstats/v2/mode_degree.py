@@ -126,3 +126,12 @@ df_mode_degrees = pd.DataFrame(
 
 
 df_mode_degrees = df_mode_degrees.applymap(convert_to_mode_degree)
+
+
+def convert_pc_to_mode_degree(self, *, base_pc):
+    return ModeDegree.from_pc_pair(pc=self, base_pc=base_pc)
+
+
+# Note: we add the method `in_mode_degrees()` dynamically to the class `PC` here
+# in order to avoid a circular import.
+PC.in_mode_degrees = convert_pc_to_mode_degree

@@ -21,3 +21,12 @@ def test_pitch_class_description():
     assert "B-" == PC.B_FLAT.descr
     assert "F" == PC.F.descr
     assert "G" == PC.G.descr
+
+
+def test_pitch_class_in_mode_degrees():
+    assert 1 == PC.A.in_mode_degrees(base_pc=PC.A)
+    assert 3 == PC.C.in_mode_degrees(base_pc=PC.A)
+    assert "flat-2" == PC.B_FLAT.in_mode_degrees(base_pc=PC.A)
+    assert 4 == PC.G.in_mode_degrees(base_pc=PC.D)
+    assert 5 == PC.F.in_mode_degrees(base_pc=PC.B_FLAT)
+    assert "#1" == PC.B.in_mode_degrees(base_pc=PC.B_FLAT)
