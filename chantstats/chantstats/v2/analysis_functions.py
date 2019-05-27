@@ -1,5 +1,5 @@
 from .analysis_type import AnalysisType
-from .freqs import PCFreqs, ModeDegreeFreqs
+from .freqs import PCFreqs, ModeDegreeFreqs, LeapL5Freqs
 from .tendency import PCTendency, ModeDegreeTendency
 
 __all__ = ["get_analysis_function"]
@@ -37,6 +37,15 @@ def calculate_tendency(item, unit, *, using="condprobs_v1"):
 #         raise NotImplementedError()
 #
 #     return tendency.as_series(using=using)
+
+
+def calculate_relative_leap_L5_freqs(item, *, unit):
+    if unit == "pcs":
+        freqs = LeapL5Freqs.from_note_pairs(item.note_pairs)
+    else:
+        raise NotImplementedError()
+
+    return freqs.rel_freqs
 
 
 def get_analysis_function(analysis):
