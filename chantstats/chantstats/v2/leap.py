@@ -32,6 +32,10 @@ class LeapL5:
         return rf"pcs$\stackrel{{{self.top_pc}}}{{{self.bottom_pc}}}$_L5"
         # return f"pcs${{\mathrm{{{self.top_pc}}}}}^{{\mathrm{{{self.bottom_pc}}}}}$_L5"
 
+    @property
+    def label_for_plots(self):
+        return rf"pcs$\stackrel{{{self.top_pc.label_for_plots}}}{{{self.bottom_pc.label_for_plots}}}$_L5"
+
     @classmethod
     def from_note_pair(cls, note_pair):
         assert isinstance(note_pair, NotePair)
@@ -82,6 +86,10 @@ class LeapL5inMD:
     def str_value(self):
         return rf"mds$\stackrel{{{self.top_md.descr}}}{{{self.bottom_md.descr}}}$_L5"
         # return f"pcs${{\mathrm{{{self.top_md.descr}}}}}^{{\mathrm{{{self.bottom_md.descr}}}}}$_L5"
+
+    @property
+    def label_for_plots(self):
+        return rf"mds$\stackrel{{{self.top_md.label_for_plots}}}{{{self.bottom_md.label_for_plots}}}$_L5"
 
     # @classmethod
     # def from_note_pair(cls, note_pair):

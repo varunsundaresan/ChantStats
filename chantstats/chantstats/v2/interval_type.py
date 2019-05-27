@@ -12,5 +12,9 @@ class IntervalType(str, Enum):
     def str_value(self):
         return self.value
 
+    @property
+    def label_for_plots(self):
+        return self.value
+
 
 IntervalType.allowed_values = list(IntervalType)

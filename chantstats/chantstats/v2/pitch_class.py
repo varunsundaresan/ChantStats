@@ -33,6 +33,10 @@ class PC(str, Enum):
         return self._str_value
 
     @property
+    def label_for_plots(self):
+        return self._str_value
+
+    @property
     def _number_prefix(self):
         # index of this PC in the list of occurring pitch classes
         return self.allowed_values.index(self) + 1

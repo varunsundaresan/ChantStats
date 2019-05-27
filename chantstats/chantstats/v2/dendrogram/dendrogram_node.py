@@ -64,7 +64,7 @@ class DendrogramNode:
         import matplotlib.pyplot as plt
 
         ax = self.df_cluster.T.plot.bar(figsize=figsize)
-        ax.set_xticklabels([x.str_value for x in self.df_cluster.columns], rotation=0)
+        ax.set_xticklabels([x.label_for_plots for x in self.df_cluster.columns], rotation=0)
         ax.set_title(f"Cluster #{self.id} ({self.num_leaves} leaves, p={self.dist:.2f})")
         ax.set_xlabel(self.df_cluster.columns[0].get_class_description())
         ax.set_ylabel("Rel. frequency (%)")  # TODO: this may not always be relative frequencies!

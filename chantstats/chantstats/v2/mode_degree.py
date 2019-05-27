@@ -20,6 +20,7 @@ class ModeDegree:
         self.str_value = (
             f"{self.str_prefix}$\widehat{self.value}$"
         )  # same as 'descr', but with a hat symbol over the number
+        self.label_for_plots = f"{self.str_prefix}{self.value}"  # same as 'str_value', but without the hat symbol
 
     @classmethod
     def from_note_pair(self, *, note, base_note):

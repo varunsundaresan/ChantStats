@@ -105,7 +105,7 @@ def plot_multiple_pandas_series_as_stacked_bar_chart(
     # Add legend
     assert len(set([tuple(s.index) for s in series])) == 1  # ensure all series objects share the same index
     legend_labels = [
-        x.str_value for x in series[0].index
+        x.label_for_plots for x in series[0].index
     ]  # TODO: this relies on the fact that the index values are enums; would be good to make this more explicit
     add_color_palette_legend(ax, labels=legend_labels, color_palette=color_palette)
 
@@ -172,7 +172,7 @@ def plot_tendency_distributions(
     df = dendrogram_node.avg_distribution.unstack(level=0)
     series = [df[col] for col in df.columns]
     title = result_descriptor.plot_title
-    xlabels = [pc.str_value for pc in df.columns]
+    xlabels = [pc.label_for_plots for pc in df.columns]
 
     plot_multiple_pandas_series_as_stacked_bar_chart(
         series,
