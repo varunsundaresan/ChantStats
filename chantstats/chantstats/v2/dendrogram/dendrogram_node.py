@@ -23,6 +23,8 @@ class DendrogramNode:
         self.leaf_ids = self.cluster_node.pre_order(lambda x: x.id)
         self.avg_distribution = self.df_full.iloc[self.leaf_ids].mean()  #  average distribution of all leaf nodes
 
+        self.df_cluster = self.df_full.iloc[self.leaf_ids]  # dataframe containig only the leaves in this cluster
+
         if self.is_leaf:
             self.descr = self.df_full.index[self.id]
         else:
@@ -46,3 +48,24 @@ class DendrogramNode:
     def __repr__(self):
         leaf_info = f" (leaf node: '{self.descr}')" if self.is_leaf else f" ({self.num_leaves} leaves: {self.leaf_ids})"
         return f"<DendrogramNode: id={self.id}{leaf_info}>"
+
+    def plot_leaf_distributions(self, figsize=(8, 4)):
+        """
+        Plot distributions of the leaf nodes in this cluster as a multiple bar plot.
+
+        Returns
+        -------
+        matplotlib.figure.Figure
+        """
+        import matplotlib.pyplot as plt
+
+        ax = self.df_cluster.T.plot.bar(figsize=figsize)
+        ax.set_xticklabels([x.str_value for x in self.df_cluster.columns], rotation=0)
+        ax.set_title(f"Cluster #{self.id} ({self.num_leaves} leaves, p={self.dist:.2f})")
+        ax.set_xlabel(self.df_cluster.columns[0].get_class_description())
+        ax.set_ylabel("Rel. frequency (%)")  # TODO: this may not always be relative frequencies!
+        ax.set_ylim(0, 105)
+        ax.grid()
+        fig = ax.figure
+        plt.close(fig)
+        return fig
