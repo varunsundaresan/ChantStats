@@ -212,7 +212,12 @@ class EmptyDendrogram:
         self.df = df
         self.analysis = AnalysisType(analysis)
         if len(self.df) != 1:
-            raise RuntimeError(f"Unexpected size of input data frame: {len(df)}.\n\n{df}")
+            if (self.df == 0).all(axis=None):
+                logger.warning(
+                    f"Plotting empty dendrogram because input dataframe (with {len(df)} rows) contains only zero values."
+                )
+            else:
+                raise RuntimeError(f"Unexpected size of input data frame: {len(df)}.\n\n{df}")
 
     def plot_dendrogram(self, p_cutoff, *, result_descriptor=None, figsize=(20, 4)):
         msg_text = "This dendrogram plot is deliberately empty\nbecause there is only a single input item."
