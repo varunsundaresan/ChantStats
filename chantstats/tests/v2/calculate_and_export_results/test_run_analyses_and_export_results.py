@@ -34,7 +34,7 @@ def test_folder_structure_for_exported_results(tmpdir, diff_reporter):
         min_num_notes_per_monomodal_section=80,
         modes=["final_and_ambitus"],
         units=["pcs", "mode_degrees"],
-        modal_category_keys=[("C", "authentic")],
+        modal_category_keys=[("E", "authentic")],
     )
     export_results(results_pc_freqs, output_root_dir, p_cutoff=0.4)
     export_results(results_tendency, output_root_dir, p_cutoff=0.4)

@@ -12,14 +12,12 @@
         `-- tendency
             `-- sequences
                 |-- mode_degrees
-                |   |-- dendrogram__2.authentic_8.C.png
-                |   |-- stacked_bar_chart__2.authentic_8.C__01.png
-                |   |-- stacked_bar_chart__2.authentic_8.C__02.png
-                |   `-- stacked_bar_chart__2.authentic_8.C__03.png
+                |   |-- dendrogram__2.authentic_2.E.png
+                |   |-- stacked_bar_chart__2.authentic_2.E__01.png
+                |   `-- stacked_bar_chart__2.authentic_2.E__02.png
                 `-- pcs
-                    |-- dendrogram__2.authentic_8.C.png
-                    |-- stacked_bar_chart__2.authentic_8.C__01.png
-                    |-- stacked_bar_chart__2.authentic_8.C__02.png
-                    `-- stacked_bar_chart__2.authentic_8.C__03.png
+                    |-- dendrogram__2.authentic_2.E.png
+                    |-- stacked_bar_chart__2.authentic_2.E__01.png
+                    `-- stacked_bar_chart__2.authentic_2.E__02.png
 
-10 directories, 12 files
+10 directories, 10 files
