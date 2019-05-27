@@ -225,9 +225,7 @@ class EmptyDendrogram:
 
     def plot_dendrogram(self, p_cutoff, *, result_descriptor=None, figsize=(20, 4)):
         msg_text = "This dendrogram plot is deliberately empty\nbecause there is only a single input item."
-        fig = plot_empty_figure(msg_text, figsize=figsize)
-        if result_descriptor is not None:
-            fig.axes[0].set_title(result_descriptor.plot_title)
+        fig = plot_empty_figure(msg_text, result_descriptor=result_descriptor, figsize=figsize)
         return fig
 
     def get_nodes_below_cutoff(self, p_cutoff, *, include_leaf_nodes):

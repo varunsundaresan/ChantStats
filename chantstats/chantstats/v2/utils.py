@@ -91,10 +91,12 @@ def get_subsample(values, fraction, seed, sort_key=None):
         return sorted(np.take(values, sample_indices), key=sort_key)
 
 
-def plot_empty_figure(msg_text, fontsize=20, figsize=(20, 4)):
+def plot_empty_figure(msg_text, *, result_descriptor=None, fontsize=20, figsize=(20, 4)):
     fig, ax = plt.subplots(figsize=figsize)
     fig.text(0.5, 0.5, msg_text, fontsize=fontsize, color="gray", ha="center", va="center", alpha=1.0)
     ax.get_xaxis().set_visible(False)
     ax.get_yaxis().set_visible(False)
+    if result_descriptor is not None:
+        ax.set_title(result_descriptor.plot_title)
     plt.close(fig)
     return fig
