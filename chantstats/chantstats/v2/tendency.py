@@ -51,6 +51,6 @@ class ModeDegreeTendency(BaseTendency):
 class PCApproaches(BaseTendency):
     def __init__(cls, item):
         second_pcs = [pc2 for (_, pc2) in item.pc_pairs]
-        approach_interval_types = [NotePair(n1, n2).interval_type_v1 for (n1, n2) in item.note_pairs]
+        approach_interval_types = [note_pair.interval_type_v1 for note_pair in item.note_pairs]
         pairs = zip(second_pcs, approach_interval_types)
         super().__init__(pairs, label_first="pc2", label_second="approach")

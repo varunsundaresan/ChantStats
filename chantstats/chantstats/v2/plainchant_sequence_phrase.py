@@ -1,6 +1,7 @@
 import music21
 from .ambitus import calculate_ambitus
 from .mode_degree import ModeDegree
+from .note_pair import NotePair
 from .pitch_class import PC
 
 __all__ = ["PlainchantSequencePhrase"]
@@ -27,7 +28,7 @@ class PlainchantSequencePhrase:
         self.pitch_classes = [PC.from_note(n) for n in self.notes]
         self.mode_degrees = [ModeDegree.from_note_pair(note=n, base_note=self.note_of_final) for n in self.notes]
         self.pc_pairs = list(zip(self.pitch_classes, self.pitch_classes[1:]))
-        self.note_pairs = list(zip(self.notes, self.notes[1:]))
+        self.note_pairs = [NotePair(n1, n2) for (n1, n2) in zip(self.notes, self.notes[1:])]
         self.mode_degree_pairs = list(zip(self.mode_degrees, self.mode_degrees[1:]))
 
     def __repr__(self):
