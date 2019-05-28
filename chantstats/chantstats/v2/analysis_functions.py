@@ -1,5 +1,6 @@
 from .analysis_type import AnalysisType
-from .freqs import PCFreqs, ModeDegreeFreqs, LeapL5Freqs, convert_pc_based_freqs_to_mode_degree_based_freqs
+from .freqs import PCFreqs, ModeDegreeFreqs, L5M5Freqs, L5M5inMDFreqs, convert_pc_based_freqs_to_mode_degree_based_freqs
+from .leaps_and_melodic_outlines import L5M5, L5M5inMD
 from .tendency import PCTendency, ModeDegreeTendency
 
 __all__ = ["get_analysis_function"]
@@ -39,18 +40,27 @@ def calculate_tendency(item, unit, *, using="condprobs_v1"):
 #     return tendency.as_series(using=using)
 
 
-def calculate_relative_leap_L5_freqs(item, *, unit):
-    freqs = LeapL5Freqs.from_note_pairs(item.note_pairs)
-    rel_freqs = freqs.rel_freqs
-
+def calculate_relative_L5M5_freqs(item, *, unit):
     if unit == "pcs":
-        pass  # already in units of PC
+        occurrences_L5 = [L5M5.from_note_pair(mo.framing_note_pair) for mo in item.get_melodic_outlines("P5")]
+        occurrences_M5 = [L5M5.from_note_pair(note_pair) for note_pair in item.note_pairs if note_pair.semitones == 7]
+        all_occurrences = occurrences_L5 + occurrences_M5
+        freqs = L5M5Freqs(all_occurrences)
     elif unit == "mode_degrees":
-        rel_freqs = convert_pc_based_freqs_to_mode_degree_based_freqs(rel_freqs, base_pc=item.final)
+        occurrences_L5 = [
+            L5M5inMD.from_note_pair(mo.framing_note_pair, base_pc=item.final) for mo in item.get_melodic_outlines("P5")
+        ]
+        occurrences_M5 = [
+            L5M5inMD.from_note_pair(note_pair, base_pc=item.final)
+            for note_pair in item.note_pairs
+            if note_pair.semitones == 7
+        ]
+        all_occurrences = occurrences_L5 + occurrences_M5
+        freqs = L5M5inMDFreqs(all_occurrences)
     else:
         raise NotImplementedError()
 
-    return rel_freqs
+    return freqs.rel_freqs
 
 
 def get_analysis_function(analysis):
@@ -63,6 +73,6 @@ def get_analysis_function(analysis):
     # elif analysis == "approaches":
     #     return calculate_approaches
     elif analysis == "leaps_and_melodic_outlines_L5M5":
-        return calculate_relative_leap_L5_freqs
+        return calculate_relative_L5M5_freqs
     else:
         raise NotImplementedError()

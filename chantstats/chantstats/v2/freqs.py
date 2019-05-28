@@ -1,7 +1,7 @@
 import pandas as pd
 import textwrap
 from collections import Counter
-from .leap import LeapL5
+from .leaps_and_melodic_outlines import L5M5, L5M5inMD
 from .mode_degree import ModeDegree
 from .pitch_class import PC
 
@@ -72,19 +72,12 @@ class ModeDegreeFreqs(BaseFreqs):
         return cls([ModeDegree.from_note_pair(note=n, base_note=final) for n in notes])
 
 
-class LeapL5Freqs(BaseFreqs):
-    ALLOWED_VALUES = LeapL5.allowed_values
+class L5M5Freqs(BaseFreqs):
+    ALLOWED_VALUES = L5M5.allowed_values
 
-    @classmethod
-    def from_note_pairs(cls, note_pairs):
-        leaps_found = []
-        for note_pair in note_pairs:
-            try:
-                leaps_found.append(LeapL5.from_note_pair(note_pair))
-            except ValueError:
-                pass
 
-        return cls(leaps_found)
+class L5M5inMDFreqs(BaseFreqs):
+    ALLOWED_VALUES = L5M5inMD.allowed_values
 
 
 # def convert_pc_based_freqs_to_mode_degree_based_freqs(freqs, *, base_pc):
