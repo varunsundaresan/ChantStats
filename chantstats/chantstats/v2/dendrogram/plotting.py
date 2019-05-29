@@ -10,7 +10,7 @@ def prepare_axes_for_stacked_bar_chart(ax, num_bars):
     ax.clear()
     ax.set_xticks(range(num_bars))
     ax.set_xlim(-0.5, num_bars + 0.5)
-    ax.set_ylim(-5.0, 105.0)  # y-axis contains percentages between 0% and 100%
+    ax.set_ylim(0.0, 105.0)  # y-axis contains percentages between 0% and 100%
 
 
 def add_color_palette_legend(ax, *, labels, color_palette):
