@@ -13,6 +13,12 @@ class AnalysisType(str, Enum):
         "LMO",
         "Analysis 3 L&M: L5&M5: ",
     )
+    LEAPS_AND_MELODIC_OUTLINES_L4M4 = (
+        "leaps_and_melodic_outlines_L4M4",
+        "Leaps and Melodic Outlines (L4 & M4)",
+        "LMO",
+        "Analysis 3 L&M: L4&M4: ",
+    )
 
     def __new__(cls, value, desc, desc_short, plot_title_descr, **kwargs):
         obj = str.__new__(cls, value)

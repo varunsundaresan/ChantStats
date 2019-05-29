@@ -1,6 +1,14 @@
 from .analysis_type import AnalysisType
-from .freqs import PCFreqs, ModeDegreeFreqs, L5M5Freqs, L5M5inMDFreqs, convert_pc_based_freqs_to_mode_degree_based_freqs
-from .leaps_and_melodic_outlines import L5M5, L5M5inMD
+from .freqs import (
+    PCFreqs,
+    ModeDegreeFreqs,
+    L5M5Freqs,
+    L5M5inMDFreqs,
+    L4M4Freqs,
+    L4M4inMDFreqs,
+    convert_pc_based_freqs_to_mode_degree_based_freqs,
+)
+from .leaps_and_melodic_outlines import L5M5, L5M5inMD, L4M4, L4M4inMD
 from .tendency import PCTendency, ModeDegreeTendency
 
 __all__ = ["get_analysis_function"]
@@ -63,6 +71,29 @@ def calculate_relative_L5M5_freqs(item, *, unit):
     return freqs.rel_freqs
 
 
+def calculate_relative_L4M4_freqs(item, *, unit):
+    if unit == "pcs":
+        occurrences_L4 = [L4M4.from_note_pair(mo.framing_note_pair) for mo in item.get_melodic_outlines("P4")]
+        occurrences_M4 = [L4M4.from_note_pair(note_pair) for note_pair in item.note_pairs if note_pair.semitones == 5]
+        all_occurrences = occurrences_L4 + occurrences_M4
+        freqs = L4M4Freqs(all_occurrences)
+    elif unit == "mode_degrees":
+        occurrences_L4 = [
+            L4M4inMD.from_note_pair(mo.framing_note_pair, base_pc=item.final) for mo in item.get_melodic_outlines("P4")
+        ]
+        occurrences_M4 = [
+            L4M4inMD.from_note_pair(note_pair, base_pc=item.final)
+            for note_pair in item.note_pairs
+            if note_pair.semitones == 5
+        ]
+        all_occurrences = occurrences_L4 + occurrences_M4
+        freqs = L4M4inMDFreqs(all_occurrences)
+    else:
+        raise NotImplementedError()
+
+    return freqs.rel_freqs
+
+
 def get_analysis_function(analysis):
     analysis = AnalysisType(analysis)
 
@@ -74,5 +105,7 @@ def get_analysis_function(analysis):
     #     return calculate_approaches
     elif analysis == "leaps_and_melodic_outlines_L5M5":
         return calculate_relative_L5M5_freqs
+    elif analysis == "leaps_and_melodic_outlines_L4M4":
+        return calculate_relative_L4M4_freqs
     else:
         raise NotImplementedError()

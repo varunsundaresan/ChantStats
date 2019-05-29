@@ -1,7 +1,7 @@
 import pandas as pd
 import textwrap
 from collections import Counter
-from .leaps_and_melodic_outlines import L5M5, L5M5inMD
+from .leaps_and_melodic_outlines import L5M5, L5M5inMD, L4M4, L4M4inMD
 from .mode_degree import ModeDegree
 from .pitch_class import PC
 
@@ -78,6 +78,14 @@ class L5M5Freqs(BaseFreqs):
 
 class L5M5inMDFreqs(BaseFreqs):
     ALLOWED_VALUES = L5M5inMD.allowed_values
+
+
+class L4M4Freqs(BaseFreqs):
+    ALLOWED_VALUES = L4M4.allowed_values
+
+
+class L4M4inMDFreqs(BaseFreqs):
+    ALLOWED_VALUES = L4M4inMD.allowed_values
 
 
 # def convert_pc_based_freqs_to_mode_degree_based_freqs(freqs, *, base_pc):
