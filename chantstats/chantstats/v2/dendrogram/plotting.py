@@ -183,4 +183,5 @@ def plot_tendency_distributions(
         bar_width=bar_width,
         sort_freqs_ascending=sort_freqs_ascending,
     )
+    ax.set_ylabel("Probability of occurrence (in percent)", rotation="vertical")
     return fig
