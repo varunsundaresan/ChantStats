@@ -42,14 +42,14 @@ class ModalCategoryType(str, Enum):
     def get_output_path_stub_2(self, key):
         if self == "final":
             final = PC(key)
-            return f"1.final_{final.value_with_number_prefix}"
+            return f"{final.value_with_number_prefix}_1.final"
         elif self == "final_and_ambitus":
             final = PC(key[0])
             ambitus = AmbitusType(key[1])
             if ambitus == "authentic":
-                return f"2.authentic_{final.value_with_number_prefix}"
+                return f"{final.value_with_number_prefix}_2.authentic"
             elif ambitus == "plagal":
-                return f"3.plagal_{final.value_with_number_prefix}"
+                return f"{final.value_with_number_prefix}_3.plagal"
             else:
                 raise NotImplementedError(f"Unexpected ambitus: {ambitus}")
         else:  # pragma: no cover
