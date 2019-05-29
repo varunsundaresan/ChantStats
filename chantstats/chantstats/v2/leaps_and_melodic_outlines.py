@@ -13,7 +13,7 @@ class BaseLM:
         self.top_pc = PC(top_pc)
 
     def __repr__(self):
-        return f"pcs{self.bottom_pc}^{self.top_pc}_{self.cls_descr}"
+        return f"PCs{self.bottom_pc}^{self.top_pc}_{self.cls_descr}"
 
     def __eq__(self, other):
         return self.bottom_pc == other.bottom_pc and self.top_pc == other.top_pc
@@ -29,12 +29,12 @@ class BaseLM:
 
     @property
     def str_value(self):
-        return rf"pcs$\stackrel{{{self.top_pc}}}{{{self.bottom_pc}}}$_{self.cls_descr}"
-        # return f"pcs${{\mathrm{{{self.top_pc}}}}}^{{\mathrm{{{self.bottom_pc}}}}}$_L5M5"
+        return rf"PCs$\stackrel{{{self.top_pc}}}{{{self.bottom_pc}}}$_{self.cls_descr}"
+        # return f"PCs${{\mathrm{{{self.top_pc}}}}}^{{\mathrm{{{self.bottom_pc}}}}}$_L5M5"
 
     @property
     def label_for_plots(self):
-        return rf"pcs$\stackrel{{{self.top_pc.label_for_plots}}}{{{self.bottom_pc.label_for_plots}}}$_L5M5"
+        return rf"PCs$\stackrel{{{self.top_pc.label_for_plots}}}{{{self.bottom_pc.label_for_plots}}}$_L5M5"
 
     @classmethod
     def from_note_pair(cls, note_pair):
@@ -57,7 +57,7 @@ class BaseLMinMD:
         self.top_md = top_md
 
     def __repr__(self):
-        return f"mds{self.bottom_md}^{self.top_md}_{self.cls_descr}"
+        return f"MDs{self.bottom_md}^{self.top_md}_{self.cls_descr}"
 
     def __eq__(self, other):
         return self.bottom_md == other.bottom_md and self.top_md == other.top_md
@@ -73,12 +73,12 @@ class BaseLMinMD:
 
     @property
     def str_value(self):
-        return rf"mds$\stackrel{{{self.top_md.descr}}}{{{self.bottom_md.descr}}}$_{self.cls_descr}"
-        # return f"pcs${{\mathrm{{{self.top_md.descr}}}}}^{{\mathrm{{{self.bottom_md.descr}}}}}$_{self.cls_descr}"
+        return rf"MDs$\stackrel{{{self.top_md.descr}}}{{{self.bottom_md.descr}}}$_{self.cls_descr}"
+        # return f"MDs${{\mathrm{{{self.top_md.descr}}}}}^{{\mathrm{{{self.bottom_md.descr}}}}}$_{self.cls_descr}"
 
     @property
     def label_for_plots(self):
-        return rf"mds$\stackrel{{{self.top_md.label_for_plots}}}{{{self.bottom_md.label_for_plots}}}$_L5"
+        return rf"MDs$\stackrel{{{self.top_md.label_for_plots}}}{{{self.bottom_md.label_for_plots}}}$_L5"
 
     @classmethod
     def from_note_pair(cls, note_pair, *, base_pc):
