@@ -36,7 +36,7 @@ def test_folder_structure_for_exported_results(tmpdir, diff_reporter):
         units=["pcs", "mode_degrees"],
         modal_category_keys=[("E", "authentic")],
     )
-    results_leaps_L5 = calculate_results(
+    results_L5M5 = calculate_results(
         pieces=pieces,
         analysis="leaps_and_melodic_outlines_L5M5",
         sampling_fraction=1.0,
@@ -47,9 +47,21 @@ def test_folder_structure_for_exported_results(tmpdir, diff_reporter):
         units=["pcs", "mode_degrees"],
         modal_category_keys=[("E", "authentic")],
     )
+    results_L4M4 = calculate_results(
+        pieces=pieces,
+        analysis="leaps_and_melodic_outlines_L4M4",
+        sampling_fraction=1.0,
+        sampling_seed=None,
+        min_num_phrases_per_monomodal_section=3,
+        min_num_notes_per_monomodal_section=80,
+        modes=["final_and_ambitus"],
+        units=["pcs", "mode_degrees"],
+        modal_category_keys=[("E", "authentic")],
+    )
     export_results(results_pc_freqs, output_root_dir, p_cutoff=0.4)
     export_results(results_tendency, output_root_dir, p_cutoff=0.4)
-    export_results(results_leaps_L5, output_root_dir, p_cutoff=0.4)
+    export_results(results_L5M5, output_root_dir, p_cutoff=0.4)
+    export_results(results_L4M4, output_root_dir, p_cutoff=0.4)
 
     exported_files = list_directory_tree(output_root_dir)
     verify(exported_files, diff_reporter)
@@ -70,7 +82,7 @@ def test_run_analyses_and_export_results(tmpdir):
 
     pieces = load_pieces(repertoire_and_genre, cfg)
 
-    for analysis in ["pc_freqs", "tendency", "leaps_and_melodic_outlines_L5M5"]:
+    for analysis in ["pc_freqs", "tendency", "leaps_and_melodic_outlines_L5M5", "leaps_and_melodic_outlines_L4M4"]:
         logger.info(f"Calculating results for analysis '{analysis}'")
         results = calculate_results(
             pieces=pieces,
