@@ -159,9 +159,11 @@ def test_initialisation_methods():
     md1 = ModeDegree.from_pc_pair(pc="A", base_pc="E")
     assert md1.value == 4
     assert md1.alter == 0
+    assert md1.base_pc == PC.E
 
     md2 = ModeDegree.from_other(md1)
     assert md2.value == 4
     assert md2.alter == 0
+    assert md2.base_pc == PC.E
 
     assert md2 == md1

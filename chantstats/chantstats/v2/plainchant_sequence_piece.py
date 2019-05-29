@@ -146,10 +146,3 @@ class PlainchantSequencePieces:
             min_num_phrases=min_num_phrases_per_monomodal_section,
             min_num_notes=min_num_notes_per_monomodal_section,
         )
-
-
-def load_pieces(repertoire_and_genre, cfg, filename_pattern=None):
-    if repertoire_and_genre == "plainchant_sequences":
-        return PlainchantSequencePieces.from_musicxml_files(cfg, filename_pattern=filename_pattern)
-    else:
-        raise NotImplementedError()

@@ -7,10 +7,11 @@ __all__ = ["ModeDegree"]
 
 
 class ModeDegree:
-    def __init__(self, *, value, alter=0):
+    def __init__(self, *, value, alter=0, base_pc=None):  # TODO: should really make base_pc mandatory...
         assert value in [1, 2, 3, 4, 5, 6, 7]
         assert alter in [0, -1.0, +1.0]
 
+        self.base_pc = base_pc
         self.value = value
         self.alter = alter
         self.prefix = "flat-" if self.alter == -1.0 else ("#" if self.alter == +1.0 else "")
@@ -42,14 +43,14 @@ class ModeDegree:
                 f"Unexpected alteration of note '{note.nameWithOctave}' compared to base note '{base_note.nameWithOctave}'"
             )
 
-        return ModeDegree(value=diatonic_distance, alter=alter)
+        return ModeDegree(base_pc=PC.from_note(base_note), value=diatonic_distance, alter=alter)
 
     @classmethod
     def from_other(cls, value):
         if isinstance(value, ModeDegree):
             return value
         elif isinstance(value, int):
-            return ModeDegree(value=value)
+            return ModeDegree(base_pc=None, value=value)
         else:
             raise NotImplementedError()
 
@@ -136,6 +137,12 @@ df_mode_degrees = pd.DataFrame(
 
 
 df_mode_degrees = df_mode_degrees.applymap(convert_to_mode_degree)
+for base_pc in df_mode_degrees.columns:
+    for pc in df_mode_degrees.index:
+        # Set base PC for the entries in df_mode_degrees.
+        # TODO: this could be tidied up (we shouldn't need
+        # to set this manually here)
+        df_mode_degrees[base_pc][pc].base_pc = base_pc
 
 
 def convert_pc_to_mode_degree(self, *, base_pc):
