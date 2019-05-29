@@ -8,16 +8,16 @@ class AnalysisType(str, Enum):
     TENDENCY = ("tendency", "Tendency", "T", "Analysis 2 Tendency: ")
     # APPROACHES = ("approaches", "Leaps and Melodic Outlines", "L+M", "Analysis 3 L&M: ")
     LEAPS_AND_MELODIC_OUTLINES_L5M5 = (
-        "leaps_and_melodic_outlines_L5M5",
+        "L_and_M__L5_u_M5",
         "Leaps and Melodic Outlines (L5 & M5)",
         "LMO",
-        "Analysis 3 L&M: L5&M5: ",
+        "Analysis 3 L&M: L5 ∪ M5: ",
     )
     LEAPS_AND_MELODIC_OUTLINES_L4M4 = (
-        "leaps_and_melodic_outlines_L4M4",
+        "L_and_M__L4_u_L4",
         "Leaps and Melodic Outlines (L4 & M4)",
         "LMO",
-        "Analysis 3 L&M: L4&M4: ",
+        "Analysis 3 L&M: L4 ∪ M4: ",
     )
 
     def __new__(cls, value, desc, desc_short, plot_title_descr, **kwargs):
