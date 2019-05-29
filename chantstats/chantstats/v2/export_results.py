@@ -133,7 +133,7 @@ def export_results(results, output_root_dir, p_cutoff=0.4, include_leaf_nodes_in
         elif result_descriptor.analysis == "tendency":
             # export_stacked_bar_charts_for_tendency(nodes_below_cutoff, output_root_dir, result_descriptor)
             export_individual_stacked_bar_charts_for_tendency(nodes_below_cutoff, output_root_dir, result_descriptor)
-        elif result_descriptor.analysis == "leaps_and_melodic_outlines_L5M5":
+        elif result_descriptor.analysis == "L_and_M__L5_u_M5" or result_descriptor.analysis == "L_and_M__L4_u_M4":
             export_stacked_bar_chart_for_leaps_and_melodic_outlines(
                 nodes_below_cutoff, output_root_dir, result_descriptor
             )

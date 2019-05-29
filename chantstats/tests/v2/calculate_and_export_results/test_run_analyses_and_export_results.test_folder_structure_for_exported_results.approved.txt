@@ -1,7 +1,7 @@
 .
 `-- p_cutoff_0.40
     `-- chant
-        |-- leaps_and_melodic_outlines_L4M4
+        |-- L_and_M__L4_u_M4
         |   `-- sequences
         |       |-- mode_degrees
         |       |   |-- dendrogram__2.E_2.authentic.png
@@ -9,7 +9,7 @@
         |       `-- pcs
         |           |-- dendrogram__2.E_2.authentic.png
         |           `-- stacked_bar_chart__2.E_2.authentic.png
-        |-- leaps_and_melodic_outlines_L5M5
+        |-- L_and_M__L5_u_M5
         |   `-- sequences
         |       |-- mode_degrees
         |       |   |-- dendrogram__2.E_2.authentic.png

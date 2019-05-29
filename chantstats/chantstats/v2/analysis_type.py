@@ -14,7 +14,7 @@ class AnalysisType(str, Enum):
         "Analysis 3 L&M: L5 ∪ M5: ",
     )
     LEAPS_AND_MELODIC_OUTLINES_L4M4 = (
-        "L_and_M__L4_u_L4",
+        "L_and_M__L4_u_M4",
         "Leaps and Melodic Outlines (L4 & M4)",
         "LMO",
         "Analysis 3 L&M: L4 ∪ M4: ",

@@ -38,7 +38,7 @@ def test_folder_structure_for_exported_results(tmpdir, diff_reporter):
     )
     results_L5M5 = calculate_results(
         pieces=pieces,
-        analysis="leaps_and_melodic_outlines_L5M5",
+        analysis="L_and_M__L5_u_M5",
         sampling_fraction=1.0,
         sampling_seed=None,
         min_num_phrases_per_monomodal_section=3,
@@ -49,7 +49,7 @@ def test_folder_structure_for_exported_results(tmpdir, diff_reporter):
     )
     results_L4M4 = calculate_results(
         pieces=pieces,
-        analysis="leaps_and_melodic_outlines_L4M4",
+        analysis="L_and_M__L4_u_M4",
         sampling_fraction=1.0,
         sampling_seed=None,
         min_num_phrases_per_monomodal_section=3,
@@ -82,7 +82,7 @@ def test_run_analyses_and_export_results(tmpdir):
 
     pieces = load_pieces(repertoire_and_genre, cfg)
 
-    for analysis in ["pc_freqs", "tendency", "leaps_and_melodic_outlines_L5M5", "leaps_and_melodic_outlines_L4M4"]:
+    for analysis in ["pc_freqs", "tendency", "L_and_M__L5_u_M5", "L_and_M__L4_u_M4"]:
         logger.info(f"Calculating results for analysis '{analysis}'")
         results = calculate_results(
             pieces=pieces,
