@@ -142,7 +142,9 @@ L4M4.allowed_values = [
 ]
 
 L4M4inMD.allowed_values = [
+    L4M4inMD(bottom_md=ModeDegree(value=1), top_md=ModeDegree(value=4, alter=-1)),
     L4M4inMD(bottom_md=ModeDegree(value=1), top_md=ModeDegree(value=4)),
+    L4M4inMD(bottom_md=ModeDegree(value=2), top_md=ModeDegree(value=5, alter=-1)),
     L4M4inMD(bottom_md=ModeDegree(value=2), top_md=ModeDegree(value=5)),
     L4M4inMD(bottom_md=ModeDegree(value=3), top_md=ModeDegree(value=6)),
     L4M4inMD(bottom_md=ModeDegree(value=3), top_md=ModeDegree(value=6, alter=-1)),
