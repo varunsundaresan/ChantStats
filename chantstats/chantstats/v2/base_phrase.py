@@ -36,7 +36,7 @@ class BasePhrase:
     def __repr__(self):
         return f"<Phrase {self.phrase_number} of piece {self.piece}>"
 
-    def get_melodic_outlines(self, interval, *, allow_thirds=False):
+    def get_melodic_outlines(self, interval_name, *, allow_thirds=False):
         return get_melodic_outlines_from_candidates(
-            self._melodic_outline_candidates, interval, allow_thirds=allow_thirds
+            self._melodic_outline_candidates, interval_name, allow_thirds=allow_thirds
         )

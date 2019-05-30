@@ -25,7 +25,7 @@ def calculate_melodic_outline_candidates_for_phrase(phrase):
     return mo_candidates
 
 
-def get_melodic_outlines_from_candidates(melodic_outline_candidates, interval, *, allow_thirds=False):
+def get_melodic_outlines_from_candidates(melodic_outline_candidates, interval_name, *, allow_thirds=False):
     """
     Parameters
     ----------
@@ -35,7 +35,7 @@ def get_melodic_outlines_from_candidates(melodic_outline_candidates, interval, *
     return [
         MelodicOutline(notes)
         for notes in melodic_outline_candidates
-        if has_framing_interval(notes, interval) and check_step_size(notes, allow_thirds)
+        if has_framing_interval(notes, interval_name) and check_step_size(notes, allow_thirds)
     ]
 
 
