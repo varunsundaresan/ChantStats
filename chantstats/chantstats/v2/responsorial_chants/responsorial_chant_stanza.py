@@ -7,6 +7,7 @@ class NonmodulatoryResponsorialChantStanza:
         self.num_phrases = len(self.phrases)
         self.num_notes = len(self.notes)
         self.final = self.phrases[-1].final
+        self.descr = f"{self.piece.descr_stub}.{self.final}.pp_{'.'.join([str(n) for n in self.phrase_numbers])}"
 
     def __repr__(self):
         s = (
