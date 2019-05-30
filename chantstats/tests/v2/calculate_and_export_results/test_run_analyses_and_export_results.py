@@ -76,25 +76,26 @@ def test_run_analyses_and_export_results(tmpdir):
     logger.info(f"Using output root dir: '{output_root_dir}'")
 
     cfg = ChantStatsConfig.from_env()
-    repertoire_and_genre = "plainchant_sequences"
+    repertoires_and_genres = ["plainchant_sequences", "responsorial_chants"]
     p_cutoff = 0.4
     sampling_fraction = 0.7
     sampling_seed = 99999
     min_num_phrases_per_monomodal_section = 3
     min_num_notes_per_monomodal_section = 80
 
-    pieces = load_pieces(repertoire_and_genre, cfg)
+    for rep_and_genre in repertoires_and_genres:
+        pieces = load_pieces(rep_and_genre, cfg)
 
-    for analysis in ["pc_freqs", "tendency", "L_and_M__L5_u_M5", "L_and_M__L4_u_M4"]:
-        logger.info(f"Calculating results for analysis '{analysis}'")
-        results = calculate_results(
-            pieces=pieces,
-            analysis=analysis,
-            sampling_fraction=sampling_fraction,
-            sampling_seed=sampling_seed,
-            min_num_phrases_per_monomodal_section=min_num_phrases_per_monomodal_section,
-            min_num_notes_per_monomodal_section=min_num_notes_per_monomodal_section,
-        )
+        for analysis in ["pc_freqs", "tendency", "L_and_M__L5_u_M5", "L_and_M__L4_u_M4"]:
+            logger.info(f"Calculating results for analysis '{analysis}'")
+            results = calculate_results(
+                pieces=pieces,
+                analysis=analysis,
+                sampling_fraction=sampling_fraction,
+                sampling_seed=sampling_seed,
+                min_num_phrases_per_monomodal_section=min_num_phrases_per_monomodal_section,
+                min_num_notes_per_monomodal_section=min_num_notes_per_monomodal_section,
+            )
 
-        logger.info(f"Exporting results for analysis '{analysis}'")
-        export_results(results, output_root_dir, p_cutoff=p_cutoff)
+            logger.info(f"Exporting results for analysis '{analysis}'")
+            export_results(results, output_root_dir, p_cutoff=p_cutoff)
