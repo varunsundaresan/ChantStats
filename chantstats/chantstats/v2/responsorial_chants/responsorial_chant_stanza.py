@@ -36,6 +36,12 @@ class NonmodulatoryResponsorialChantStanza:
         )
         return s
 
+    def __lt__(self, other):
+        return (self.piece.descr_stub, tuple(self.phrase_numbers)) < (
+            other.piece.descr_stub,
+            tuple(other.phrase_numbers),
+        )
+
     def get_melodic_outlines(self, interval, *, allow_thirds=False):
         return sum([p.get_melodic_outlines(interval, allow_thirds=allow_thirds) for p in self.phrases], [])
 
