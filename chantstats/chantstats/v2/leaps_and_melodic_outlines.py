@@ -50,14 +50,15 @@ class BaseLM:
 
 
 class BaseLMinMD:
-    def __init__(self, *, bottom_md, top_md):
+    def __init__(self, *, bottom_md, top_md, base_pc=None):
         assert isinstance(bottom_md, ModeDegree)
         assert isinstance(top_md, ModeDegree)
         self.bottom_md = bottom_md
         self.top_md = top_md
+        self.base_pc = base_pc
 
     def __repr__(self):
-        return f"MDs{self.bottom_md}^{self.top_md}_{self.cls_descr}"
+        return f"<MDs{self.bottom_md.str_descr}^{self.top_md.str_descr}_{self.cls_descr}, base_pc={self.base_pc}>"
 
     def __eq__(self, other):
         return self.bottom_md == other.bottom_md and self.top_md == other.top_md
@@ -87,7 +88,7 @@ class BaseLMinMD:
             raise ValueError(f"Not a leap L5: {note_pair}")
         bottom_md = ModeDegree.from_pc_pair(pc=note_pair.bottom_pc, base_pc=base_pc)
         top_md = ModeDegree.from_pc_pair(pc=note_pair.top_pc, base_pc=base_pc)
-        return cls(bottom_md=bottom_md, top_md=top_md)
+        return cls(bottom_md=bottom_md, top_md=top_md, base_pc=base_pc)
 
 
 class L5M5(BaseLM):

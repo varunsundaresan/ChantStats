@@ -17,6 +17,7 @@ class ModeDegree:
         self.prefix = "flat-" if self.alter == -1.0 else ("#" if self.alter == +1.0 else "")
         self.descr = f"{self.prefix}{self.value}"
         self.str_prefix = "♭" if self.alter == -1.0 else ("♯" if self.alter == +1.0 else "")
+        self.str_descr = f"{self.str_prefix}{self.value}"
         # self.str_value = f"{self.str_prefix}{self.value}\u0302"  # same as 'descr', but with a hat symbol over the number
         self.str_value = (
             f"{self.str_prefix}$\widehat{self.value}$"
