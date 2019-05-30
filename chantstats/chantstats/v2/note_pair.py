@@ -28,13 +28,9 @@ class NotePair:
             self.bottom_pc = self.pc2
             self.top_pc = self.pc1
 
-    @property
-    def is_P4(self):
-        return self.interval.name == "P4"
-
-    @property
-    def is_P5(self):
-        return self.interval.name == "P5"
+    def is_interval(self, interval_name):
+        assert isinstance(interval_name, str)
+        return self.interval.name == interval_name
 
     def __repr__(self):
         return f"<NotePair: ({self.note1}, {self.note2})>"
