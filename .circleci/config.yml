@@ -29,10 +29,31 @@ jobs:
             cd chantstats
             pipenv run pytest --cov=chantstats --cov-report=term-missing -svx tests/v2/unit_tests/
       - run:
-          name: "Run slow tests; calculate and export results"
+          name: "Run slow tests"
           command: |
             cd chantstats
-            pipenv run pytest -svx --runslow --cov=chantstats --cov-report=term-missing tests/v2/calculate_and_export_results/
+            pipenv run pytest -svx --runslow --cov=chantstats --cov-report=term-missing tests/v2/calculate_and_export_results/ -k test_folder_structure_for_exported_results
+      - run:
+          name: "Calculate and export results for plainchant sequences"
+          command: |
+            cd chantstats
+            pipenv run python tests/v2/calculate_and_export_results/run_analyses_and_export_result.py plainchant_sequences
+            touch .results-plainchant-sequences-done
+          background: true
+      - run:
+          name: "Calculate and export results for responsorial chants"
+          command: |
+            cd chantstats
+            pipenv run python tests/v2/calculate_and_export_results/run_analyses_and_export_result.py responsorial_chants
+            touch .results-responsorial-chants-done
+          background: true
+      - run:
+          name: Wait for calculation of results to complete
+          command: |
+            while [ ! -f ".results-plainchant-sequences-done" ] || [ ! -f ".results-responsorial-chants-done" ]; do
+              echo "Waiting for calculation of results to complete"
+              sleep 5
+            done
       - run: cd /tmp/analysis_results/ && zip -r $ZIP_FILE_NAME $RESULTS_FOLDER_NAME
       - store_artifacts:
           path: /tmp/analysis_results
