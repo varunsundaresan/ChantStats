@@ -27,8 +27,10 @@ class MonomodalSection:
             )
             raise ValueError(error_msg)
         self.note_of_final = self.phrases[0].notes[-1]
+        assert self.note_of_final == self.phrases[-1].notes[-1]  # sanity check
         self.lowest_note = min([p.lowest_note for p in self.phrases])
         self.final = self.phrases[0].phrase_final
+        assert self.final == self.phrases[-1].phrase_final  # sanity check
         self.ambitus = calculate_ambitus(self)
         self.descr = f"s{self.piece.number:02d}.{self.final}.mm_{self.idx_start:02d}_{self.idx_end:02d}"
 

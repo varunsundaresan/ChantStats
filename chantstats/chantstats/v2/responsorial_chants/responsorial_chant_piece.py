@@ -107,5 +107,7 @@ class ResponsorialChantPieces:
         pieces = load_responsorial_chant_pieces(musicxml_path, pattern=filename_pattern)
         return cls(pieces)
 
-    def get_analysis_inputs(self):
+    def get_analysis_inputs(
+        self, mode=None, min_num_phrases_per_monomodal_section=None, min_num_notes_per_monomodal_section=None
+    ):
         return sum([piece.get_stanzas_without_modulatory_phrases() for piece in self.pieces], [])

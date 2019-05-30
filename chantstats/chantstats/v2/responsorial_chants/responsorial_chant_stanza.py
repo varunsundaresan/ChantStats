@@ -1,3 +1,8 @@
+from ..ambitus import calculate_ambitus
+
+__all__ = ["ResponsorialChantStanza", "NonmodulatoryResponsorialChantStanza"]
+
+
 class NonmodulatoryResponsorialChantStanza:
     def __init__(self, piece, phrase_numbers):
         self.piece = piece
@@ -6,8 +11,19 @@ class NonmodulatoryResponsorialChantStanza:
         self.notes = sum([p.notes for p in self.phrases], [])
         self.num_phrases = len(self.phrases)
         self.num_notes = len(self.notes)
+        self.note_of_final = self.phrases[-1].notes[-1]
+        self.lowest_note = min(
+            [p.lowest_note for p in self.phrases]
+        )  # TODO: should this also consider modulatory phrases?!
         self.final = self.phrases[-1].final
+        self.ambitus = calculate_ambitus(self)
         self.descr = f"{self.piece.descr_stub}.{self.final}.pp_{'.'.join([str(n) for n in self.phrase_numbers])}"
+
+        self.pitch_classes = sum([p.pitch_classes for p in self.phrases], [])
+        self.pc_pairs = sum([p.pc_pairs for p in self.phrases], [])
+        self.note_pairs = sum([p.note_pairs for p in self.phrases], [])
+        self.mode_degrees = sum([p.mode_degrees for p in self.phrases], [])
+        self.mode_degree_pairs = sum([p.mode_degree_pairs for p in self.phrases], [])
 
     def __repr__(self):
         s = (
@@ -19,6 +35,9 @@ class NonmodulatoryResponsorialChantStanza:
             f">"
         )
         return s
+
+    def get_melodic_outlines(self, interval, *, allow_thirds=False):
+        return sum([p.get_melodic_outlines(interval, allow_thirds=allow_thirds) for p in self.phrases], [])
 
 
 class ResponsorialChantStanza:
