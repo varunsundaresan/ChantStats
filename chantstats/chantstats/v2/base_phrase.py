@@ -40,3 +40,6 @@ class BasePhrase:
         return get_melodic_outlines_from_candidates(
             self._melodic_outline_candidates, interval_name, allow_thirds=allow_thirds
         )
+
+    def get_note_pairs_with_interval(self, interval_name):
+        return [x for x in self.note_pairs if x.is_interval(interval_name)]
