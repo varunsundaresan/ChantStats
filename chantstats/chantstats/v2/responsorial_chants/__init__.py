@@ -1,1 +1,3 @@
 from .responsorial_chant_phrase import ResponsorialChantPhrase
+from .responsorial_chant_piece import ResponsorialChantPiece
+from .responsorial_chant_stanza import ResponsorialChantStanza
