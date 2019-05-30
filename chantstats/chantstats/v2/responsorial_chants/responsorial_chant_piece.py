@@ -1,5 +1,6 @@
 import music21
 import os
+import re
 from .responsorial_chant_phrase import ResponsorialChantPhrase
 from .responsorial_chant_stanza import ResponsorialChantStanza
 
@@ -20,6 +21,7 @@ class ResponsorialChantPiece:
             raise TypeError(f"Cannot load piece from object of type: '{type(stream_or_filename)}'")
 
         # TODO: extract stub_descr from filename
+        self.descr_stub = re.match("^(F3[MO]\d\dps).*\.xml$", self.filename_short).group(1)
 
         num_parts = len(self.stream.parts)
         if num_parts != 1:  # pragma: no cover
@@ -44,3 +46,6 @@ class ResponsorialChantPiece:
             ResponsorialChantStanza(self, idx_start, idx_end)
             for (idx_start, idx_end) in zip(stanza_starts, stanza_ends)
         ]
+
+    def get_analysis_inputs(self):
+        return [stanza.without_modulatory_phrases() for stanza in self.get_stanzas()]
