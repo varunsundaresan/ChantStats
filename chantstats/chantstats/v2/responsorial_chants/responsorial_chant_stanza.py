@@ -42,8 +42,11 @@ class NonmodulatoryResponsorialChantStanza:
             tuple(other.phrase_numbers),
         )
 
-    def get_melodic_outlines(self, interval, *, allow_thirds=False):
-        return sum([p.get_melodic_outlines(interval, allow_thirds=allow_thirds) for p in self.phrases], [])
+    def get_melodic_outlines(self, interval_name, *, allow_thirds=False):
+        return sum([p.get_melodic_outlines(interval_name, allow_thirds=allow_thirds) for p in self.phrases], [])
+
+    def get_note_pairs_with_interval(self, interval_name):
+        return sum([p.get_note_pairs_with_interval(interval_name) for p in self.phrases], [])
 
 
 class ResponsorialChantStanza:
