@@ -73,18 +73,18 @@ def calculate_relative_L5M5_freqs(item, *, unit):
 
 def calculate_relative_L4M4_freqs(item, *, unit):
     if unit == "pcs":
-        occurrences_L4 = [L4M4.from_note_pair(mo.framing_note_pair) for mo in item.get_melodic_outlines("P4")]
-        occurrences_M4 = [L4M4.from_note_pair(note_pair) for note_pair in item.note_pairs if note_pair.semitones == 5]
+        occurrences_L4 = [L4M4.from_note_pair(note_pair) for note_pair in item.note_pairs if note_pair.semitones == 5]
+        occurrences_M4 = [L4M4.from_note_pair(mo.framing_note_pair) for mo in item.get_melodic_outlines("P4")]
         all_occurrences = occurrences_L4 + occurrences_M4
         freqs = L4M4Freqs(all_occurrences)
     elif unit == "mode_degrees":
         occurrences_L4 = [
-            L4M4inMD.from_note_pair(mo.framing_note_pair, base_pc=item.final) for mo in item.get_melodic_outlines("P4")
-        ]
-        occurrences_M4 = [
             L4M4inMD.from_note_pair(note_pair, base_pc=item.final)
             for note_pair in item.note_pairs
             if note_pair.semitones == 5
+        ]
+        occurrences_M4 = [
+            L4M4inMD.from_note_pair(mo.framing_note_pair, base_pc=item.final) for mo in item.get_melodic_outlines("P4")
         ]
         all_occurrences = occurrences_L4 + occurrences_M4
         freqs = L4M4inMDFreqs(all_occurrences)
