@@ -161,6 +161,41 @@ set3_12_with_colors_swapped = [
     "#D9D9D9",
 ]
 
+set_3_12_with_colors_swapped_plus_one = set3_12_with_colors_swapped + ["#09c553"]
+
+i_want_hue_13_v01 = [
+    "#e8432b",
+    "#00d094",
+    "#d266ed",
+    "#65b81d",
+    "#ff75d3",
+    "#116100",
+    "#679bff",
+    "#c87000",
+    "#82da78",
+    "#a01749",
+    "#847300",
+    "#ff9db9",
+    "#78462a",
+]
+
+i_want_hue_14_v01 = [
+    "#cc9b75",
+    "#006443",
+    "#01c3d4",
+    "#60520b",
+    "#68dca0",
+    "#90276e",
+    "#ff9f62",
+    "#858700",
+    "#ca0049",
+    "#e09300",
+    "#a835bb",
+    "#aad42c",
+    "#c4240b",
+    "#30a81e",
+]
+
 
 def get_color_palette_for_unit(unit):
     unit = UnitType(unit)
@@ -173,7 +208,9 @@ def get_color_palette_for_unit(unit):
     elif unit.value == "mode_degrees":
         # # return palettable.cartocolors.qualitative.Pastel_10.hex_colors
         # return palettable.colorbrewer.qualitative.Set3_12.hex_colors
-        return set3_12_with_colors_swapped
+        # return set3_12_with_colors_swapped
+        # return set_3_12_with_colors_swapped_plus_one
+        return i_want_hue_14_v01
         # # return palettable.matplotlib.Viridis_12.hex_colors
         # # return palettable.tableau.PurpleGray_12.hex_colors
         # # return sns.color_palette("muted", 12).as_hex()  # WARNING: this contains only 10 distinct colors!!!
