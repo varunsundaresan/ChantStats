@@ -71,6 +71,25 @@ def calculate_relative_L5M5_freqs(item, *, unit):
     return freqs.rel_freqs
 
 
+def calculate_occurrences(item, *, unit, interval_name, cls_pcs, cls_mds):
+    note_pairs_filtered = [x for x in item.note_pairs if x.is_interval(interval_name)]
+    if unit == "pcs":
+        occurrences = [cls_pcs.from_note_pair(note_pair) for note_pair in note_pairs_filtered]
+    elif unit == "mode_degrees":
+        occurrences = [cls_mds.from_note_pair(note_pair, base_pc=item.final) for note_pair in note_pairs_filtered]
+    else:
+        raise NotImplementedError()
+    return occurrences
+
+
+def calculate_L4_occurrences(item, *, unit):
+    return calculate_occurrences(item, unit=unit, interval_name="P4", cls_pcs=L4M4, cls_mds=L4M4inMD)
+
+
+def calculate_L5_occurrences(item, *, unit):
+    return calculate_occurrences(item, unit=unit, interval_name="P5", cls_pcs=L5M5, cls_mds=L5M5inMD)
+
+
 def calculate_relative_L4M4_freqs(item, *, unit):
     if unit == "pcs":
         occurrences_L4 = [L4M4.from_note_pair(note_pair) for note_pair in item.note_pairs if note_pair.semitones == 5]
