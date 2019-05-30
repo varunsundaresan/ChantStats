@@ -48,29 +48,6 @@ def calculate_tendency(item, unit, *, using="condprobs_v1"):
 #     return tendency.as_series(using=using)
 
 
-def calculate_relative_L5M5_freqs(item, *, unit):
-    if unit == "pcs":
-        occurrences_L5 = [L5M5.from_note_pair(mo.framing_note_pair) for mo in item.get_melodic_outlines("P5")]
-        occurrences_M5 = [L5M5.from_note_pair(note_pair) for note_pair in item.note_pairs if note_pair.semitones == 7]
-        all_occurrences = occurrences_L5 + occurrences_M5
-        freqs = L5M5Freqs(all_occurrences)
-    elif unit == "mode_degrees":
-        occurrences_L5 = [
-            L5M5inMD.from_note_pair(mo.framing_note_pair, base_pc=item.final) for mo in item.get_melodic_outlines("P5")
-        ]
-        occurrences_M5 = [
-            L5M5inMD.from_note_pair(note_pair, base_pc=item.final)
-            for note_pair in item.note_pairs
-            if note_pair.semitones == 7
-        ]
-        all_occurrences = occurrences_L5 + occurrences_M5
-        freqs = L5M5inMDFreqs(all_occurrences)
-    else:
-        raise NotImplementedError()
-
-    return freqs.rel_freqs
-
-
 def calculate_leap_occurrences(item, *, unit, interval_name, cls_pcs, cls_mds):
     note_pairs_filtered = item.get_note_pairs_with_interval(interval_name)
     if unit == "pcs":
@@ -110,22 +87,27 @@ def calculate_M5_occurrences(item, *, unit):
 
 
 def calculate_relative_L4M4_freqs(item, *, unit):
+    occurrences_L4 = calculate_L4_occurrences(item, unit=unit)
+    occurrences_M4 = calculate_M4_occurrences(item, unit=unit)
+    all_occurrences = occurrences_L4 + occurrences_M4
     if unit == "pcs":
-        occurrences_L4 = [L4M4.from_note_pair(note_pair) for note_pair in item.note_pairs if note_pair.semitones == 5]
-        occurrences_M4 = [L4M4.from_note_pair(mo.framing_note_pair) for mo in item.get_melodic_outlines("P4")]
-        all_occurrences = occurrences_L4 + occurrences_M4
         freqs = L4M4Freqs(all_occurrences)
     elif unit == "mode_degrees":
-        occurrences_L4 = [
-            L4M4inMD.from_note_pair(note_pair, base_pc=item.final)
-            for note_pair in item.note_pairs
-            if note_pair.semitones == 5
-        ]
-        occurrences_M4 = [
-            L4M4inMD.from_note_pair(mo.framing_note_pair, base_pc=item.final) for mo in item.get_melodic_outlines("P4")
-        ]
-        all_occurrences = occurrences_L4 + occurrences_M4
         freqs = L4M4inMDFreqs(all_occurrences)
+    else:
+        raise NotImplementedError()
+
+    return freqs.rel_freqs
+
+
+def calculate_relative_L5M5_freqs(item, *, unit):
+    occurrences_L5 = calculate_L5_occurrences(item, unit=unit)
+    occurrences_M5 = calculate_M5_occurrences(item, unit=unit)
+    all_occurrences = occurrences_L5 + occurrences_M5
+    if unit == "pcs":
+        freqs = L5M5Freqs(all_occurrences)
+    elif unit == "mode_degrees":
+        freqs = L5M5inMDFreqs(all_occurrences)
     else:
         raise NotImplementedError()
 
