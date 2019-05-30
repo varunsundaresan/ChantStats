@@ -1,0 +1,1 @@
+from .responsorial_chant_phrase import ResponsorialChantPhrase
