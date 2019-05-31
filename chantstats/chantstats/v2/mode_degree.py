@@ -34,24 +34,24 @@ class ModeDegree:
             if note.name == "B-":
                 alter = 0
             elif note.name == "B":
-                raise NotImplementedError()
+                alter = +1
             else:
                 # all other cases are covered
                 pass
 
-        # if base_note.name == "F#":
-        #     if note.name == "F#":
-        #         alter = 0
-        #     elif note.name == "F":
-        #         raise NotImplementedError()
-        #     else:
-        #         # all other cases are covered
-        #         pass
+        if base_note.name == "F#":
+            if note.name == "F#":
+                alter = 0
+            elif note.name == "F":
+                alter = -1
+            else:
+                # all other cases are covered
+                pass
 
-        if alter not in [0, -1.0]:  # pragma: no cover
-            raise NotImplementedError(
-                f"Unexpected alteration of note '{note.nameWithOctave}' compared to base note '{base_note.nameWithOctave}'"
-            )
+        # if alter not in [0, -1.0]:  # pragma: no cover
+        #     raise NotImplementedError(
+        #         f"Unexpected alteration of note '{note.nameWithOctave}' compared to base note '{base_note.nameWithOctave}'"
+        #     )
 
         return ModeDegree(base_pc=PC.from_note(base_note), value=diatonic_distance, alter=alter)
 
