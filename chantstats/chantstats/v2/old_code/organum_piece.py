@@ -5,6 +5,8 @@ import re
 from music21.note import Note
 
 from ..logging import logger
+from ..mode_degree import ModeDegree
+from ..note_pair import NotePair
 from ..pitch_class import PC
 from .helpers import group_by_contiguous_values, pairwise
 from .organum_piece_section import OrganumPieceSection
@@ -103,7 +105,6 @@ def calculate_dataframe_from_single_part_stream(stream):
 
     columns = ["offset", "pitch_class", "note", "pitch", "duration", "measure", "time_signature", "lyric"]
     df = pd.DataFrame([get_note_info(n) for n in stream.flat.notes], columns=columns)
-
     return df.set_index("offset")
 
 
@@ -229,6 +230,17 @@ class OrganumPiece:
         self.note_of_final = self.note_of_chant_final  # alias
         self.chant_final = PC.from_note(self.note_of_final)
         self.final = self.chant_final  # alias
+
+        self.duplum_notes = list(self.df[self.df["common", "texture"] == "organum_purum"]["duplum", "note"])
+        if not all([isinstance(n, Note) for n in self.duplum_notes]):
+            raise ValueError(f"duplum_notes contains non-note objects: {self.duplum_notes}")
+        self.notes = self.duplum_notes  # alias for use in analysis function
+
+        self.pitch_classes = [PC.from_note(n) for n in self.notes]
+        self.mode_degrees = [ModeDegree.from_note_pair(note=n, base_note=self.note_of_final) for n in self.notes]
+        self.pc_pairs = list(zip(self.pitch_classes, self.pitch_classes[1:]))
+        self.note_pairs = [NotePair(n1, n2) for (n1, n2) in zip(self.notes, self.notes[1:])]
+        self.mode_degree_pairs = list(zip(self.mode_degrees, self.mode_degrees[1:]))
 
     def __repr__(self):
         return "<OrganumPiece: '{}'>".format(self.descr_stub)
