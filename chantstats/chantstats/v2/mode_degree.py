@@ -39,6 +39,15 @@ class ModeDegree:
                 # all other cases are covered
                 pass
 
+        # if base_note.name == "F#":
+        #     if note.name == "F#":
+        #         alter = 0
+        #     elif note.name == "F":
+        #         raise NotImplementedError()
+        #     else:
+        #         # all other cases are covered
+        #         pass
+
         if alter not in [0, -1.0]:  # pragma: no cover
             raise NotImplementedError(
                 f"Unexpected alteration of note '{note.nameWithOctave}' compared to base note '{base_note.nameWithOctave}'"
@@ -125,15 +134,16 @@ def convert_to_mode_degree(x):
 
 df_mode_degrees = pd.DataFrame(
     [
-        [1, 7, 7, 6, 5, 4, 3, 3, 2],
-        ["flat-2", 1, "flat-1", "flat-7", "flat-6", "flat-5", 4, "flat-4", "flat-3"],
-        [2, "#1", 1, 7, 6, 5, 4, 4, 3],
-        [3, 2, 2, 1, 7, 6, 5, 5, 4],
-        [4, 3, 3, 2, 1, 7, 6, 6, 5],
-        [5, 4, 4, 3, 2, 1, 7, 7, 6],
-        ["flat-6", "flat-5", "flat-5", "flat-4", "flat-3", "flat-2", 1, "flat-1", "flat-7"],
-        [6, 5, 5, 4, 3, 2, "#1", 1, 7],
-        [7, 6, 6, 5, 4, 3, 2, 2, 1],
+        [1, 7, 7, 6, 6, 5, 4, 3, 3, 2],
+        ["flat-2", 1, "flat-1", "flat-7", "flat-7", "flat-6", "flat-5", 4, "flat-4", "flat-3"],
+        [2, "#1", 1, 7, 7, 6, 5, 4, 4, 3],
+        [3, 2, 2, 1, "flat-1", 7, 6, 5, 5, 4],
+        ["#3", "#2", "#2", "#1", 1, 7, "#6", "#5", "#5", "#4"],
+        [4, 3, 3, 2, 2, 1, 7, 6, 6, 5],
+        [5, 4, 4, 3, 3, 2, 1, 7, 7, 6],
+        ["flat-6", "flat-5", "flat-5", "flat-4", "flat-4", "flat-3", "flat-2", 1, "flat-1", "flat-7"],
+        [6, 5, 5, 4, 4, 3, 2, "#1", 1, 7],
+        [7, 6, 6, 5, 5, 4, 3, 2, 2, 1],
     ],
     columns=PC.allowed_values,
     index=PC.allowed_values,

@@ -12,6 +12,7 @@ class PC(str, Enum):
     E_FLAT = ("E-", "E♭")
     E = ("E", "E")
     F = ("F", "F")
+    F_SHARP = ("F#", "F♯")
     G = ("G", "G")
     A = ("A", "A")
     B_FLAT = ("B-", "B♭")
@@ -43,7 +44,7 @@ class PC(str, Enum):
 
     @property
     def value_with_number_prefix(self):
-        return f"{self._number_prefix}.{self.value}"
+        return f"{self._number_prefix:02d}.{self.value}"
 
     @classmethod
     def from_note(cls, note):
