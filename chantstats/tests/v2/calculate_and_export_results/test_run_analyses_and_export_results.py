@@ -72,7 +72,7 @@ def test_folder_structure_for_exported_results(tmpdir, diff_reporter):
 
 
 @pytest.mark.slow
-def test_run_analyses_and_export_results(tmpdir):
+def test_run_analyses_and_export_results_for_different_repertoires(tmpdir):
     output_root_dir = os.getenv("CHANTSTATS_OUTPUT_ROOT_DIR", str(tmpdir))
     run_analyses_and_export_results("plainchant_sequences", output_root_dir=output_root_dir)
     run_analyses_and_export_results("responsorial_chants", output_root_dir=output_root_dir)
