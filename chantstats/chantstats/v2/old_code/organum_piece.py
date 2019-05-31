@@ -5,6 +5,7 @@ import re
 from music21.note import Note
 
 from ..logging import logger
+from ..melodic_outline import calculate_melodic_outline_candidates_for_phrase, get_melodic_outlines_from_candidates
 from ..mode_degree import ModeDegree
 from ..note_pair import NotePair
 from ..pitch_class import PC
@@ -239,8 +240,11 @@ class OrganumPiece:
         self.pitch_classes = [PC.from_note(n) for n in self.notes]
         self.mode_degrees = [ModeDegree.from_note_pair(note=n, base_note=self.note_of_final) for n in self.notes]
         self.pc_pairs = list(zip(self.pitch_classes, self.pitch_classes[1:]))
-        self.note_pairs = [NotePair(n1, n2) for (n1, n2) in zip(self.notes, self.notes[1:])]
+        self.note_pairs = [
+            NotePair(n1, n2) for (n1, n2) in zip(self.notes, self.notes[1:])
+        ]  # FIXME: calculate these from note_pairs in phrases!
         self.mode_degree_pairs = list(zip(self.mode_degrees, self.mode_degrees[1:]))
+        self._melodic_outline_candidates = calculate_melodic_outline_candidates_for_phrase(self)
 
     def __repr__(self):
         return "<OrganumPiece: '{}'>".format(self.descr_stub)
@@ -258,3 +262,11 @@ class OrganumPiece:
             OrganumPhrase(df_phrase, self.filename_short)
             for _, df_phrase in self.df.dropna(subset=[("common", "phrase")]).groupby([("common", "phrase")])
         ]
+
+    def get_note_pairs_with_interval(self, interval_name):
+        return [x for x in self.note_pairs if x.is_interval(interval_name)]
+
+    def get_melodic_outlines(self, interval_name, *, allow_thirds=False):
+        return get_melodic_outlines_from_candidates(
+            self._melodic_outline_candidates, interval_name, allow_thirds=allow_thirds
+        )
