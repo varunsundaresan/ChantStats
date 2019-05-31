@@ -90,7 +90,8 @@ def calculate_dataframe_from_single_part_stream(stream):
         return (
             note.offset,
             note.name,
-            note.nameWithOctave,
+            # note.nameWithOctave,
+            note,
             note.pitch.ps,
             note.duration.quarterLength,
             note.measureNumber,

@@ -1,4 +1,5 @@
 from .helpers import pairwise
+from ..note_pair import NotePair
 
 # from .melodic_outlines import calculate_melodic_outline_candidates
 # from .pc_pair_condprobs import PCPairCondProbs
@@ -58,7 +59,8 @@ class OrganumPhrase:
 
     @property
     def note_pairs(self):
-        return pairwise(self.notes)
+        # return pairwise(self.notes)
+        return [NotePair(n1, n2) for n1, n2 in pairwise(self.notes)]
 
     # @property
     # def pc_pair_condprobs(self):
