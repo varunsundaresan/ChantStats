@@ -1,5 +1,6 @@
 from enum import Enum
 from music21.interval import Interval
+from .logging import logger
 
 __all__ = ["AmbitusType", "calculate_ambitus"]
 
@@ -36,9 +37,15 @@ def calculate_ambitus(item):
     elif interval.semitones == -12:
         # TODO: which ambitus should this have?
         return AmbitusType.PLAGAL
-    else:
-        raise Exception(  # pragma: no cover
+    else:  # pragma: no cover
+        msg = (
             "Check the logic in the ambitus calculation! "
-            "We expect the lowest note to be less than an octave "
-            "below the main final."
+            "We expect the lowest note to be an octave or less"
+            "below the main final. "
+            f"Got: lowest_note={item.lowest_note.nameWithOctave}, "
+            f"note_of_final={item.note_of_final.nameWithOctave}. "
+            f"Returning ambitus='UNDEFINED'."
         )
+        # raise Exception(msg)
+        logger.warning(msg)
+        return AmbitusType.UNDEFINED
