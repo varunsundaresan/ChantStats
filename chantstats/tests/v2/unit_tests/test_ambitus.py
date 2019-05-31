@@ -16,10 +16,16 @@ def test_calculate_ambitus():
     piece = Mock(lowest_note=Note("F3"), note_of_final=Note("F4"))
     assert calculate_ambitus(piece) == "plagal"
 
-    with pytest.raises(Exception, match="We expect the lowest note to be less than an octave below the main final"):
-        piece = Mock(lowest_note=Note("D3"), note_of_final=Note("G4"))
-        calculate_ambitus(piece)
+    # with pytest.raises(Exception, match="We expect the lowest note to be less than an octave below the main final"):
+    #     piece = Mock(lowest_note=Note("D3"), note_of_final=Note("G4"))
+    #     calculate_ambitus(piece)
+    #
+    # with pytest.raises(Exception, match="We expect the lowest note to be less than an octave below the main final"):
+    #     piece = Mock(lowest_note=Note("F4"), note_of_final=Note("C3"))
+    #     calculate_ambitus(piece)
 
-    with pytest.raises(Exception, match="We expect the lowest note to be less than an octave below the main final"):
-        piece = Mock(lowest_note=Note("F4"), note_of_final=Note("C3"))
-        calculate_ambitus(piece)
+    piece = Mock(lowest_note=Note("D3"), note_of_final=Note("G4"))
+    assert calculate_ambitus(piece) == "undefined"
+
+    piece = Mock(lowest_note=Note("F4"), note_of_final=Note("C3"))
+    assert calculate_ambitus(piece) == "undefined"
