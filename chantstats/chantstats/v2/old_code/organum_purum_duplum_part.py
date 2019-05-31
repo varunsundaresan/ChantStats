@@ -33,6 +33,9 @@ class OrganumPurumDuplumPart:
     def __repr__(self):
         return "<OrganumPurumDuplumPart of piece: '{}'>".format(self.piece.descr_stub)
 
+    def __lt__(self, other):
+        return self.piece.descr_stub < other.piece.descr_stub
+
     def get_melodic_outlines(self, interval_name, *, allow_thirds=False):
         return get_melodic_outlines_from_candidates(
             self._melodic_outline_candidates, interval_name, allow_thirds=allow_thirds
