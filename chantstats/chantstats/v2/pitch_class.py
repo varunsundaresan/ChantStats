@@ -9,7 +9,7 @@ class PC(str, Enum):
     """
 
     D = ("D", "D")
-    # E_FLAT = ("E-", "E♭")
+    E_FLAT = ("E-", "E♭")
     E = ("E", "E")
     F = ("F", "F")
     G = ("G", "G")
