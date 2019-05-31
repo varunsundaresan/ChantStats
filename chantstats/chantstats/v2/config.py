@@ -22,5 +22,6 @@ class ChantStatsConfig:
             musicxml_paths={
                 "plainchant_sequences": os.path.join(chants_dir, "BN_lat_1112_Sequences", "musicxml"),
                 "responsorial_chants": os.path.join(chants_dir, "Organum_Chant_Files_MLO_II_III_IV", "musicxml"),
+                "organum_pieces": os.path.join(chants_dir, "Organum_Files", "musicxml", "all"),
             }
         )

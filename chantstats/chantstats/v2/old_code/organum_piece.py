@@ -2,16 +2,19 @@ import music21
 import os
 import pandas as pd
 import re
+from functools import lru_cache
+from glob import glob
+from tqdm import tqdm
+from time import time
 from music21.note import Note
 
 from ..logging import logger
-from ..melodic_outline import calculate_melodic_outline_candidates_for_phrase, get_melodic_outlines_from_candidates
-from ..mode_degree import ModeDegree
-from ..note_pair import NotePair
 from ..pitch_class import PC
+from ..repertoire_and_genre import RepertoireAndGenreType
 from .helpers import group_by_contiguous_values, pairwise
 from .organum_piece_section import OrganumPieceSection
 from .organum_phrase import OrganumPhrase
+from .organum_purum_duplum_part import OrganumPurumDuplumPart
 
 
 def warn_if_tenor_does_not_start_on_first_note_of_each_measure(df):
@@ -232,20 +235,6 @@ class OrganumPiece:
         self.chant_final = PC.from_note(self.note_of_final)
         self.final = self.chant_final  # alias
 
-        self.duplum_notes = list(self.df[self.df["common", "texture"] == "organum_purum"]["duplum", "note"])
-        if not all([isinstance(n, Note) for n in self.duplum_notes]):
-            raise ValueError(f"duplum_notes contains non-note objects: {self.duplum_notes}")
-        self.notes = self.duplum_notes  # alias for use in analysis function
-
-        self.pitch_classes = [PC.from_note(n) for n in self.notes]
-        self.mode_degrees = [ModeDegree.from_note_pair(note=n, base_note=self.note_of_final) for n in self.notes]
-        self.pc_pairs = list(zip(self.pitch_classes, self.pitch_classes[1:]))
-        self.note_pairs = [
-            NotePair(n1, n2) for (n1, n2) in zip(self.notes, self.notes[1:])
-        ]  # FIXME: calculate these from note_pairs in phrases!
-        self.mode_degree_pairs = list(zip(self.mode_degrees, self.mode_degrees[1:]))
-        self._melodic_outline_candidates = calculate_melodic_outline_candidates_for_phrase(self)
-
     def __repr__(self):
         return "<OrganumPiece: '{}'>".format(self.descr_stub)
 
@@ -263,10 +252,62 @@ class OrganumPiece:
             for _, df_phrase in self.df.dropna(subset=[("common", "phrase")]).groupby([("common", "phrase")])
         ]
 
-    def get_note_pairs_with_interval(self, interval_name):
-        return [x for x in self.note_pairs if x.is_interval(interval_name)]
+    def get_organum_purum_duplum_part(self):
+        return OrganumPurumDuplumPart(self)
 
-    def get_melodic_outlines(self, interval_name, *, allow_thirds=False):
-        return get_melodic_outlines_from_candidates(
-            self._melodic_outline_candidates, interval_name, allow_thirds=allow_thirds
-        )
+
+@lru_cache(maxsize=10)
+def load_organum_pieces(input_dir, *, pattern="*.xml"):
+    """
+    Load responsorial chant pieces from MusicXML files in a given input directory.
+
+    Parameters
+    ----------
+    input_dir : str
+        Input directory in which to look for MusicXML files.
+    pattern : str, optional
+        Filename pattern; this can be used to filter the files
+        to be loaded to a subset (for example during testing).
+
+    Returns
+    -------
+    list of ResponsorialChantPiece
+    """
+    pattern = pattern if pattern is not None else "*.xml"
+    filenames = sorted(glob(os.path.join(input_dir, pattern)))
+    logger.debug(f"Found {len(filenames)} pieces matching the pattern '{pattern}'.")
+    logger.debug(f"Loading pieces... ")
+    tic = time()
+    pieces = [OrganumPiece(f) for f in tqdm(filenames)]
+    toc = time()
+    logger.debug(f"Done. Loaded {len(pieces)} pieces.")
+    logger.debug(f"Loading pieces took {toc-tic:.2f} seconds.")
+    return pieces
+
+
+class OrganumPieces:
+    def __init__(self, pieces):
+        assert all([isinstance(p, OrganumPiece) for p in pieces])
+        self.pieces = pieces
+        self.repertoire_and_genre = RepertoireAndGenreType("organum_pieces")
+
+    def __repr__(self):
+        return f"<Collection of {len(self.pieces)} plainchant sequence pieces>"
+
+    def __getitem__(self, idx):
+        return self.pieces[idx]
+
+    def __iter__(self):
+        yield from self.pieces
+
+    @classmethod
+    def from_musicxml_files(cls, cfg, filename_pattern=None):
+        musicxml_path = cfg.get_musicxml_path("organum_pieces")
+        pieces = load_organum_pieces(musicxml_path, pattern=filename_pattern)
+        return cls(pieces)
+
+    def get_analysis_inputs(
+        self, mode=None, min_num_phrases_per_monomodal_section=None, min_num_notes_per_monomodal_section=None
+    ):
+        # return sum([piece.get_stanzas_without_modulatory_phrases() for piece in self.pieces], [])
+        return [piece.get_organum_purum_duplum_part() for piece in self.pieces]
