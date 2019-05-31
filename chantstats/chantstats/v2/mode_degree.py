@@ -99,20 +99,7 @@ class ModeDegree:
 
 
 ModeDegree.allowed_values = [
-    ModeDegree(value=1, alter=-1),
-    ModeDegree(value=1, alter=0),
-    ModeDegree(value=2, alter=-1),
-    ModeDegree(value=2, alter=0),
-    ModeDegree(value=3, alter=-1),
-    ModeDegree(value=3, alter=0),
-    ModeDegree(value=4, alter=-1),
-    ModeDegree(value=4, alter=0),
-    ModeDegree(value=5, alter=-1),
-    ModeDegree(value=5, alter=0),
-    ModeDegree(value=6, alter=-1),
-    ModeDegree(value=6, alter=0),
-    ModeDegree(value=7, alter=-1),
-    ModeDegree(value=7, alter=0),
+    ModeDegree(value=value, alter=alter) for value in [1, 2, 3, 4, 5, 6, 7] for alter in [-1, 0, 1]
 ]
 
 
