@@ -13,11 +13,17 @@ def prepare_axes_for_stacked_bar_chart(ax, num_bars):
     ax.set_ylim(0.0, 105.0)  # y-axis contains percentages between 0% and 100%
 
 
-def add_color_palette_legend(ax, *, labels, color_palette):
-    legend_elements = [
-        Patch(facecolor=color, edgecolor=color, label=value)
-        for value, color in reversed(list(zip(labels, color_palette)))
-    ]
+def add_color_palette_legend(ax, *, labels, color_palette, non_null_labels):
+    num_labels = len(labels)
+    labels_and_colors = reversed(
+        list(
+            pd.Series(color_palette[:num_labels], index=labels)
+            .loc[non_null_labels]
+            .reset_index()
+            .itertuples(index=False)
+        )
+    )
+    legend_elements = [Patch(facecolor=color, edgecolor=color, label=value) for value, color in labels_and_colors]
     ax.legend(handles=legend_elements, loc="right")
 
 
@@ -106,10 +112,11 @@ def plot_multiple_pandas_series_as_stacked_bar_chart(
     assert len(set([tuple(s.index) for s in series])) == 1  # ensure all series objects share the same index
     df_s = pd.DataFrame(series)
     non_null_columns = df_s.columns[(df_s != 0).any(axis=0)].tolist()
+    non_null_labels = [x.label_for_plots for x in non_null_columns]
     legend_labels = [
-        x.label_for_plots for x in non_null_columns
+        x.label_for_plots for x in series[0].index
     ]  # TODO: this relies on the fact that the index values are enums; would be good to make this more explicit
-    add_color_palette_legend(ax, labels=legend_labels, color_palette=color_palette)
+    add_color_palette_legend(ax, labels=legend_labels, color_palette=color_palette, non_null_labels=non_null_labels)
 
     # Add plot title
     ax.set_title(title)
