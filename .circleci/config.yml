@@ -34,6 +34,7 @@ jobs:
             cd chantstats
             pipenv run pytest -svx --runslow --cov=chantstats --cov-report=term-missing tests/v2/calculate_and_export_results/ -k test_folder_structure_for_exported_results
           background: true
+
       - run:
           name: "Calculate and export results for plainchant sequences"
           command: |
@@ -43,41 +44,26 @@ jobs:
           background: true
 
       - run:
-          name: "Calculate and export results for responsorial chants, pc_freqs and tendency"
+          name: "Calculate and export results for responsorial chants"
           command: |
             cd chantstats
-            pipenv run python tests/v2/calculate_and_export_results/run_analyses_and_export_result.py responsorial_chants pc_freqs,tendency
-            touch .results-responsorial-chants-1-2-done
-          background: true
-      - run:
-          name: "Calculate and export results for responsorial chants, L&M"
-          command: |
-            cd chantstats
-            pipenv run python tests/v2/calculate_and_export_results/run_analyses_and_export_result.py responsorial_chants L_and_M__L5_u_M5,L_and_M__L4_u_M4
-            touch .results-responsorial-chants-3-done
+            pipenv run python tests/v2/calculate_and_export_results/run_analyses_and_export_result.py responsorial_chants
+            touch .results-responsorial-chants-done
           background: true
 
       - run:
-          name: "Calculate and export results for organum pieces, pc_freqs and tendency"
+          name: "Calculate and export results for organum pieces"
           command: |
             cd chantstats
-            pipenv run python tests/v2/calculate_and_export_results/run_analyses_and_export_result.py organum_pieces pc_freqs,tendency
-            touch .results-organum-pieces-1-2-done
-          background: true
-
-      - run:
-          name: "Calculate and export results for organum pieces, L&M"
-          command: |
-            cd chantstats
-            pipenv run python tests/v2/calculate_and_export_results/run_analyses_and_export_result.py organum_pieces L_and_M__L5_u_M5,L_and_M__L4_u_M4
-            touch .results-organum-pieces-3-done
+            pipenv run python tests/v2/calculate_and_export_results/run_analyses_and_export_result.py organum_pieces
+            touch .results-organum-pieces-done
           background: true
 
       - run:
           name: Wait for calculation of results to complete
           command: |
             cd chantstats
-            while [ ! -f ".results-plainchant-sequences-done" ] || [ ! -f ".results-responsorial-chants-1-2-done" ] || [ ! -f ".results-responsorial-chants-3-done" ] || [ ! -f ".results-organum-pieces-1-2-done" ] || [ ! -f ".results-organum-pieces-3-done" ]; do
+            while [ ! -f ".results-plainchant-sequences-done" ] || [ ! -f ".results-responsorial-chants-done" ] || [ ! -f ".results-organum-pieces-done" ]; do
               echo "Waiting for calculation of results to complete"
               sleep 5
             done
