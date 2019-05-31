@@ -1,10 +1,12 @@
 import music21
+import os
 import pandas as pd
 import re
 
 from ..logging import logger
 from .helpers import group_by_contiguous_values, pairwise
 from .organum_piece_section import OrganumPieceSection
+from .organum_phrase import OrganumPhrase
 
 
 def warn_if_tenor_does_not_start_on_first_note_of_each_measure(df):
@@ -200,3 +202,39 @@ def calculate_dataframe_from_music21_stream(stream, filename):
     assert df[("common", "texture")].iloc[-1] == "chant"
 
     return df
+
+
+class OrganumPiece:
+    def __init__(self, stream_or_filename):
+        if isinstance(stream_or_filename, str):
+            self.stream = music21.converter.parse(stream_or_filename)
+            self.filename_full = os.path.abspath(stream_or_filename)
+            self.filename_short = os.path.basename(stream_or_filename)
+        # elif isinstance(stream_or_filename, music21.stream.Stream):
+        #     self.stream = stream_or_filename
+        #     self.filename_full = ""
+        #     self.filename_short = ""
+        else:  # pragma: no cover
+            raise TypeError(f"Cannot load piece from object of type: '{type(stream_or_filename)}'")
+
+        # TODO: extract stub_descr from filename
+        self.descr_stub = re.match("^(F3.*)\.xml$", self.filename_short).group(1)
+
+        self.df = calculate_dataframe_from_music21_stream(self.stream, self.filename_short)
+
+    def __repr__(self):
+        return "<OrganumPiece: '{}'>".format(self.descr_stub)
+
+    @property
+    def descr(self):
+        return self.filename_short
+
+    @property
+    def phrases(self):
+        """
+        Iterate over all phrases in this OrganumPiece
+        """
+        return [
+            OrganumPhrase(df_phrase, self.filename_short)
+            for _, df_phrase in self.df.dropna(subset=[("common", "phrase")]).groupby([("common", "phrase")])
+        ]
