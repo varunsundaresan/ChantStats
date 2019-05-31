@@ -2,6 +2,7 @@ from .analysis_type import AnalysisType
 from .dendrogram import calculate_dendrogram
 from .logging import logger
 from .modal_category import ModalCategoryType, GroupingByModalCategory
+from .old_code.organum_piece import OrganumPieces
 from .plainchant_sequence_piece import PlainchantSequencePieces
 from .responsorial_chants import ResponsorialChantPieces
 from .repertoire_and_genre import RepertoireAndGenreType
@@ -51,7 +52,7 @@ def calculate_results(
     units=None,
     modal_category_keys=None,
 ):
-    assert isinstance(pieces, (PlainchantSequencePieces, ResponsorialChantPieces))
+    assert isinstance(pieces, (PlainchantSequencePieces, ResponsorialChantPieces, OrganumPieces))
     modes = modes or list(ModalCategoryType)
     units = units or list(UnitType)
 

@@ -50,6 +50,8 @@ class ModalCategoryType(str, Enum):
                 return f"{final.value_with_number_prefix}_2.authentic"
             elif ambitus == "plagal":
                 return f"{final.value_with_number_prefix}_3.plagal"
+            elif ambitus == "undefined":  # TODO: should we have undefined ambitus?
+                return f"{final.value_with_number_prefix}_4.undefined"
             else:
                 raise NotImplementedError(f"Unexpected ambitus: {ambitus}")
         else:  # pragma: no cover

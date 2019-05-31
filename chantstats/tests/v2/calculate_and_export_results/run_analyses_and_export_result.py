@@ -17,8 +17,8 @@ def run_analyses_and_export_results(rep_and_genre, *, output_root_dir):
 
     pieces = load_pieces(rep_and_genre, cfg)
 
-    # for analysis in ["pc_freqs", "tendency", "L_and_M__L5_u_M5", "L_and_M__L4_u_M4"]:
-    for analysis in ["L_and_M__L5_u_M5", "L_and_M__L4_u_M4"]:
+    for analysis in ["pc_freqs", "tendency", "L_and_M__L5_u_M5", "L_and_M__L4_u_M4"]:
+        # for analysis in ["L_and_M__L5_u_M5", "L_and_M__L4_u_M4"]:
         logger.info(f"Calculating results for analysis '{analysis}'")
         results = calculate_results(
             pieces=pieces,

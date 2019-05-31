@@ -48,9 +48,16 @@ jobs:
             touch .results-responsorial-chants-done
           background: true
       - run:
+          name: "Calculate and export results for organum pieces"
+          command: |
+            cd chantstats
+            pipenv run python tests/v2/calculate_and_export_results/run_analyses_and_export_result.py organum_pieces
+            touch .results-organum-pieces-done
+          background: true
+      - run:
           name: Wait for calculation of results to complete
           command: |
-            while [ ! -f ".results-plainchant-sequences-done" ] || [ ! -f ".results-responsorial-chants-done" ]; do
+            while [ ! -f ".results-plainchant-sequences-done" ] || [ ! -f ".results-responsorial-chants-done" ] || [ ! -f ".results-organum-pieces-done" ]; do
               echo "Waiting for calculation of results to complete"
               sleep 5
             done

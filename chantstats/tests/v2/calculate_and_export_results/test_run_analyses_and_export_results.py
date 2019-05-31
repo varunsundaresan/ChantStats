@@ -16,6 +16,7 @@ def test_folder_structure_for_exported_results(tmpdir, diff_reporter):
     cfg = ChantStatsConfig.from_env()
     plainchant_sequence_pieces = load_pieces("plainchant_sequences", cfg)
     responsorial_chant_pieces = load_pieces("responsorial_chants", cfg, filename_pattern="F3M[0-1]*.xml")
+    # organum_pieces = load_pieces("organum_pieces", cfg, filename_pattern="F3BD0[1-5]*.xml")
 
     for pieces in [plainchant_sequence_pieces, responsorial_chant_pieces]:
         results_pc_freqs = calculate_results(
