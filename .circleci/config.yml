@@ -41,25 +41,58 @@ jobs:
             pipenv run python tests/v2/calculate_and_export_results/run_analyses_and_export_result.py plainchant_sequences
             touch .results-plainchant-sequences-done
           background: true
+
       - run:
-          name: "Calculate and export results for responsorial chants"
+          name: "Calculate and export results for responsorial chants, pc_freqs"
           command: |
             cd chantstats
-            pipenv run python tests/v2/calculate_and_export_results/run_analyses_and_export_result.py responsorial_chants
-            touch .results-responsorial-chants-done
+            pipenv run python tests/v2/calculate_and_export_results/run_analyses_and_export_result.py responsorial_chants pc_freqs
+            touch .results-responsorial-chants-1-done
           background: true
       - run:
-          name: "Calculate and export results for organum pieces"
+          name: "Calculate and export results for responsorial chants, tendency"
           command: |
             cd chantstats
-            pipenv run python tests/v2/calculate_and_export_results/run_analyses_and_export_result.py organum_pieces
-            touch .results-organum-pieces-done
+            pipenv run python tests/v2/calculate_and_export_results/run_analyses_and_export_result.py responsorial_chants tendency
+            touch .results-responsorial-chants-2-done
           background: true
+      - run:
+          name: "Calculate and export results for responsorial chants, L&M"
+          command: |
+            cd chantstats
+            pipenv run python tests/v2/calculate_and_export_results/run_analyses_and_export_result.py responsorial_chants L_and_M__L5_u_M5,L_and_M__L4_u_M4
+            touch .results-responsorial-chants-3-done
+          background: true
+
+      - run:
+          name: "Calculate and export results for organum pieces, pc_freqs"
+          command: |
+            cd chantstats
+            pipenv run python tests/v2/calculate_and_export_results/run_analyses_and_export_result.py organum_pieces pc_freqs
+            touch .results-organum-pieces-1-done
+          background: true
+
+      - run:
+          name: "Calculate and export results for organum pieces, tendency"
+          command: |
+            cd chantstats
+            pipenv run python tests/v2/calculate_and_export_results/run_analyses_and_export_result.py organum_pieces tendency
+            touch .results-organum-pieces-2-done
+          background: true
+
+      - run:
+          name: "Calculate and export results for organum pieces, L&M"
+          command: |
+            cd chantstats
+            pipenv run python tests/v2/calculate_and_export_results/run_analyses_and_export_result.py organum_pieces L_and_M__L5_u_M5,L_and_M__L4_u_M4
+            touch .results-organum-pieces-3-done
+          background: true
+
       - run:
           name: Wait for calculation of results to complete
           command: |
             cd chantstats
-            while [ ! -f ".results-plainchant-sequences-done" ] || [ ! -f ".results-responsorial-chants-done" ] || [ ! -f ".results-organum-pieces-done" ]; do
+            while [ ! -f ".results-plainchant-sequences-done" ] || [ ! -f ".results-responsorial-chants-1-done" ] || [ ! -f ".results-responsorial-chants-2-done" ] || [ ! -f ".results-responsorial-chants-3-done" ] || [ ! -f ".results-organum-pieces-1-done" ] || [ ! -f ".results-organum-pieces-2-done" ] || [ ! -f ".results-organum-pieces-3-done" ]; do
               echo "Waiting for calculation of results to complete"
               sleep 5
             done
