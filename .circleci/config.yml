@@ -58,6 +58,7 @@ jobs:
       - run:
           name: Wait for calculation of results to complete
           command: |
+            cd chantstats
             while [ ! -f ".results-plainchant-sequences-done" ] || [ ! -f ".results-responsorial-chants-done" ] || [ ! -f ".results-organum-pieces-done" ]; do
               echo "Waiting for calculation of results to complete"
               sleep 5
