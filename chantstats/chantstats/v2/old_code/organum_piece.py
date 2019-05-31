@@ -2,8 +2,10 @@ import music21
 import os
 import pandas as pd
 import re
+from music21.note import Note
 
 from ..logging import logger
+from ..pitch_class import PC
 from .helpers import group_by_contiguous_values, pairwise
 from .organum_piece_section import OrganumPieceSection
 from .organum_phrase import OrganumPhrase
@@ -222,6 +224,11 @@ class OrganumPiece:
         self.descr_stub = re.match("^(F3.*)\.xml$", self.filename_short).group(1)
 
         self.df = calculate_dataframe_from_music21_stream(self.stream, self.filename_short)
+        self.note_of_chant_final = self.df.iloc[-1]["tenor"]["note"]
+        assert isinstance(self.note_of_chant_final, Note)
+        self.note_of_final = self.note_of_chant_final  # alias
+        self.chant_final = PC.from_note(self.note_of_final)
+        self.final = self.chant_final  # alias
 
     def __repr__(self):
         return "<OrganumPiece: '{}'>".format(self.descr_stub)
