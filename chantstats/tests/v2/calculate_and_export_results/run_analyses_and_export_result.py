@@ -5,7 +5,7 @@ from chantstats.v2 import ChantStatsConfig, calculate_results, export_results, l
 from chantstats.v2.repertoire_and_genre import RepertoireAndGenreType
 
 
-def run_analyses_and_export_results(rep_and_genre, *, output_root_dir):
+def run_analyses_and_export_results(rep_and_genre, *, output_root_dir, analyses=None):
     logger.info(f"Using output root dir: '{output_root_dir}'")
 
     cfg = ChantStatsConfig.from_env()
@@ -16,9 +16,9 @@ def run_analyses_and_export_results(rep_and_genre, *, output_root_dir):
     min_num_notes_per_monomodal_section = 80
 
     pieces = load_pieces(rep_and_genre, cfg)
+    analyses = analyses or ["pc_freqs", "tendency", "L_and_M__L5_u_M5", "L_and_M__L4_u_M4"]
 
-    for analysis in ["pc_freqs", "tendency", "L_and_M__L5_u_M5", "L_and_M__L4_u_M4"]:
-        # for analysis in ["L_and_M__L5_u_M5", "L_and_M__L4_u_M4"]:
+    for analysis in analyses:
         logger.info(f"Calculating results for analysis '{analysis}'")
         results = calculate_results(
             pieces=pieces,
@@ -36,4 +36,8 @@ def run_analyses_and_export_results(rep_and_genre, *, output_root_dir):
 if __name__ == "__main__":
     output_root_dir = os.environ["CHANTSTATS_OUTPUT_ROOT_DIR"]
     rep_and_genre = RepertoireAndGenreType(sys.argv[1])
-    run_analyses_and_export_results(rep_and_genre, output_root_dir=output_root_dir)
+    try:
+        analyses = sys.argv[2].split(",")
+    except IndexError:
+        analyses = None
+    run_analyses_and_export_results(rep_and_genre, output_root_dir=output_root_dir, analyses=analyses)
