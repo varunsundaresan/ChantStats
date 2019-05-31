@@ -49,6 +49,7 @@ def calculate_tendency(item, unit, *, using="condprobs_v1"):
 
 
 def calculate_leap_occurrences(item, *, unit, interval_name, cls_pcs, cls_mds):
+    assert interval_name in ["P4", "P5"]
     note_pairs_filtered = item.get_note_pairs_with_interval(interval_name)
     if unit == "pcs":
         occurrences = [cls_pcs.from_note_pair(note_pair) for note_pair in note_pairs_filtered]
@@ -60,6 +61,7 @@ def calculate_leap_occurrences(item, *, unit, interval_name, cls_pcs, cls_mds):
 
 
 def calculate_melodic_outline_occurrences(item, *, unit, interval_name, cls_pcs, cls_mds):
+    assert interval_name in ["P4", "P5"]
     note_pairs_filtered = [mo.framing_note_pair for mo in item.get_melodic_outlines(interval_name)]
     if unit == "pcs":
         occurrences = [cls_pcs.from_note_pair(note_pair) for note_pair in note_pairs_filtered]
@@ -79,11 +81,11 @@ def calculate_L5_occurrences(item, *, unit):
 
 
 def calculate_M4_occurrences(item, *, unit):
-    return calculate_leap_occurrences(item, unit=unit, interval_name="M4", cls_pcs=L4M4, cls_mds=L4M4inMD)
+    return calculate_melodic_outline_occurrences(item, unit=unit, interval_name="P4", cls_pcs=L4M4, cls_mds=L4M4inMD)
 
 
 def calculate_M5_occurrences(item, *, unit):
-    return calculate_leap_occurrences(item, unit=unit, interval_name="M5", cls_pcs=L5M5, cls_mds=L5M5inMD)
+    return calculate_melodic_outline_occurrences(item, unit=unit, interval_name="P5", cls_pcs=L5M5, cls_mds=L5M5inMD)
 
 
 def calculate_relative_L4M4_freqs(item, *, unit):
