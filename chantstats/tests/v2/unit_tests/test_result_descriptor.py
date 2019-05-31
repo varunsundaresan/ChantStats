@@ -12,11 +12,11 @@ def test_result_descriptor():
     assert rd.get_output_dir(output_root_dir) == "/tmp/foo/chant/pc_freqs/sequences/pcs"
     assert (
         rd.get_full_output_path(output_root_dir, filename_prefix="dendrogram", filename_suffix="")
-        == "/tmp/foo/chant/pc_freqs/sequences/pcs/dendrogram__4.G_1.final.png"
+        == "/tmp/foo/chant/pc_freqs/sequences/pcs/dendrogram__5.G_1.final.png"
     )
     assert (
         rd.get_full_output_path(output_root_dir, filename_prefix="quux", filename_suffix="")
-        == "/tmp/foo/chant/pc_freqs/sequences/pcs/quux__4.G_1.final.png"
+        == "/tmp/foo/chant/pc_freqs/sequences/pcs/quux__5.G_1.final.png"
     )
 
     output_root_dir = "/quux/bar"
@@ -25,11 +25,11 @@ def test_result_descriptor():
     assert rd.output_dirname == "chant/tendency/sequences/mode_degrees"
     assert (
         rd.get_full_output_path(output_root_dir, filename_prefix="dendrogram", filename_suffix="")
-        == "/quux/bar/chant/tendency/sequences/mode_degrees/dendrogram__8.C_3.plagal.png"
+        == "/quux/bar/chant/tendency/sequences/mode_degrees/dendrogram__9.C_3.plagal.png"
     )
     assert (
         rd.get_full_output_path(output_root_dir, filename_prefix="foobar", filename_suffix="04")
-        == "/quux/bar/chant/tendency/sequences/mode_degrees/foobar__8.C_3.plagal__04.png"
+        == "/quux/bar/chant/tendency/sequences/mode_degrees/foobar__9.C_3.plagal__04.png"
     )
 
 

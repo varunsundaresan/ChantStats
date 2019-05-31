@@ -20,7 +20,7 @@ def test_modal_category_type():
     assert "final" == ModalCategoryType.FINAL == t
     assert t.enforce_same_ambitus == False
     assert t.get_output_path_stub_1("A") == "by_final"
-    assert t.get_output_path_stub_2("A") == "5.A_1.final"
+    assert t.get_output_path_stub_2("A") == "6.A_1.final"
     assert t.get_descr("A") == "A-final"
     assert t.grouping_func(Mock(final="D")) == "D"
 
@@ -29,12 +29,12 @@ def test_modal_category_type():
     assert t.enforce_same_ambitus == True
 
     assert t.get_output_path_stub_1(("B-", "plagal")) == "plagal_modes"
-    assert t.get_output_path_stub_2(("B-", "plagal")) == "6.B-_3.plagal"
+    assert t.get_output_path_stub_2(("B-", "plagal")) == "7.B-_3.plagal"
     assert t.get_descr(("B-", "plagal")) == "B--plagal"
     assert t.grouping_func(Mock(final="G", ambitus="plagal")) == ("G", "plagal")
 
     assert t.get_output_path_stub_1(("C", "authentic")) == "authentic_modes"
-    assert t.get_output_path_stub_2(("C", "authentic")) == "8.C_2.authentic"
+    assert t.get_output_path_stub_2(("C", "authentic")) == "9.C_2.authentic"
     assert t.get_descr(("C", "authentic")) == "C-authentic"
     assert t.grouping_func(Mock(final="F", ambitus="authentic")) == ("F", "authentic")
 
@@ -89,8 +89,8 @@ def test_make_results_dataframe():
 
     df = modal_category.make_results_dataframe(analysis_func=calculate_relative_pc_freqs, unit="pcs")
 
-    row_piece1 = pd.Series([40.0, 20.0, 0, 0, 20.0, 0, 0, 20.0], index=list(PC))
-    row_piece2 = pd.Series([0, 0, 37.5, 12.5, 12.5, 12.5, 12.5, 12.5], index=list(PC))
-    row_piece3 = pd.Series([0, 0, 20.0, 20.0, 40.0, 0, 0, 20.0], index=list(PC))
+    row_piece1 = pd.Series([40.0, 0, 20.0, 0, 0, 20.0, 0, 0, 20.0], index=list(PC))
+    row_piece2 = pd.Series([0, 0, 0, 37.5, 12.5, 12.5, 12.5, 12.5, 12.5], index=list(PC))
+    row_piece3 = pd.Series([0, 0, 0, 20.0, 20.0, 40.0, 0, 0, 20.0], index=list(PC))
     df_expected = pd.DataFrame({"piece_3": row_piece3, "piece_2": row_piece2, "piece_1": row_piece1}).T
     assert_frame_equal(df_expected, df)
