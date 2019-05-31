@@ -40,7 +40,7 @@ def calculate_ambitus(item):
     else:  # pragma: no cover
         msg = (
             "Check the logic in the ambitus calculation! "
-            "We expect the lowest note to be an octave or less"
+            "We expect the lowest note to be an octave or less "
             "below the main final. "
             f"Got: lowest_note={item.lowest_note.nameWithOctave}, "
             f"note_of_final={item.note_of_final.nameWithOctave}. "
