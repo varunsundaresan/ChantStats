@@ -197,6 +197,37 @@ i_want_hue_14_v01 = [
 ]
 
 
+# https://graphicdesign.stackexchange.com/questions/3682/where-can-i-find-a-large-palette-set-of-contrasting-colors-for-coloring-many-d
+colors_26 = [
+    "#F0A3FF",
+    "#0075DC",
+    "#993F00",
+    "#4C005C",
+    "#191919",
+    "#005C31",
+    "#2BCE48",
+    "#FFCC99",
+    "#808080",
+    "#94FFB5",
+    "#8F7C00",
+    "#9DCC00",
+    "#C20088",
+    "#003380",
+    "#FFA405",
+    "#FFA8BB",
+    "#426600",
+    "#FF0010",
+    "#5EF1F2",
+    "#00998F",
+    "#E0FF66",
+    "#740AFF",
+    "#990000",
+    "#FFFF80",
+    "#FFFF00",
+    "#FF5005",
+]
+
+
 def get_color_palette_for_unit(unit):
     unit = UnitType(unit)
     if unit.value == "pcs":
@@ -210,7 +241,8 @@ def get_color_palette_for_unit(unit):
         # return palettable.colorbrewer.qualitative.Set3_12.hex_colors
         # return set3_12_with_colors_swapped
         # return set_3_12_with_colors_swapped_plus_one
-        return i_want_hue_14_v01
+        # return i_want_hue_14_v01
+        return colors_26
         # # return palettable.matplotlib.Viridis_12.hex_colors
         # # return palettable.tableau.PurpleGray_12.hex_colors
         # # return sns.color_palette("muted", 12).as_hex()  # WARNING: this contains only 10 distinct colors!!!
