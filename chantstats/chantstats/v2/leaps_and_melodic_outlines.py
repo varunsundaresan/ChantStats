@@ -119,6 +119,7 @@ L5M5inMD.allowed_values = [
     L5M5inMD(bottom_md=ModeDegree(value=5), top_md=ModeDegree(value=2)),
     L5M5inMD(bottom_md=ModeDegree(value=6), top_md=ModeDegree(value=3)),
     L5M5inMD(bottom_md=ModeDegree(value=7), top_md=ModeDegree(value=4)),
+    L5M5inMD(bottom_md=ModeDegree(value=7, alter=-1), top_md=ModeDegree(value=4)),
 ]
 
 
