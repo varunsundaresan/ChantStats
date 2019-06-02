@@ -15,6 +15,12 @@ from .helpers import group_by_contiguous_values, pairwise
 from .organum_piece_section import OrganumPieceSection
 from .organum_phrase import OrganumPhrase
 from .organum_purum_duplum_part import OrganumPurumDuplumPart
+from ..analysis_functions import (
+    calculate_L5_occurrences,
+    calculate_L4_occurrences,
+    calculate_M5_occurrences,
+    calculate_M4_occurrences,
+)
 
 
 def warn_if_tenor_does_not_start_on_first_note_of_each_measure(df):
@@ -236,6 +242,7 @@ class OrganumPiece:
         self.note_of_final = self.note_of_chant_final  # alias
         self.chant_final = PC.from_note(self.note_of_final)
         self.final = self.chant_final  # alias
+        self.organum_purum_duplum_part = OrganumPurumDuplumPart(self)
 
     def __repr__(self):
         return "<OrganumPiece: '{}'>".format(self.descr_stub)
@@ -261,11 +268,17 @@ class OrganumPiece:
             sections.append(OrganumPieceSection(df_grp, self.filename_short, self.note_of_chant_final))
         return sections
 
-    def get_organum_purum_duplum_part(self):
-        return OrganumPurumDuplumPart(self)
-
     def get_occurring_mode_degrees(self):
-        return set(self.get_organum_purum_duplum_part().mode_degrees)
+        return set(self.organum_purum_duplum_part.mode_degrees)
+
+    def _get_L_or_M_occurrences(self, which, unit):
+        funcs = {
+            "L5": calculate_L5_occurrences,
+            "L4": calculate_L4_occurrences,
+            "M5": calculate_M5_occurrences,
+            "M4": calculate_M4_occurrences,
+        }
+        return set(funcs[which](self.organum_purum_duplum_part, unit=unit))
 
 
 @lru_cache(maxsize=10)
@@ -328,3 +341,27 @@ class OrganumPieces:
         for piece in self.pieces:
             mds.update(piece.get_occurring_mode_degrees())
         return mds
+
+    def get_L_and_M_occurrences(self, which, unit):
+        res = set()
+        if which == "L5M5":
+            res.update(self._get_L_or_M_occurrences("L5", unit))
+            res.update(self._get_L_or_M_occurrences("M5", unit))
+        elif which == "L4M4":
+            res.update(self._get_L_or_M_occurrences("L4", unit))
+            res.update(self._get_L_or_M_occurrences("M4", unit))
+        else:
+            raise NotImplementedError()
+        return res
+
+    def _get_L_or_M_occurrences(self, which, unit):
+        funcs = {
+            "L5": calculate_L5_occurrences,
+            "L4": calculate_L4_occurrences,
+            "M5": calculate_M5_occurrences,
+            "M4": calculate_M4_occurrences,
+        }
+        res = set()
+        for piece in self.pieces:
+            res.update(piece._get_L_or_M_occurrences(which, unit))
+        return res

@@ -62,6 +62,9 @@ class OrganumPhrase:
         # return pairwise(self.notes)
         return [NotePair(n1, n2) for n1, n2 in pairwise(self.notes)]
 
+    def get_note_pairs_with_interval(self, interval_name):
+        return [note_pair for note_pair in self.note_pairs if note_pair.interval.name == interval_name]
+
     # @property
     # def pc_pair_condprobs(self):
     #     return PCPairCondProbs.from_seq(self.pitch_classes)
