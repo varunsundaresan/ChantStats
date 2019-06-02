@@ -159,8 +159,10 @@ L4M4.allowed_values = [
     L4M4(bottom_pc=PC("D"), top_pc=PC("G")),
     L4M4(bottom_pc=PC("E"), top_pc=PC("A")),
     L4M4(bottom_pc=PC("F"), top_pc=PC("B-")),
+    L4M4(bottom_pc=PC("F#"), top_pc=PC("B")),
     L4M4(bottom_pc=PC("G"), top_pc=PC("C")),
     L4M4(bottom_pc=PC("A"), top_pc=PC("D")),
+    L4M4(bottom_pc=PC("B-"), top_pc=PC("E-")),
     L4M4(bottom_pc=PC("B"), top_pc=PC("E")),
     L4M4(bottom_pc=PC("C"), top_pc=PC("F")),
 ]
