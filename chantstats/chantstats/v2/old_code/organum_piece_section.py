@@ -13,7 +13,7 @@ class BaseOrganumPieceSection:
     chant).
     """
 
-    def __init__(self, df, piece_filename):
+    def __init__(self, df, piece_filename, piece_descr_stub):
         self.df = df
 
         texture_vals = self.df[("common", "texture")].unique()
@@ -22,6 +22,7 @@ class BaseOrganumPieceSection:
 
         self.texture = texture_vals[0]
         self.piece_filename = piece_filename
+        self.piece_descr_stub = piece_descr_stub
 
     @property
     def _measure_descr(self):
@@ -46,8 +47,8 @@ class BaseOrganumPieceSection:
 
 
 class OrganumPieceOrganumPurumSection(BaseOrganumPieceSection):
-    def __init__(self, df, piece_filename, note_of_chant_final):
-        super().__init__(df, piece_filename)
+    def __init__(self, df, piece_filename, piece_descr_stub, note_of_chant_final):
+        super().__init__(df, piece_filename, piece_descr_stub)
         assert self.texture == "organum_purum"
         self.duplum_notes = list(self.df["duplum", "note"])
         self.notes = self.duplum_notes  # alias
@@ -62,17 +63,17 @@ class OrganumPieceOrganumPurumSection(BaseOrganumPieceSection):
         phrases = []
         tenor_ffilled = self.df["tenor"].ffill().dropna()
         for i, df_grp in group_by_contiguous_values(self.df, tenor_ffilled["note"]):
-            phrases.append(OrganumPhrase(self.df.loc[df_grp.index], self.piece_filename))
+            phrases.append(OrganumPhrase(self.df.loc[df_grp.index], self.piece_filename, self.piece_descr_stub))
         return phrases
 
 
-def OrganumPieceSection(df, piece_filename, note_of_chant_final):
+def OrganumPieceSection(df, piece_filename, piece_descr_stub, note_of_chant_final):
     texture_vals = df[("common", "texture")].unique()
     if len(texture_vals) != 1:
         raise ValueError("Section does not have a unique texture: {}".format(texture_vals))
     texture = texture_vals[0]
 
     if texture == "organum_purum":
-        return OrganumPieceOrganumPurumSection(df, piece_filename, note_of_chant_final)
+        return OrganumPieceOrganumPurumSection(df, piece_filename, piece_descr_stub, note_of_chant_final)
     else:
-        return BaseOrganumPieceSection(df, piece_filename)
+        return BaseOrganumPieceSection(df, piece_filename, piece_descr_stub)

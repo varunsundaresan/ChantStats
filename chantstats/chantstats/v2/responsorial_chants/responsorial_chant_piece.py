@@ -120,7 +120,11 @@ class ResponsorialChantPieces:
         return cls(pieces)
 
     def get_analysis_inputs(
-        self, mode=None, min_num_phrases_per_monomodal_section=None, min_num_notes_per_monomodal_section=None
+        self,
+        mode=None,
+        min_num_phrases_per_monomodal_section=None,
+        min_num_notes_per_monomodal_section=None,
+        min_num_notes_per_organum_phrase=None,
     ):
         return sum([piece.get_stanzas_without_modulatory_phrases() for piece in self.pieces], [])
 

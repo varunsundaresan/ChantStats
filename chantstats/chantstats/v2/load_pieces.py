@@ -1,6 +1,6 @@
 from .plainchant_sequence_piece import PlainchantSequencePieces
 from .responsorial_chants import ResponsorialChantPieces
-from .old_code.organum_piece import OrganumPieces
+from .old_code.organum_piece import OrganumPieces, OrganumPhrases
 
 
 def load_pieces(repertoire_and_genre, cfg, filename_pattern=None):
@@ -10,5 +10,7 @@ def load_pieces(repertoire_and_genre, cfg, filename_pattern=None):
         return ResponsorialChantPieces.from_musicxml_files(cfg, filename_pattern=filename_pattern)
     elif repertoire_and_genre == "organum_pieces":
         return OrganumPieces.from_musicxml_files(cfg, filename_pattern=filename_pattern)
+    elif repertoire_and_genre == "organum_phrases":
+        return OrganumPhrases.from_musicxml_files(cfg, filename_pattern=filename_pattern)
     else:
         raise NotImplementedError()

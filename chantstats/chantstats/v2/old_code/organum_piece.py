@@ -146,7 +146,7 @@ def get_stanza_boundary_offsets(stream):
     return barline_offsets
 
 
-def calculate_dataframe_from_music21_stream(stream, filename):
+def calculate_dataframe_from_music21_stream(stream, filename, descr_stub):
     """
     Given a music21 Stream, return a pandas DataFrame representing it.
     """
@@ -188,7 +188,7 @@ def calculate_dataframe_from_music21_stream(stream, filename):
     df[("common", "phrase")] = None
     phrase_num = 0
     for _, df_grp in group_by_contiguous_values(df, ("common", "texture")):
-        sec = OrganumPieceSection(df_grp, filename, note_of_chant_final)
+        sec = OrganumPieceSection(df_grp, filename, descr_stub, note_of_chant_final)
         for phrase in sec.phrases:
             phrase_num += 1
             df.loc[phrase.df.index, ("common", "phrase")] = phrase_num
@@ -236,7 +236,7 @@ class OrganumPiece:
         # TODO: extract stub_descr from filename
         self.descr_stub = re.match("^(F3.*)\.xml$", self.filename_short).group(1)
 
-        self.df = calculate_dataframe_from_music21_stream(self.stream, self.filename_short)
+        self.df = calculate_dataframe_from_music21_stream(self.stream, self.filename_short, self.descr_stub)
         self.note_of_chant_final = self.df.iloc[-1]["tenor"]["note"]
         assert isinstance(self.note_of_chant_final, Note)
         self.note_of_final = self.note_of_chant_final  # alias
@@ -257,7 +257,7 @@ class OrganumPiece:
         Iterate over all phrases in this OrganumPiece
         """
         return [
-            OrganumPhrase(df_phrase, self.filename_short)
+            OrganumPhrase(df_phrase, self.filename_short, self.descr_stub)
             for _, df_phrase in self.df.dropna(subset=[("common", "phrase")]).groupby([("common", "phrase")])
         ]
 
@@ -265,7 +265,7 @@ class OrganumPiece:
     def sections(self):
         sections = []
         for _, df_grp in group_by_contiguous_values(self.df, ("common", "texture")):
-            sections.append(OrganumPieceSection(df_grp, self.filename_short, self.note_of_chant_final))
+            sections.append(OrganumPieceSection(df_grp, self.filename_short, self.descr_stub, self.note_of_chant_final))
         return sections
 
     def get_occurring_mode_degrees(self):
@@ -317,7 +317,7 @@ class OrganumPieces:
         self.repertoire_and_genre = RepertoireAndGenreType("organum_pieces")
 
     def __repr__(self):
-        return f"<Collection of {len(self.pieces)} plainchant sequence pieces>"
+        return f"<Collection of {len(self.pieces)} organum pieces>"
 
     def __getitem__(self, idx):
         return self.pieces[idx]
@@ -365,3 +365,35 @@ class OrganumPieces:
         for piece in self.pieces:
             res.update(piece._get_L_or_M_occurrences(which, unit))
         return res
+
+
+class OrganumPhrases:
+    def __init__(self, phrases):
+        assert all([isinstance(p, OrganumPhrase) for p in phrases])
+        self.phrases = phrases
+        self.repertoire_and_genre = RepertoireAndGenreType("organum_phrases")
+
+    def __repr__(self):
+        return f"<Collection of {len(self.phrases)} organum phrases>"
+
+    def __getitem__(self, idx):
+        return self.phrases[idx]
+
+    def __iter__(self):
+        yield from self.phrases
+
+    @classmethod
+    def from_musicxml_files(cls, cfg, filename_pattern=None):
+        musicxml_path = cfg.get_musicxml_path("organum_pieces")
+        pieces = load_organum_pieces(musicxml_path, pattern=filename_pattern)
+        phrases = sum([piece.phrases for piece in pieces], [])
+        return cls(phrases)
+
+    def get_analysis_inputs(
+        self,
+        mode=None,
+        min_num_phrases_per_monomodal_section=None,
+        min_num_notes_per_monomodal_section=None,
+        min_num_notes_per_organum_phrase=16,
+    ):
+        return [p for p in self.phrases if len(p.notes) >= min_num_notes_per_organum_phrase]

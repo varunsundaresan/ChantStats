@@ -149,7 +149,11 @@ class PlainchantSequencePieces:
         return cls(pieces)
 
     def get_analysis_inputs(
-        self, mode, min_num_phrases_per_monomodal_section=3, min_num_notes_per_monomodal_section=80
+        self,
+        mode,
+        min_num_phrases_per_monomodal_section=3,
+        min_num_notes_per_monomodal_section=80,
+        min_num_notes_per_organum_phrase=None,
     ):
         mode = ModalCategoryType(mode)
         return extract_monomodal_sections(

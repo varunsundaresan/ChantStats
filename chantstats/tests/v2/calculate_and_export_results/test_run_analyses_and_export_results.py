@@ -78,3 +78,4 @@ def test_run_analyses_and_export_results_for_different_repertoires(tmpdir):
     run_analyses_and_export_results("plainchant_sequences", output_root_dir=output_root_dir)
     run_analyses_and_export_results("responsorial_chants", output_root_dir=output_root_dir)
     run_analyses_and_export_results("organum_pieces", output_root_dir=output_root_dir)
+    run_analyses_and_export_results("organum_phrases", output_root_dir=output_root_dir)
