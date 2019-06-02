@@ -77,6 +77,12 @@ class PlainchantSequencePiece:
             min_num_notes=min_num_notes,
         )
 
+    def get_occurring_mode_degrees(self):
+        mds = set()
+        for phrase in self.phrases:
+            mds.update(phrase.mode_degrees)
+        return mds
+
 
 @lru_cache(maxsize=10)
 def load_plainchant_sequence_pieces(input_dir, *, pattern="*.xml", exclude_heavy_polymodal_frame_pieces=False):
@@ -146,3 +152,9 @@ class PlainchantSequencePieces:
             min_num_phrases=min_num_phrases_per_monomodal_section,
             min_num_notes=min_num_notes_per_monomodal_section,
         )
+
+    def get_occurring_mode_degrees(self):
+        mds = set()
+        for piece in self.pieces:
+            mds.update(piece.get_occurring_mode_degrees())
+        return mds

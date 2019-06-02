@@ -56,6 +56,12 @@ class ResponsorialChantPiece:
     def get_stanzas_without_modulatory_phrases(self):
         return [s.without_modulatory_phrases() for s in self.get_stanzas()]
 
+    def get_occurring_mode_degrees(self):
+        mds = set()
+        for phrase in self.phrases:
+            mds.update(phrase.mode_degrees)
+        return mds
+
 
 @lru_cache(maxsize=10)
 def load_responsorial_chant_pieces(input_dir, *, pattern="*.xml"):
@@ -111,3 +117,9 @@ class ResponsorialChantPieces:
         self, mode=None, min_num_phrases_per_monomodal_section=None, min_num_notes_per_monomodal_section=None
     ):
         return sum([piece.get_stanzas_without_modulatory_phrases() for piece in self.pieces], [])
+
+    def get_occurring_mode_degrees(self):
+        mds = set()
+        for piece in self.pieces:
+            mds.update(piece.get_occurring_mode_degrees())
+        return mds
