@@ -98,8 +98,27 @@ class ModeDegree:
         return "Mode degree"
 
 
+# ModeDegree.allowed_values = [
+#     ModeDegree(value=value, alter=alter) for value in [1, 2, 3, 4, 5, 6, 7] for alter in [-1, 0, 1]
+# ]
+
 ModeDegree.allowed_values = [
-    ModeDegree(value=value, alter=alter) for value in [1, 2, 3, 4, 5, 6, 7] for alter in [-1, 0, 1]
+    ModeDegree(value=1),
+    ModeDegree(value=1, alter=+1),
+    ModeDegree(value=2, alter=-1),
+    ModeDegree(value=2),
+    ModeDegree(value=3, alter=-1),
+    ModeDegree(value=3),
+    ModeDegree(value=4, alter=-1),
+    ModeDegree(value=4),
+    ModeDegree(value=5, alter=-1),
+    ModeDegree(value=5),
+    ModeDegree(value=6, alter=-1),
+    ModeDegree(value=6),
+    ModeDegree(value=6, alter=+1),
+    ModeDegree(value=7, alter=-1),
+    ModeDegree(value=7),
+    ModeDegree(value=7, alter=+1),
 ]
 
 
