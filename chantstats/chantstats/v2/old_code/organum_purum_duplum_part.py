@@ -1,7 +1,5 @@
-from music21.note import Note
 from ..ambitus import calculate_ambitus
 from ..mode_degree import ModeDegree
-from ..note_pair import NotePair
 from ..pitch_class import PC
 from ..melodic_outline import calculate_melodic_outline_candidates_for_phrase, get_melodic_outlines_from_candidates
 
@@ -13,20 +11,17 @@ class OrganumPurumDuplumPart:
         self.note_of_final = self.piece.note_of_final
         self.final = self.piece.final
         self.descr = self.piece.descr_stub
+        self.sections = [s for s in self.piece.sections if s.texture == "organum_purum"]
 
-        self.duplum_notes = list(piece.df[piece.df["common", "texture"] == "organum_purum"]["duplum", "note"])
-        if not all([isinstance(n, Note) for n in self.duplum_notes]):
-            raise ValueError(f"duplum_notes contains non-note objects: {self.duplum_notes}")
+        self.duplum_notes = sum([s.duplum_notes for s in self.sections], [])
         self.notes = self.duplum_notes  # alias for use in analysis function
         self.lowest_note = min(self.notes)
-
         self.pitch_classes = [PC.from_note(n) for n in self.notes]
         self.mode_degrees = [ModeDegree.from_note_pair(note=n, base_note=self.note_of_final) for n in self.notes]
-        self.pc_pairs = list(zip(self.pitch_classes, self.pitch_classes[1:]))
-        self.note_pairs = [
-            NotePair(n1, n2) for (n1, n2) in zip(self.notes, self.notes[1:])
-        ]  # FIXME: calculate these from note_pairs in phrases!
-        self.mode_degree_pairs = list(zip(self.mode_degrees, self.mode_degrees[1:]))
+
+        self.note_pairs = sum([s.note_pairs for s in self.sections], [])
+        self.pc_pairs = sum([s.pc_pairs for s in self.sections], [])
+        self.mode_degree_pairs = sum([s.mode_degree_pairs for s in self.sections], [])
         self._melodic_outline_candidates = calculate_melodic_outline_candidates_for_phrase(self)
         self.ambitus = calculate_ambitus(self)
 

@@ -174,13 +174,15 @@ def calculate_dataframe_from_music21_stream(stream, filename):
     ggg = df.groupby([("common", "measure")])
     df = pd.concat([add_texture(x) for _, x in ggg], axis=0)
 
+    note_of_chant_final = df.iloc[-1]["tenor"]["note"]
+
     #
     # Fill phrase numbers
     #
     df[("common", "phrase")] = None
     phrase_num = 0
     for _, df_grp in group_by_contiguous_values(df, ("common", "texture")):
-        sec = OrganumPieceSection(df_grp, filename)
+        sec = OrganumPieceSection(df_grp, filename, note_of_chant_final)
         for phrase in sec.phrases:
             phrase_num += 1
             df.loc[phrase.df.index, ("common", "phrase")] = phrase_num
@@ -251,6 +253,13 @@ class OrganumPiece:
             OrganumPhrase(df_phrase, self.filename_short)
             for _, df_phrase in self.df.dropna(subset=[("common", "phrase")]).groupby([("common", "phrase")])
         ]
+
+    @property
+    def sections(self):
+        sections = []
+        for _, df_grp in group_by_contiguous_values(self.df, ("common", "texture")):
+            sections.append(OrganumPieceSection(df_grp, self.filename_short, self.note_of_chant_final))
+        return sections
 
     def get_organum_purum_duplum_part(self):
         return OrganumPurumDuplumPart(self)
