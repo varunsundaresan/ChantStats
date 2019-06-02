@@ -264,6 +264,9 @@ class OrganumPiece:
     def get_organum_purum_duplum_part(self):
         return OrganumPurumDuplumPart(self)
 
+    def get_occurring_mode_degrees(self):
+        return set(self.get_organum_purum_duplum_part().mode_degrees)
+
 
 @lru_cache(maxsize=10)
 def load_organum_pieces(input_dir, *, pattern="*.xml"):
@@ -319,3 +322,9 @@ class OrganumPieces:
         self, mode=None, min_num_phrases_per_monomodal_section=None, min_num_notes_per_monomodal_section=None
     ):
         return [piece.get_organum_purum_duplum_part() for piece in self.pieces]
+
+    def get_occurring_mode_degrees(self):
+        mds = set()
+        for piece in self.pieces:
+            mds.update(piece.get_occurring_mode_degrees())
+        return mds
