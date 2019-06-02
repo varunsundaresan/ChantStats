@@ -334,7 +334,7 @@ class OrganumPieces:
     def get_analysis_inputs(
         self, mode=None, min_num_phrases_per_monomodal_section=None, min_num_notes_per_monomodal_section=None
     ):
-        return [piece.get_organum_purum_duplum_part() for piece in self.pieces]
+        return [piece.organum_purum_duplum_part for piece in self.pieces]
 
     def get_occurring_mode_degrees(self):
         mds = set()
