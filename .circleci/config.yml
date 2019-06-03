@@ -107,6 +107,24 @@ jobs:
             - p_cutoff_0.40
 
   zip_results:
+    docker:
+      - image: circleci/python:3.7
+        environment:
+          CHANTS_DIR: /home/circleci/chants/
+    steps:
+      - checkout
+      - run:
+          name: "Export timestamp for this test run"
+          command: echo "TIMESTAMP=$(date +%Y-%m-%d_%H.%M.%S)" > /tmp/env_timestamp.sh
+      - run:
+          name: "Setup custom environment variables"
+          command: |
+            echo 'source /tmp/env_timestamp.sh' >> $BASH_ENV
+            echo 'export GIT_REV="$(echo $CIRCLE_SHA1 | cut -c -10)"' >> $BASH_ENV
+            echo 'export TEST_RUN_ID="${TIMESTAMP}__${GIT_REV}"' >> $BASH_ENV
+            echo 'export RESULTS_FOLDER_NAME="analysis_results__$TEST_RUN_ID"' >> $BASH_ENV
+            echo 'export ZIP_FILE_NAME="analysis_results__$TEST_RUN_ID.zip"' >> $BASH_ENV
+            echo 'export CHANTSTATS_OUTPUT_ROOT_DIR="/tmp/analysis_results/$RESULTS_FOLDER_NAME"' >> $BASH_ENV
       - run: cd /tmp/analysis_results/ && zip -r $ZIP_FILE_NAME $RESULTS_FOLDER_NAME
       - store_artifacts:
           path: /tmp/analysis_results
