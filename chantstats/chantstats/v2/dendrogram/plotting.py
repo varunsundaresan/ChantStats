@@ -94,7 +94,7 @@ def plot_multiple_pandas_series_as_stacked_bar_chart(
         If True, sort the relative frequency values in ascending order before assembling
         them into the stacked bar (default: True).
     """
-    prepare_axes_for_stacked_bar_chart(ax, num_bars=len(series))
+    prepare_axes_for_stacked_bar_chart(ax, num_bars=len(xlabels))
 
     # Plot stacked bars and associated x-axis labels
     for idx, s in enumerate(series):
@@ -213,9 +213,11 @@ def plot_tendency_distribution_NEW(
     fig, ax = plt.subplots(figsize=figsize) if ax is None else (ax.figure, ax)
 
     df = distribution.unstack(level=0)
-    series = [df[col] for col in df.columns]
+    non_null_columns = df.columns[(df != 0).any(axis=0)].tolist()
+    non_null_labels = [pc.label_for_plots for pc in non_null_columns]
+    series = [df[col] for col in non_null_columns]
     title = result_descriptor.plot_title
-    xlabels = [pc.label_for_plots for pc in df.columns]
+    xlabels = non_null_labels
 
     plot_multiple_pandas_series_as_stacked_bar_chart(
         series,
