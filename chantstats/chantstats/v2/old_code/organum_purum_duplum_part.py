@@ -1,7 +1,7 @@
 from ..ambitus import calculate_ambitus
 from ..mode_degree import ModeDegree
 from ..pitch_class import PC
-from ..melodic_outline import calculate_melodic_outline_candidates_for_phrase, get_melodic_outlines_from_candidates
+from ..melodic_outline import calculate_melodic_outline_candidates, get_melodic_outlines_from_candidates
 
 
 class OrganumPurumDuplumPart:
@@ -22,7 +22,7 @@ class OrganumPurumDuplumPart:
         self.note_pairs = sum([s.note_pairs for s in self.sections], [])
         self.pc_pairs = sum([s.pc_pairs for s in self.sections], [])
         self.mode_degree_pairs = sum([s.mode_degree_pairs for s in self.sections], [])
-        self._melodic_outline_candidates = calculate_melodic_outline_candidates_for_phrase(self)
+        self._melodic_outline_candidates = calculate_melodic_outline_candidates(self.notes, self.note_pairs)
         # self.ambitus = calculate_ambitus(self)
 
     def __repr__(self):

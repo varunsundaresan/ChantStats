@@ -6,29 +6,32 @@ from .note_pair import NotePair
 __all__ = ["MelodicOutline", "has_framing_interval", "check_step_size"]
 
 
-def calculate_melodic_outline_candidates_for_phrase(phrase):
+def calculate_melodic_outline_candidates(notes, note_pairs):
     """
     Parameters
     ----------
-    phrase
-        A phrase in a plainchant sequence or responsorial chant piece.
-        Must have the attributes `notes` and `note_pairs`.
+    notes
+        List of notes
+    note_pairs
+        List of note pairs corresponding to the list of notes.
+        Note that we _could_ calculate this directly from `notes`,
+        but in all cases we already have the list of note pair
+        pre-computed, so it's more efficient to pass it as an extra
+        parameter here even though it seems redundant.
     """
-    if len(phrase.note_pairs) < 2:
+    if len(note_pairs) < 2:
         return []
-    directions = pd.Series([note_pair.direction for note_pair in phrase.note_pairs])
+    directions = pd.Series([note_pair.direction for note_pair in note_pairs])
     directions_ffill = directions.replace(0, np.NaN).ffill(downcast="infer").bfill(downcast="infer")
     dir_changes = directions_ffill.diff().fillna(0, downcast="infer") != 0
     offsets_with_dir_changes = dir_changes[dir_changes != 0].index
     if len(offsets_with_dir_changes) == 0:
-        mo_candidates = [phrase.notes]
+        mo_candidates = [notes]
     else:
         mo_slices = list(zip(offsets_with_dir_changes, offsets_with_dir_changes[1:]))
-        mo_slices = (
-            [(0, offsets_with_dir_changes[0])] + mo_slices + [(offsets_with_dir_changes[-1], len(phrase.notes) + 1)]
-        )
+        mo_slices = [(0, offsets_with_dir_changes[0])] + mo_slices + [(offsets_with_dir_changes[-1], len(notes) + 1)]
         mo_slices = [slice(i, j + 1) for (i, j) in mo_slices]
-        mo_candidates = [phrase.notes[sl] for sl in mo_slices]
+        mo_candidates = [notes[sl] for sl in mo_slices]
     return mo_candidates
 
 

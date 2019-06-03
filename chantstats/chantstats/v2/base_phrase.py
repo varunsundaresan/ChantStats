@@ -1,6 +1,6 @@
 import music21
 from .ambitus import calculate_ambitus
-from .melodic_outline import calculate_melodic_outline_candidates_for_phrase, get_melodic_outlines_from_candidates
+from .melodic_outline import calculate_melodic_outline_candidates, get_melodic_outlines_from_candidates
 from .mode_degree import ModeDegree
 from .note_pair import NotePair
 from .pitch_class import PC
@@ -31,7 +31,7 @@ class BasePhrase:
         self.pc_pairs = list(zip(self.pitch_classes, self.pitch_classes[1:]))
         self.note_pairs = [NotePair(n1, n2) for (n1, n2) in zip(self.notes, self.notes[1:])]
         self.mode_degree_pairs = list(zip(self.mode_degrees, self.mode_degrees[1:]))
-        self._melodic_outline_candidates = calculate_melodic_outline_candidates_for_phrase(self)
+        self._melodic_outline_candidates = calculate_melodic_outline_candidates(self.notes, self.note_pairs)
 
     def __repr__(self):
         return f"<Phrase {self.phrase_number} of piece {self.piece}>"
