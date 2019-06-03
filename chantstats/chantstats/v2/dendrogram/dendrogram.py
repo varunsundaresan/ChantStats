@@ -153,12 +153,18 @@ class Dendrogram:
         link_color_palette = link_color_palette or palettable.tableau.Tableau_10.hex_colors
         set_link_color_palette(link_color_palette)
 
-        def find_leaf_id(label):
+        def get_leaf_id(label):
             leaf_nodes_with_label = [n for n in self.leaf_nodes if n.descr == label]
-            assert len(leaf_nodes_with_label) == 1
-            return leaf_nodes_with_label[0].id
+            if len(leaf_nodes_with_label) == 1:
+                return f"#{leaf_nodes_with_label[0].id}: "
+            else:
+                # raise RuntimeError(
+                #     f"Could not find leaf unique node with label '{label}'. Found: {leaf_nodes_with_label}"
+                # )
+                logger.error(f"Could not find leaf unique node with label '{label}'. Found: {leaf_nodes_with_label}")
+                return ""
 
-        xticklabels = [f"#{find_leaf_id(label)}: {label}" for label in self.df.index]
+        xticklabels = [f"{get_leaf_id(label)}{label}" for label in self.df.index]
 
         R = dendrogram(
             self.L,
