@@ -152,9 +152,17 @@ class Dendrogram:
 
         link_color_palette = link_color_palette or palettable.tableau.Tableau_10.hex_colors
         set_link_color_palette(link_color_palette)
+
+        def find_leaf_id(label):
+            leaf_nodes_with_label = [n for n in self.leaf_nodes if n.descr == label]
+            assert len(leaf_nodes_with_label) == 1
+            return leaf_nodes_with_label[0].id
+
+        xticklabels = [f"#{find_leaf_id(label)}: {label}" for label in self.df.index]
+
         R = dendrogram(
             self.L,
-            labels=self.df.index,
+            labels=xticklabels,
             truncate_mode=None,
             color_threshold=p_cutoff,
             above_threshold_color="#999999",
