@@ -34,6 +34,7 @@ def export_stacked_bar_chart_for_pc_freqs(nodes_below_cutoff, output_root_dir, r
     fig = plot_pc_freq_distributions(
         nodes_below_cutoff, result_descriptor=result_descriptor, color_palette=color_palette
     )
+    fig.tight_layout()
     outfilename = result_descriptor.get_full_output_path(
         output_root_dir, filename_prefix="stacked_bar_chart", filename_suffix=""
     )
