@@ -103,6 +103,8 @@ def plot_multiple_pandas_series_as_stacked_bar_chart_MULTIPLE_ROWS(
     num_chunks = len(series_chunks)
 
     fig, axes = plt.subplots(nrows=num_chunks, figsize=(figwidth, num_chunks * height_per_axes))
+    if num_chunks == 1:
+        axes = [axes]
     for s_chunk, l_chunk, ax in zip(series_chunks, xticklabels_chunks, axes):
         plot_multiple_pandas_series_as_stacked_bar_chart(
             s_chunk,
