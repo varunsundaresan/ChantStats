@@ -1,7 +1,12 @@
 import matplotlib.pyplot as plt
 import os
 from .color_palettes import get_color_palette_for_unit
-from .dendrogram.plotting import plot_pc_freq_distributions, plot_tendency_distributions, plot_LMO_freq_distributions
+from .dendrogram.plotting import (
+    plot_pc_freq_distributions,
+    plot_tendency_distributions,
+    plot_LMO_freq_distributions,
+    plot_tendency_distribution_NEW,
+)
 from .logging import logger
 from .utils import plot_empty_figure
 
@@ -57,6 +62,7 @@ def export_stacked_bar_chart_for_tendency(nodes_below_cutoff, output_root_dir, r
 def export_individual_stacked_bar_charts_for_tendency(nodes_below_cutoff, output_root_dir, result_descriptor):
     assert len(nodes_below_cutoff) > 0
     color_palette = get_color_palette_for_unit(result_descriptor.unit)
+
     for idx, node in enumerate(nodes_below_cutoff, start=1):
         fig = plot_tendency_distributions(node, result_descriptor=result_descriptor, color_palette=color_palette)
         fig.tight_layout()
@@ -65,6 +71,17 @@ def export_individual_stacked_bar_charts_for_tendency(nodes_below_cutoff, output
         )
         fig.savefig(outfilename)
         plt.close(fig)
+
+
+def export_stacked_bar_chart_for_modal_category_tendency(distribution, output_root_dir, result_descriptor):
+    color_palette = get_color_palette_for_unit(result_descriptor.unit)
+    fig = plot_tendency_distribution_NEW(distribution, result_descriptor=result_descriptor, color_palette=color_palette)
+    fig.tight_layout()
+    outfilename = result_descriptor.get_full_output_path(
+        output_root_dir, filename_prefix="stacked_bar_chart", filename_suffix=""
+    )
+    fig.savefig(outfilename)
+    plt.close(fig)
 
 
 def export_stacked_bar_chart_for_leaps_and_melodic_outlines(nodes_below_cutoff, output_root_dir, result_descriptor):
@@ -105,37 +122,39 @@ def export_results(results, output_root_dir, p_cutoff=0.4, include_leaf_nodes_in
 
     for result_descriptor in results.keys():
         output_dir = result_descriptor.get_output_dir(output_root_dir)
-        logger.info(f"Exporting results to folder: {output_dir}")
-        dendrogram = results[result_descriptor]["dendrogram"]
-
-        # Export dendrogram
         os.makedirs(output_dir, exist_ok=True)
-        fig = dendrogram.plot_dendrogram(p_cutoff=p_cutoff, result_descriptor=result_descriptor)
-        outfilename = result_descriptor.get_full_output_path(
-            output_root_dir, filename_prefix="dendrogram", filename_suffix=""
-        )
-        fig.savefig(outfilename)
+        logger.info(f"Exporting results to folder: {output_dir}")
 
-        # Export stacked bar chart(s)
-        nodes_below_cutoff = dendrogram.get_nodes_below_cutoff(
-            p_cutoff, include_leaf_nodes=include_leaf_nodes_in_clusters
-        )
-        if nodes_below_cutoff == []:
-            msg = (
-                f"Exporting empty figure because no dendrogram nodes are below p_cutoff={p_cutoff} {result_descriptor}."
-            )
-            logger.warning(msg)
-            export_empty_figure(output_root_dir, result_descriptor)
-            continue
-
-        if result_descriptor.analysis == "pc_freqs":
-            export_stacked_bar_chart_for_pc_freqs(nodes_below_cutoff, output_root_dir, result_descriptor)
-        elif result_descriptor.analysis == "tendency":
-            # export_stacked_bar_charts_for_tendency(nodes_below_cutoff, output_root_dir, result_descriptor)
-            export_individual_stacked_bar_charts_for_tendency(nodes_below_cutoff, output_root_dir, result_descriptor)
-        elif result_descriptor.analysis == "L_and_M__L5_u_M5" or result_descriptor.analysis == "L_and_M__L4_u_M4":
-            export_stacked_bar_chart_for_leaps_and_melodic_outlines(
-                nodes_below_cutoff, output_root_dir, result_descriptor
-            )
+        if result_descriptor.analysis == "tendency":
+            distribution = results[result_descriptor]["tendency_distribution"]
+            export_stacked_bar_chart_for_modal_category_tendency(distribution, output_root_dir, result_descriptor)
         else:
-            raise NotImplementedError()
+            # Export dendrogram
+            dendrogram = results[result_descriptor]["dendrogram"]
+            fig = dendrogram.plot_dendrogram(p_cutoff=p_cutoff, result_descriptor=result_descriptor)
+            outfilename = result_descriptor.get_full_output_path(
+                output_root_dir, filename_prefix="dendrogram", filename_suffix=""
+            )
+            fig.savefig(outfilename)
+
+            # Export stacked bar chart(s)
+            nodes_below_cutoff = dendrogram.get_nodes_below_cutoff(
+                p_cutoff, include_leaf_nodes=include_leaf_nodes_in_clusters
+            )
+            if nodes_below_cutoff == []:
+                msg = f"Exporting empty figure because no dendrogram nodes are below p_cutoff={p_cutoff} {result_descriptor}."
+                logger.warning(msg)
+                export_empty_figure(output_root_dir, result_descriptor)
+                continue
+
+            if result_descriptor.analysis == "pc_freqs":
+                export_stacked_bar_chart_for_pc_freqs(nodes_below_cutoff, output_root_dir, result_descriptor)
+            # elif result_descriptor.analysis == "tendency":
+            #     # export_stacked_bar_charts_for_tendency(nodes_below_cutoff, output_root_dir, result_descriptor)
+            #     # export_individual_stacked_bar_charts_for_tendency(nodes_below_cutoff, output_root_dir, result_descriptor)
+            elif result_descriptor.analysis == "L_and_M__L5_u_M5" or result_descriptor.analysis == "L_and_M__L4_u_M4":
+                export_stacked_bar_chart_for_leaps_and_melodic_outlines(
+                    nodes_below_cutoff, output_root_dir, result_descriptor
+                )
+            else:
+                raise NotImplementedError()

@@ -195,3 +195,36 @@ def plot_tendency_distributions(
     )
     ax.set_ylabel("Probability of occurrence (in percent)", rotation="vertical")
     return fig
+
+
+def plot_tendency_distribution_NEW(
+    distribution,
+    *,
+    result_descriptor,
+    color_palette,
+    ax=None,
+    bar_width=0.6,
+    sort_freqs_ascending=True,
+    figsize=(22, 4),
+):
+    """
+    Create a stacked bar chart from the PC tendency distributions of the given dendrogram node.
+    """
+    fig, ax = plt.subplots(figsize=figsize) if ax is None else (ax.figure, ax)
+
+    df = distribution.unstack(level=0)
+    series = [df[col] for col in df.columns]
+    title = result_descriptor.plot_title
+    xlabels = [pc.label_for_plots for pc in df.columns]
+
+    plot_multiple_pandas_series_as_stacked_bar_chart(
+        series,
+        xlabels=xlabels,
+        ax=ax,
+        color_palette=color_palette,
+        title=title,
+        bar_width=bar_width,
+        sort_freqs_ascending=sort_freqs_ascending,
+    )
+    ax.set_ylabel("Probability of occurrence (in percent)", rotation="vertical")
+    return fig
