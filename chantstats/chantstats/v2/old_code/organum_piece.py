@@ -198,12 +198,15 @@ def calculate_dataframe_from_music21_stream(stream, filename, descr_stub):
     ### NEW CODE: self-contained and cleaner
     phrase_num = 0
     for _, df_texture in group_by_contiguous_values(df, ("common", "texture")):
-        if df_texture["common", "texture"].unique() != ["organum_purum"]:
+        cur_texture = df_texture["common", "texture"].unique()[0]
+        if cur_texture != "organum_purum":
             continue
+
         tenor_ffilled = df_texture["tenor"].ffill().dropna()
         for i, df_phrase in group_by_contiguous_values(df_texture, tenor_ffilled["note"]):
             phrase_num += 1
-            # print(f"Filling in phrase: {phrase_num}")
+            # tenor_note = df_phrase["tenor", "note"].iloc[0]
+            # print(f"Filling in phrase: {phrase_num} (tenor note: {tenor_note})")
             # print(f"   {df_phrase.index[0]}-{df_phrase.index[-1]}")
             df.loc[df_phrase.index, ("common", "phrase")] = phrase_num
 
