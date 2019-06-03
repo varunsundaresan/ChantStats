@@ -28,12 +28,12 @@ jobs:
           command: |
             cd chantstats
             pipenv run pytest --cov=chantstats --cov-report=term-missing -svx tests/v2/unit_tests/
-      - run:
-          name: "Run slow tests"
-          command: |
-            cd chantstats
-            pipenv run pytest -svx --runslow --cov=chantstats --cov-report=term-missing tests/v2/calculate_and_export_results/ -k test_folder_structure_for_exported_results
-          background: true
+#      - run:
+#          name: "Run slow tests"
+#          command: |
+#            cd chantstats
+#            pipenv run pytest -svx --runslow --cov=chantstats --cov-report=term-missing tests/v2/calculate_and_export_results/ -k test_folder_structure_for_exported_results
+#          background: true
 
       - run:
           name: "Calculate and export results for plainchant sequences"
