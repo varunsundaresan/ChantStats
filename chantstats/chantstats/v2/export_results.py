@@ -15,7 +15,7 @@ class MissingDendrogramNodesError(Exception):
 def export_empty_figure(output_root_dir, result_descriptor):
     # raise NotImplementedError("TODO: implement this if required")
     msg_text = "This plot is deliberately empty\nbecause there is no data to export."
-    fig = plot_empty_figure(msg_text, result_descriptor=result_descriptor, figsize=(20, 4))
+    fig = plot_empty_figure(msg_text, result_descriptor=result_descriptor, figsize=(22, 4))
     outfilename = result_descriptor.get_full_output_path(
         output_root_dir, filename_prefix="stacked_bar_chart", filename_suffix=""
     )

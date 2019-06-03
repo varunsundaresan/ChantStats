@@ -136,7 +136,7 @@ class Dendrogram:
         result_descriptor=None,
         ax=None,
         title=None,
-        figsize=(20, 4),
+        figsize=(22, 4),
         ylim=(0.0, 1.0),
         leaf_font_size=10,
         annotate_nodes_below_cutoff=True,
@@ -223,7 +223,7 @@ class EmptyDendrogram:
                     "contains a row with only zero values."
                 )
 
-    def plot_dendrogram(self, p_cutoff, *, result_descriptor=None, figsize=(20, 4)):
+    def plot_dendrogram(self, p_cutoff, *, result_descriptor=None, figsize=(22, 4)):
         # msg_text = "This dendrogram plot is deliberately empty\nbecause there is only a single input item."
         msg_text = "This dendrogram plot is deliberately empty\nbecause there is nothing to cluster."
         fig = plot_empty_figure(msg_text, result_descriptor=result_descriptor, figsize=figsize)
