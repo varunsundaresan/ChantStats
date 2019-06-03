@@ -1,7 +1,7 @@
-version: 2.1
+version: 2
 
 jobs:
-  calculate_sequence_and_resp_chant_results:
+  build:
     docker:
       - image: circleci/python:3.7
         environment:
@@ -49,34 +49,6 @@ jobs:
             pipenv run python tests/v2/calculate_and_export_results/run_analyses_and_export_result.py responsorial_chants
             touch .results-responsorial-chants-done
 
-      - persist_to_workspace:
-          root: /tmp/analysis_results
-          paths:
-            - p_cutoff_0.40
-
-  calculate_organum_results:
-    docker:
-      - image: circleci/python:3.7
-        environment:
-          CHANTS_DIR: /home/circleci/chants/
-    steps:
-      - checkout
-      - run:
-          name: "Export timestamp for this test run"
-          command: echo "TIMESTAMP=$(date +%Y-%m-%d_%H.%M.%S)" > /tmp/env_timestamp.sh
-      - run:
-          name: "Setup custom environment variables"
-          command: |
-            echo 'source /tmp/env_timestamp.sh' >> $BASH_ENV
-            echo 'export GIT_REV="$(echo $CIRCLE_SHA1 | cut -c -10)"' >> $BASH_ENV
-            echo 'export TEST_RUN_ID="${TIMESTAMP}__${GIT_REV}"' >> $BASH_ENV
-            echo 'export RESULTS_FOLDER_NAME="analysis_results__$TEST_RUN_ID"' >> $BASH_ENV
-            echo 'export ZIP_FILE_NAME="analysis_results__$TEST_RUN_ID.zip"' >> $BASH_ENV
-            echo 'export CHANTSTATS_OUTPUT_ROOT_DIR="/tmp/analysis_results/$RESULTS_FOLDER_NAME"' >> $BASH_ENV
-      - run: sudo apt-get update && sudo apt-get install -y tree
-      - run: git clone https://github.com/maxalbert/chants.git /home/circleci/chants
-      - run: PIPENV_PIPFILE=chantstats/Pipfile pipenv install --deploy --dev
-
       - run:
           name: "Calculate and export results for organum pieces"
           command: |
@@ -91,42 +63,15 @@ jobs:
             pipenv run python tests/v2/calculate_and_export_results/run_analyses_and_export_result.py organum_phrases
             touch .results-organum-phrases-done
 
-      - persist_to_workspace:
-          root: /tmp/analysis_results
-          paths:
-            - p_cutoff_0.40
-
-  zip_results:
-    docker:
-      - image: circleci/python:3.7
-        environment:
-          CHANTS_DIR: /home/circleci/chants/
-    steps:
-      - checkout
       - run:
-          name: "Export timestamp for this test run"
-          command: echo "TIMESTAMP=$(date +%Y-%m-%d_%H.%M.%S)" > /tmp/env_timestamp.sh
-      - run:
-          name: "Setup custom environment variables"
+          name: Wait for calculation of results to complete
           command: |
-            echo 'source /tmp/env_timestamp.sh' >> $BASH_ENV
-            echo 'export GIT_REV="$(echo $CIRCLE_SHA1 | cut -c -10)"' >> $BASH_ENV
-            echo 'export TEST_RUN_ID="${TIMESTAMP}__${GIT_REV}"' >> $BASH_ENV
-            echo 'export RESULTS_FOLDER_NAME="analysis_results__$TEST_RUN_ID"' >> $BASH_ENV
-            echo 'export ZIP_FILE_NAME="analysis_results__$TEST_RUN_ID.zip"' >> $BASH_ENV
-            echo 'export CHANTSTATS_OUTPUT_ROOT_DIR="/tmp/analysis_results/$RESULTS_FOLDER_NAME"' >> $BASH_ENV
+            cd chantstats
+            while [ ! -f ".results-plainchant-sequences-done" ] || [ ! -f ".results-responsorial-chants-done" ] || [ ! -f ".results-organum-pieces-done" ] || [ ! -f ".results-organum-phrases-done" ]; do
+              echo "Waiting for calculation of results to complete"
+              sleep 5
+            done
       - run: cd /tmp/analysis_results/ && zip -r $ZIP_FILE_NAME $RESULTS_FOLDER_NAME
       - store_artifacts:
           path: /tmp/analysis_results
           destination: analysis_results
-
-workflows:
-  version: 2
-  run_build_pipeline:
-    jobs:
-      - calculate_sequence_and_resp_chant_results
-      - calculate_organum_results
-      - zip_results:
-          requires:
-            - calculate_sequence_and_resp_chant_results
-            - calculate_organum_results
