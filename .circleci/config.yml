@@ -1,7 +1,7 @@
-version: 2
+version: 2.1
 
 jobs:
-  build:
+  calculate_results:
     docker:
       - image: circleci/python:3.7
         environment:
@@ -75,3 +75,9 @@ jobs:
       - store_artifacts:
           path: /tmp/analysis_results
           destination: analysis_results
+
+
+workflows:
+  run_build_pipeline:
+    jobs:
+      - calculate_results
