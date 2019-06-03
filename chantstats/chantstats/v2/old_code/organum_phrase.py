@@ -1,6 +1,7 @@
 from music21.note import Note
 from .helpers import pairwise
 from ..ambitus import calculate_ambitus
+from ..melodic_outline import calculate_melodic_outline_candidates_for_phrase, get_melodic_outlines_from_candidates
 from ..mode_degree import ModeDegree
 from ..note_pair import NotePair
 from ..pitch_class import PC
@@ -38,6 +39,8 @@ class OrganumPhrase:
         self.lowest_note = min(self.notes)
 
         # self.ambitus = calculate_ambitus(self)
+
+        self._melodic_outline_candidates = calculate_melodic_outline_candidates_for_phrase(self)
 
         if not df["common", "phrase"].isnull().any():
             # FIXME: the only reason the phrase numbers can be null here is because we use this class
@@ -103,6 +106,11 @@ class OrganumPhrase:
 
     def get_note_pairs_with_interval(self, interval_name):
         return [note_pair for note_pair in self.note_pairs if note_pair.interval.name == interval_name]
+
+    def get_melodic_outlines(self, interval_name, *, allow_thirds=False):
+        return get_melodic_outlines_from_candidates(
+            self._melodic_outline_candidates, interval_name, allow_thirds=allow_thirds
+        )
 
     # @property
     # def pc_pair_condprobs(self):
