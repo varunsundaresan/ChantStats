@@ -111,6 +111,7 @@ ModeDegree.allowed_values = [
     ModeDegree(value=3),
     ModeDegree(value=4, alter=-1),
     ModeDegree(value=4),
+    ModeDegree(value=4, alter=+1),
     ModeDegree(value=5, alter=-1),
     ModeDegree(value=5),
     ModeDegree(value=6, alter=-1),
