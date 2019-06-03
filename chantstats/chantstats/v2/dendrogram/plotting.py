@@ -6,10 +6,10 @@ from ..utils import is_close_to_zero_or_100
 __all__ = ["plot_pc_freq_distributions", "plot_tendency_distributions"]
 
 
-def prepare_axes_for_stacked_bar_chart(ax, num_bars):
+def prepare_axes_for_stacked_bar_chart(ax, num_bars, pad_to_num_bars):
     ax.clear()
     ax.set_xticks(range(num_bars))
-    ax.set_xlim(-0.5, num_bars + 0.5)
+    ax.set_xlim(-0.5, pad_to_num_bars + 0.5)
     ax.set_ylim(0.0, 105.0)  # y-axis contains percentages between 0% and 100%
 
 
@@ -72,6 +72,57 @@ def plot_single_pandas_series_as_stacked_bar(values, *, ax, xpos, color_palette,
             ax.annotate(f"{value:.1f}", xy=xy_text, horizontalalignment=horizontalalignment, verticalalignment="center")
 
 
+def chunks(seq, n):
+    """
+    Yield successive n-sized chunks from seq.
+    """
+    for i in range(0, len(seq), n):
+        cur_chunk = seq[i : i + n]
+        # if len(cur_chunk) < n:
+        #     cur_chunk += [pd.Series() for _ in range(n - len(cur_chunk))]
+        # assert len(cur_chunk) == n
+        yield cur_chunk
+
+
+def plot_multiple_pandas_series_as_stacked_bar_chart_MULTIPLE_ROWS(
+    series,
+    *,
+    xticklabels,
+    color_palette,
+    title,
+    bar_width,
+    sort_freqs_ascending=True,
+    max_num_bars_per_row=24,
+    height_per_axes=2.5,
+    xlabel=None,
+    ylabel=None,
+    figwidth=22,
+):
+    series_chunks = list(chunks(series, max_num_bars_per_row))
+    xticklabels_chunks = list(chunks(xticklabels, max_num_bars_per_row))
+    num_chunks = len(series_chunks)
+
+    fig, axes = plt.subplots(nrows=num_chunks, figsize=(figwidth, num_chunks * height_per_axes))
+    for s_chunk, l_chunk, ax in zip(series_chunks, xticklabels_chunks, axes):
+        print("Plotting one row...")
+        plot_multiple_pandas_series_as_stacked_bar_chart(
+            s_chunk,
+            xticklabels=l_chunk,
+            ax=ax,
+            color_palette=color_palette,
+            title=title,
+            bar_width=bar_width,
+            sort_freqs_ascending=sort_freqs_ascending,
+            xlabel=xlabel,
+            ylabel=ylabel,
+            pad_to_num_bars=max_num_bars_per_row,
+        )
+
+    fig.subplots_adjust(hspace=0.35)
+    plt.close(fig)
+    return fig
+
+
 def plot_multiple_pandas_series_as_stacked_bar_chart(
     series,
     *,
@@ -85,6 +136,7 @@ def plot_multiple_pandas_series_as_stacked_bar_chart(
     xlabel_labelpad=15,
     ylabel=None,
     ylabel_rotation="vertical",
+    pad_to_num_bars=None,
 ):
     """
     Plot a collection of pandas series as a stacked bar chart (with one stacked bar per series).
@@ -107,7 +159,8 @@ def plot_multiple_pandas_series_as_stacked_bar_chart(
         If True, sort the relative frequency values in ascending order before assembling
         them into the stacked bar (default: True).
     """
-    prepare_axes_for_stacked_bar_chart(ax, num_bars=len(xticklabels))
+    pad_to_num_bars = pad_to_num_bars or len(xticklabels)
+    prepare_axes_for_stacked_bar_chart(ax, num_bars=len(xticklabels), pad_to_num_bars=pad_to_num_bars)
 
     # Plot stacked bars and associated x-axis labels
     for idx, s in enumerate(series):
