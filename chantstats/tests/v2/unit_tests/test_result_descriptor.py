@@ -7,16 +7,16 @@ def test_result_descriptor():
     output_root_dir = "/tmp/foo/"
     modal_category = ModalCategory(items=None, modal_category_type="final", key="G")
     rd = ResultDescriptor("plainchant_sequences", "pc_freqs", "pcs", modal_category)
-    assert rd.output_dirname == "chant/pc_freqs/sequences/pcs"
-    assert rd.get_output_dir(output_root_dir) == "/tmp/foo/chant/pc_freqs/sequences/pcs"
-    assert rd.get_output_dir(output_root_dir) == "/tmp/foo/chant/pc_freqs/sequences/pcs"
+    assert rd.output_dirname == "chant/mode_profiles/sequences/pcs"
+    assert rd.get_output_dir(output_root_dir) == "/tmp/foo/chant/mode_profiles/sequences/pcs"
+    assert rd.get_output_dir(output_root_dir) == "/tmp/foo/chant/mode_profiles/sequences/pcs"
     assert (
         rd.get_full_output_path(output_root_dir, filename_prefix="dendrogram", filename_suffix="")
-        == "/tmp/foo/chant/pc_freqs/sequences/pcs/dendrogram__06.G_1.final.png"
+        == "/tmp/foo/chant/mode_profiles/sequences/pcs/dendrogram__06.G_1.final.png"
     )
     assert (
         rd.get_full_output_path(output_root_dir, filename_prefix="quux", filename_suffix="")
-        == "/tmp/foo/chant/pc_freqs/sequences/pcs/quux__06.G_1.final.png"
+        == "/tmp/foo/chant/mode_profiles/sequences/pcs/quux__06.G_1.final.png"
     )
 
     output_root_dir = "/quux/bar"
