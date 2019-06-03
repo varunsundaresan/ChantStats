@@ -92,7 +92,7 @@ def plot_multiple_pandas_series_as_stacked_bar_chart_MULTIPLE_ROWS(
     title,
     bar_width,
     sort_freqs_ascending=True,
-    num_bars_per_row=24,
+    num_bars_per_row=16,
     height_per_axes=2.5,
     xlabel=None,
     ylabel=None,
@@ -201,7 +201,7 @@ def plot_pc_freq_distributions(
     color_palette,
     bar_width=0.6,
     sort_freqs_ascending=True,
-    num_bars_per_row=24,
+    num_bars_per_row=16,
     figsize=(22, 4),
 ):
     """
