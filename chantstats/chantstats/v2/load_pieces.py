@@ -9,8 +9,10 @@ def load_pieces(repertoire_and_genre, cfg, filename_pattern=None):
     elif repertoire_and_genre == "responsorial_chants":
         return ResponsorialChantPieces.from_musicxml_files(cfg, filename_pattern=filename_pattern)
     elif repertoire_and_genre == "organum_pieces":
-        return OrganumPieces.from_musicxml_files(cfg, filename_pattern=filename_pattern)
+        # return OrganumPieces.from_musicxml_files(cfg, filename_pattern=filename_pattern)
+        return OrganumPieces.from_musicxml_files(cfg, filename_pattern="F3BD*.xml")
     elif repertoire_and_genre == "organum_phrases":
-        return OrganumPhrases.from_musicxml_files(cfg, filename_pattern=filename_pattern)
+        # return OrganumPhrases.from_musicxml_files(cfg, filename_pattern=filename_pattern)
+        return OrganumPhrases.from_musicxml_files(cfg, filename_pattern="F3BD*.xml")
     else:
         raise NotImplementedError()
