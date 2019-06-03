@@ -1,4 +1,5 @@
 from .analysis_type import AnalysisType
+from .analysis_functions import calculate_tendency_for_modal_category
 from .dendrogram import calculate_dendrogram
 from .logging import logger
 from .modal_category import ModalCategoryType, GroupingByModalCategory
@@ -73,8 +74,12 @@ def calculate_results(
             modal_category = grouping[key]
             logger.info(f"Calculating {analysis} results for {modal_category}")
             for unit in units:
-                dendrogram = calculate_dendrogram(modal_category, analysis=analysis, unit=unit)
                 result_descriptor = ResultDescriptor(pieces.repertoire_and_genre, analysis, unit, modal_category)
-                results[result_descriptor] = {"dendrogram": dendrogram}
+                if analysis == "tendency":
+                    distribution = calculate_tendency_for_modal_category(modal_category, unit=unit)
+                    results[result_descriptor] = {"tendency_distribution": distribution}
+                else:
+                    dendrogram = calculate_dendrogram(modal_category, analysis=analysis, unit=unit)
+                    results[result_descriptor] = {"dendrogram": dendrogram}
 
     return results
