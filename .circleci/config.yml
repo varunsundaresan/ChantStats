@@ -35,20 +35,20 @@ jobs:
 #            pipenv run pytest -svx --runslow --cov=chantstats --cov-report=term-missing tests/v2/calculate_and_export_results/ -k test_folder_structure_for_exported_results
 #          background: true
 
-      - run:
-          name: "Calculate and export results for plainchant sequences"
-          command: |
-            cd chantstats
-            pipenv run python tests/v2/calculate_and_export_results/run_analyses_and_export_result.py plainchant_sequences
-            touch .results-plainchant-sequences-done
-
-      - run:
-          name: "Calculate and export results for responsorial chants"
-          command: |
-            cd chantstats
-            pipenv run python tests/v2/calculate_and_export_results/run_analyses_and_export_result.py responsorial_chants
-            touch .results-responsorial-chants-done
-
+#      - run:
+#          name: "Calculate and export results for plainchant sequences"
+#          command: |
+#            cd chantstats
+#            pipenv run python tests/v2/calculate_and_export_results/run_analyses_and_export_result.py plainchant_sequences
+#            touch .results-plainchant-sequences-done
+#
+#      - run:
+#          name: "Calculate and export results for responsorial chants"
+#          command: |
+#            cd chantstats
+#            pipenv run python tests/v2/calculate_and_export_results/run_analyses_and_export_result.py responsorial_chants
+#            touch .results-responsorial-chants-done
+#
       - run:
           name: "Calculate and export results for organum pieces"
           command: |
@@ -56,13 +56,13 @@ jobs:
             pipenv run python tests/v2/calculate_and_export_results/run_analyses_and_export_result.py organum_pieces
             touch .results-organum-pieces-done
 
-      - run:
-          name: "Calculate and export results for organum phrases"
-          command: |
-            cd chantstats
-            pipenv run python tests/v2/calculate_and_export_results/run_analyses_and_export_result.py organum_phrases
-            touch .results-organum-phrases-done
-
+#      - run:
+#          name: "Calculate and export results for organum phrases"
+#          command: |
+#            cd chantstats
+#            pipenv run python tests/v2/calculate_and_export_results/run_analyses_and_export_result.py organum_phrases
+#            touch .results-organum-phrases-done
+#
       - run:
           name: Wait for calculation of results to complete
           command: |
@@ -71,6 +71,7 @@ jobs:
               echo "Waiting for calculation of results to complete"
               sleep 5
             done
+
       - run: cd /tmp/analysis_results/ && zip -r $ZIP_FILE_NAME $RESULTS_FOLDER_NAME
       - store_artifacts:
           path: /tmp/analysis_results
