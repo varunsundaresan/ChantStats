@@ -6,7 +6,7 @@ __all__ = ["BaseTendency", "PCTendency"]
 
 
 class BaseTendency:
-    def __init__(self, pairs, *, label_first, label_second, cls_first, cls_second):
+    def __init__(self, pairs, *, label_first, label_second, cls_first, cls_second, replace_nan_values_with_zeros):
         if pairs == []:
             self.df_pair_counts = pd.DataFrame(0, columns=cls_first.allowed_values, index=cls_second.allowed_values)
         else:
@@ -29,6 +29,10 @@ class BaseTendency:
         # sums_per_row = self.df_pair_counts.sum(axis="columns", skipna=False)
         # self.df_condprobs_v2 = 100 * self.df_pair_counts.div(sums_per_col, axis="columns")  # each column sums up to 100
 
+        if replace_nan_values_with_zeros:
+            self.df_condprobs_v1 = self.df_condprobs_v1.fillna(0)
+            # self.df_condprobs_v2 = self.df_condprobs_v2.fillna(0)
+
     def as_series(self, using):
         if using == "counts":
             res = self.df_pair_counts
@@ -41,14 +45,26 @@ class BaseTendency:
 
 
 class PCTendency(BaseTendency):
-    def __init__(cls, item):
-        super().__init__(item.pc_pairs, label_first="pc1", label_second="pc2", cls_first=PC, cls_second=PC)
+    def __init__(cls, item, replace_nan_values_with_zeros=True):
+        super().__init__(
+            item.pc_pairs,
+            label_first="pc1",
+            label_second="pc2",
+            cls_first=PC,
+            cls_second=PC,
+            replace_nan_values_with_zeros=replace_nan_values_with_zeros,
+        )
 
 
 class ModeDegreeTendency(BaseTendency):
-    def __init__(cls, item):
+    def __init__(cls, item, replace_nan_values_with_zeros=True):
         super().__init__(
-            item.mode_degree_pairs, label_first="md1", label_second="md2", cls_first=ModeDegree, cls_second=ModeDegree
+            item.mode_degree_pairs,
+            label_first="md1",
+            label_second="md2",
+            cls_first=ModeDegree,
+            cls_second=ModeDegree,
+            replace_nan_values_with_zeros=replace_nan_values_with_zeros,
         )
 
 
