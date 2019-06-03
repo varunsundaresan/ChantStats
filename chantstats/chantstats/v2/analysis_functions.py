@@ -36,6 +36,26 @@ def calculate_tendency(item, unit, *, using="condprobs_v1"):
     return tendency.as_series(using=using)
 
 
+class ModalCategoryAsTendencyAnalysisInput:
+    def __init__(self, modal_category):
+        self.modal_category = modal_category
+
+    @property
+    def pc_pairs(self):
+        for item in self.modal_category.items:
+            yield from item.pc_pairs
+
+    @property
+    def mode_degree_pairs(self):
+        for item in self.modal_category.items:
+            yield from item.mode_degree_pairs
+
+
+def calculate_tendency_for_modal_category(modal_category, unit):
+    mc = ModalCategoryAsTendencyAnalysisInput(modal_category)
+    return calculate_tendency(mc, unit=unit)
+
+
 # def calculate_approaches(item, unit, *, using="condprobs_v1"):
 #     if unit == "pcs":
 #         tendency = PCApproaches(item)
