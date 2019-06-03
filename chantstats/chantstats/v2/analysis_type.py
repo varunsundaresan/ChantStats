@@ -4,22 +4,22 @@ __all__ = ["AnalysisType"]
 
 
 class AnalysisType(str, Enum):
-    PC_FREQS = ("pc_freqs", "Mode profiles", "MP", "Analysis 1 Mode Profiles: ", ("mode_profiles", ""))
-    TENDENCY = ("tendency", "Tendency", "T", "Analysis 2 Tendency: ", ("tendency", ""))
+    PC_FREQS = ("pc_freqs", "Mode profiles", "MP", "Analysis 1 Mode Profiles: ", ("1_mode_profiles", ""))
+    TENDENCY = ("tendency", "Tendency", "T", "Analysis 2 Tendency: ", ("2_tendency", ""))
     # APPROACHES = ("approaches", "Leaps and Melodic Outlines", "L+M", "Analysis 3 L&M: ")
     LEAPS_AND_MELODIC_OUTLINES_L5M5 = (
         "L_and_M__L5_u_M5",
         "Leaps and Melodic Outlines (L5 & M5)",
         "LMO",
         "Analysis 3 L&M: L5 ∪ M5: ",
-        ("L_and_M", "L5_u_M5"),
+        ("3_L_and_M", "L5_u_M5"),
     )
     LEAPS_AND_MELODIC_OUTLINES_L4M4 = (
         "L_and_M__L4_u_M4",
         "Leaps and Melodic Outlines (L4 & M4)",
         "LMO",
         "Analysis 3 L&M: L4 ∪ M4: ",
-        ("L_and_M", "L4_u_M4"),
+        ("3_L_and_M", "L4_u_M4"),
     )
 
     def __new__(cls, value, desc, desc_short, plot_title_descr, output_path_stubs, **kwargs):
