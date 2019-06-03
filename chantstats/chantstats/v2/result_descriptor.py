@@ -14,7 +14,8 @@ class ResultDescriptor:
         self.sep = "__"
         self.output_dirname = os.path.join(
             self.rep_and_genre.output_path_stub_1,
-            self.analysis.output_path_stub,
+            self.analysis.output_path_stub_1,
+            self.analysis.output_path_stub_2,
             self.rep_and_genre.output_path_stub_2,
             self.unit.output_path_stub,
         )
@@ -52,7 +53,8 @@ class ResultDescriptor:
     def __repr__(self):
         result_descriptor_stubs = (
             self.rep_and_genre.output_path_stub_1,
-            self.analysis.output_path_stub,
+            self.analysis.output_path_stub_1,
+            self.analysis.output_path_stub_2,
             self.rep_and_genre.output_path_stub_2,
             self.unit.output_path_stub,
             self.modal_category.output_path_stub_1,
