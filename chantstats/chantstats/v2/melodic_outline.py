@@ -14,14 +14,21 @@ def calculate_melodic_outline_candidates_for_phrase(phrase):
         A phrase in a plainchant sequence or responsorial chant piece.
         Must have the attributes `notes` and `note_pairs`.
     """
+    if len(phrase.note_pairs) < 2:
+        return []
     directions = pd.Series([note_pair.direction for note_pair in phrase.note_pairs])
     directions_ffill = directions.replace(0, np.NaN).ffill(downcast="infer").bfill(downcast="infer")
     dir_changes = directions_ffill.diff().fillna(0, downcast="infer") != 0
     offsets_with_dir_changes = dir_changes[dir_changes != 0].index
-    mo_slices = list(zip(offsets_with_dir_changes, offsets_with_dir_changes[1:]))
-    mo_slices = [(0, offsets_with_dir_changes[0])] + mo_slices + [(offsets_with_dir_changes[-1], len(phrase.notes) + 1)]
-    mo_slices = [slice(i, j + 1) for (i, j) in mo_slices]
-    mo_candidates = [phrase.notes[sl] for sl in mo_slices]
+    if len(offsets_with_dir_changes) == 0:
+        mo_candidates = [phrase.notes]
+    else:
+        mo_slices = list(zip(offsets_with_dir_changes, offsets_with_dir_changes[1:]))
+        mo_slices = (
+            [(0, offsets_with_dir_changes[0])] + mo_slices + [(offsets_with_dir_changes[-1], len(phrase.notes) + 1)]
+        )
+        mo_slices = [slice(i, j + 1) for (i, j) in mo_slices]
+        mo_candidates = [phrase.notes[sl] for sl in mo_slices]
     return mo_candidates
 
 
