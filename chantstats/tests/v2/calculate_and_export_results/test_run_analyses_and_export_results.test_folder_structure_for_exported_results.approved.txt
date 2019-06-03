@@ -1,37 +1,7 @@
 .
 `-- p_cutoff_0.40
     `-- chant
-        |-- L_and_M__L4_u_M4
-        |   |-- responsorial_chants
-        |   |   |-- mode_degrees
-        |   |   |   |-- dendrogram__03.E_2.authentic.png
-        |   |   |   `-- stacked_bar_chart__03.E_2.authentic.png
-        |   |   `-- pcs
-        |   |       |-- dendrogram__03.E_2.authentic.png
-        |   |       `-- stacked_bar_chart__03.E_2.authentic.png
-        |   `-- sequences
-        |       |-- mode_degrees
-        |       |   |-- dendrogram__03.E_2.authentic.png
-        |       |   `-- stacked_bar_chart__03.E_2.authentic.png
-        |       `-- pcs
-        |           |-- dendrogram__03.E_2.authentic.png
-        |           `-- stacked_bar_chart__03.E_2.authentic.png
-        |-- L_and_M__L5_u_M5
-        |   |-- responsorial_chants
-        |   |   |-- mode_degrees
-        |   |   |   |-- dendrogram__03.E_2.authentic.png
-        |   |   |   `-- stacked_bar_chart__03.E_2.authentic.png
-        |   |   `-- pcs
-        |   |       |-- dendrogram__03.E_2.authentic.png
-        |   |       `-- stacked_bar_chart__03.E_2.authentic.png
-        |   `-- sequences
-        |       |-- mode_degrees
-        |       |   |-- dendrogram__03.E_2.authentic.png
-        |       |   `-- stacked_bar_chart__03.E_2.authentic.png
-        |       `-- pcs
-        |           |-- dendrogram__03.E_2.authentic.png
-        |           `-- stacked_bar_chart__03.E_2.authentic.png
-        |-- pc_freqs
+        |-- 1_mode_profiles
         |   |-- responsorial_chants
         |   |   |-- mode_degrees
         |   |   |   |-- dendrogram__10.C_1.final.png
@@ -46,22 +16,47 @@
         |       `-- pcs
         |           |-- dendrogram__10.C_1.final.png
         |           `-- stacked_bar_chart__10.C_1.final.png
-        `-- tendency
-            |-- responsorial_chants
-            |   |-- mode_degrees
-            |   |   |-- dendrogram__03.E_2.authentic.png
-            |   |   `-- stacked_bar_chart__03.E_2.authentic.png
-            |   `-- pcs
-            |       |-- dendrogram__03.E_2.authentic.png
-            |       `-- stacked_bar_chart__03.E_2.authentic.png
-            `-- sequences
-                |-- mode_degrees
-                |   |-- dendrogram__03.E_2.authentic.png
-                |   |-- stacked_bar_chart__03.E_2.authentic__01.png
-                |   `-- stacked_bar_chart__03.E_2.authentic__02.png
-                `-- pcs
-                    |-- dendrogram__03.E_2.authentic.png
-                    |-- stacked_bar_chart__03.E_2.authentic__01.png
-                    `-- stacked_bar_chart__03.E_2.authentic__02.png
+        |-- 2_tendency
+        |   |-- responsorial_chants
+        |   |   |-- mode_degrees
+        |   |   |   `-- stacked_bar_chart__03.E_2.authentic.png
+        |   |   `-- pcs
+        |   |       `-- stacked_bar_chart__03.E_2.authentic.png
+        |   `-- sequences
+        |       |-- mode_degrees
+        |       |   `-- stacked_bar_chart__03.E_2.authentic.png
+        |       `-- pcs
+        |           `-- stacked_bar_chart__03.E_2.authentic.png
+        `-- 3_L_and_M
+            |-- L4_u_M4
+            |   |-- responsorial_chants
+            |   |   |-- mode_degrees
+            |   |   |   |-- dendrogram__03.E_2.authentic.png
+            |   |   |   `-- stacked_bar_chart__03.E_2.authentic.png
+            |   |   `-- pcs
+            |   |       |-- dendrogram__03.E_2.authentic.png
+            |   |       `-- stacked_bar_chart__03.E_2.authentic.png
+            |   `-- sequences
+            |       |-- mode_degrees
+            |       |   |-- dendrogram__03.E_2.authentic.png
+            |       |   `-- stacked_bar_chart__03.E_2.authentic.png
+            |       `-- pcs
+            |           |-- dendrogram__03.E_2.authentic.png
+            |           `-- stacked_bar_chart__03.E_2.authentic.png
+            `-- L5_u_M5
+                |-- responsorial_chants
+                |   |-- mode_degrees
+                |   |   |-- dendrogram__03.E_2.authentic.png
+                |   |   `-- stacked_bar_chart__03.E_2.authentic.png
+                |   `-- pcs
+                |       |-- dendrogram__03.E_2.authentic.png
+                |       `-- stacked_bar_chart__03.E_2.authentic.png
+                `-- sequences
+                    |-- mode_degrees
+                    |   |-- dendrogram__03.E_2.authentic.png
+                    |   `-- stacked_bar_chart__03.E_2.authentic.png
+                    `-- pcs
+                        |-- dendrogram__03.E_2.authentic.png
+                        `-- stacked_bar_chart__03.E_2.authentic.png
 
-30 directories, 34 files
+31 directories, 28 files
