@@ -209,20 +209,22 @@ def plot_pc_freq_distributions(
     xlabels = [make_xlabel_for_cluster_node(n) for n in dendrogram_nodes]
     title = result_descriptor.plot_title
 
-    fig, ax = plt.subplots(figsize=figsize)
-    plot_multiple_pandas_series_as_stacked_bar_chart(
+    figwidth = figsize[0]
+    ax_height = figsize[1]
+    height_per_axes = ax_height + 0.5
+
+    fig = plot_multiple_pandas_series_as_stacked_bar_chart_MULTIPLE_ROWS(
         series,
         xlabel="Clusters",
         ylabel="Probability of occurrence (in percent)",
         xticklabels=xlabels,
-        ax=ax,
         color_palette=color_palette,
         title=title,
         bar_width=bar_width,
         sort_freqs_ascending=sort_freqs_ascending,
+        figwidth=figwidth,
+        height_per_axes=height_per_axes,
     )
-    plt.close(fig)
-
     return fig
 
 
