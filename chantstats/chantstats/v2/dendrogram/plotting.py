@@ -107,6 +107,7 @@ def plot_multiple_pandas_series_as_stacked_bar_chart(
             sort_freqs_ascending=sort_freqs_ascending,
         )
     ax.set_xticklabels(xlabels)
+    # ax.set_xticklabels(xlabels, rotation=90)
 
     # Add legend
     assert len(set([tuple(s.index) for s in series])) == 1  # ensure all series objects share the same index
