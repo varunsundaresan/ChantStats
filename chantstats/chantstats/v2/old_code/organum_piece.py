@@ -332,7 +332,11 @@ class OrganumPieces:
         return cls(pieces)
 
     def get_analysis_inputs(
-        self, mode=None, min_num_phrases_per_monomodal_section=None, min_num_notes_per_monomodal_section=None
+        self,
+        mode=None,
+        min_num_phrases_per_monomodal_section=None,
+        min_num_notes_per_monomodal_section=None,
+        min_num_notes_per_organum_phrase=None,
     ):
         return [piece.organum_purum_duplum_part for piece in self.pieces]
 
