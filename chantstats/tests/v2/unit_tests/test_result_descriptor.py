@@ -7,29 +7,29 @@ def test_result_descriptor():
     output_root_dir = "/tmp/foo/"
     modal_category = ModalCategory(items=None, modal_category_type="final", key="G")
     rd = ResultDescriptor("plainchant_sequences", "pc_freqs", "pcs", modal_category)
-    assert rd.output_dirname == "chant/1_mode_profiles/1_sequences/pcs"
-    assert rd.get_output_dir(output_root_dir) == "/tmp/foo/chant/1_mode_profiles/1_sequences/pcs"
-    assert rd.get_output_dir(output_root_dir) == "/tmp/foo/chant/1_mode_profiles/1_sequences/pcs"
+    assert rd.output_dirname == "chant/1_mode_profiles/1_sequences/1_pcs"
+    assert rd.get_output_dir(output_root_dir) == "/tmp/foo/chant/1_mode_profiles/1_sequences/1_pcs"
+    assert rd.get_output_dir(output_root_dir) == "/tmp/foo/chant/1_mode_profiles/1_sequences/1_pcs"
     assert (
         rd.get_full_output_path(output_root_dir, filename_prefix="dendrogram", filename_suffix="")
-        == "/tmp/foo/chant/1_mode_profiles/1_sequences/pcs/dendrogram__06.G_1.final.png"
+        == "/tmp/foo/chant/1_mode_profiles/1_sequences/1_pcs/dendrogram__06.G_1.final.png"
     )
     assert (
         rd.get_full_output_path(output_root_dir, filename_prefix="quux", filename_suffix="")
-        == "/tmp/foo/chant/1_mode_profiles/1_sequences/pcs/quux__06.G_1.final.png"
+        == "/tmp/foo/chant/1_mode_profiles/1_sequences/1_pcs/quux__06.G_1.final.png"
     )
 
     output_root_dir = "/quux/bar"
     modal_category = ModalCategory(items=None, modal_category_type="final_and_ambitus", key=("C", "plagal"))
     rd = ResultDescriptor("plainchant_sequences", "tendency", "mode_degrees", modal_category)
-    assert rd.output_dirname == "chant/2_tendency/1_sequences/mode_degrees"
+    assert rd.output_dirname == "chant/2_tendency/1_sequences/2_mode_degrees"
     assert (
         rd.get_full_output_path(output_root_dir, filename_prefix="dendrogram", filename_suffix="")
-        == "/quux/bar/chant/2_tendency/1_sequences/mode_degrees/dendrogram__10.C_3.plagal.png"
+        == "/quux/bar/chant/2_tendency/1_sequences/2_mode_degrees/dendrogram__10.C_3.plagal.png"
     )
     assert (
         rd.get_full_output_path(output_root_dir, filename_prefix="foobar", filename_suffix="04")
-        == "/quux/bar/chant/2_tendency/1_sequences/mode_degrees/foobar__10.C_3.plagal__04.png"
+        == "/quux/bar/chant/2_tendency/1_sequences/2_mode_degrees/foobar__10.C_3.plagal__04.png"
     )
 
 

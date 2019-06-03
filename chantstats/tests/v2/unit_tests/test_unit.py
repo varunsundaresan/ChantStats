@@ -3,7 +3,7 @@ from chantstats.v2.unit import UnitType
 
 
 def test_unit_type():
-    assert "pcs" == UnitType("pcs").output_path_stub
+    assert "1_pcs" == UnitType("pcs").output_path_stub
     assert "pitch classes" == UnitType("pcs").description
-    assert "mode_degrees" == UnitType("mode_degrees").output_path_stub
+    assert "2_mode_degrees" == UnitType("mode_degrees").output_path_stub
     assert "mode degrees" == UnitType("mode_degrees").description

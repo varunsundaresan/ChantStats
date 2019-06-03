@@ -9,7 +9,12 @@ class UnitType(EnumWithDescription):
 
     @property
     def output_path_stub(self):
-        return self.value
+        if self.value == "pcs":
+            return "1_pcs"
+        elif self.value == "mode_degrees":
+            return "2_mode_degrees"
+        else:
+            raise ValueError(f"Unexpected unit: '{self.value}'")
 
     @property
     def plot_title_descr(self):
