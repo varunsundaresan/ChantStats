@@ -25,19 +25,39 @@ class OrganumPhrase:
             )
         self.tenor_note = Note(tenor_notes[0])
         self.tenor_pc = tenor_pcs[0]
-
         # FIXME: adding the attribute 'final' is a hack; instead, we should call it 'reference_pc'
         # and also add reference_pc attributes to the other analysis input classes
         self.final = self.tenor_pc
         self.note_of_final = self.tenor_note
-        # self.notes = list(self.df["duplum", "note"])
-        # self.pitch_classes = [PC.from_note(n) for n in self.notes]
+
+        s_duplum_notes = self.df[("duplum", "note")]
+        if any(s_duplum_notes.isnull()):
+            raise RuntimeError("Some duplum notes in organum phrase are null: {}".format(s_duplum_notes))
+        self.duplum_notes = list(s_duplum_notes)
+
+        self.has_voice_crossing = any([n < self.note_of_final for n in self.duplum_notes])
+        s_voice_crossing = self.df[("duplum", "note")] < self.note_of_final
+        if s_voice_crossing.any():
+            self.idx_of_first_voice_crossing = s_voice_crossing.where(s_voice_crossing == True).dropna().index[0]
+        else:
+            # self.idx_of_first_voice_crossing = len(s_voice_crossing)
+            self.idx_of_first_voice_crossing = s_voice_crossing.index[-1] + 1
+
+        self.notes = list(s_duplum_notes[s_duplum_notes.index < self.idx_of_first_voice_crossing])
+        self.pitch_classes = [PC.from_note(n) for n in self.notes]
+        self.note_pairs = [NotePair(n1, n2) for n1, n2 in pairwise(self.notes)]
         self.mode_degrees = [ModeDegree.from_note_pair(note=n, base_note=self.note_of_final) for n in self.notes]
         self.pc_pairs = list(zip(self.pitch_classes, self.pitch_classes[1:]))
-        # self.note_pairs = [NotePair(n1, n2) for (n1, n2) in zip(self.notes, self.notes[1:])]
         self.mode_degree_pairs = list(zip(self.mode_degrees, self.mode_degrees[1:]))
-        self.lowest_note = min(self.notes)
 
+        # # self.notes = list(self.df["duplum", "note"])
+        # # self.pitch_classes = [PC.from_note(n) for n in self.notes]
+        # self.mode_degrees = [ModeDegree.from_note_pair(note=n, base_note=self.note_of_final) for n in self.notes]
+        # self.pc_pairs = list(zip(self.pitch_classes, self.pitch_classes[1:]))
+        # # self.note_pairs = [NotePair(n1, n2) for (n1, n2) in zip(self.notes, self.notes[1:])]
+        # self.mode_degree_pairs = list(zip(self.mode_degrees, self.mode_degrees[1:]))
+
+        # self.lowest_note = min(self.notes)
         # self.ambitus = calculate_ambitus(self)
 
         self._melodic_outline_candidates = calculate_melodic_outline_candidates_for_phrase(self)
@@ -81,28 +101,28 @@ class OrganumPhrase:
     def __lt__(self, other):
         return (self.piece_filename, self.phrase_number) < (other.piece_filename, other.phrase_number)
 
-    @property
-    def pitch_classes(self):
-        duplum_pcs = self.df[("duplum", "pitch_class")]
-        if any(duplum_pcs.isnull()):
-            raise RuntimeError("Some duplum notes in organum phrase are null: {}".format(duplum_pcs))
-        return [PC(pc_name) for pc_name in duplum_pcs]
-
-    @property
-    def notes(self):
-        duplum_notes = self.df[("duplum", "note")]
-        if any(duplum_notes.isnull()):
-            raise RuntimeError("Some duplum notes in organum phrase are null: {}".format(duplum_notes))
-        return list(duplum_notes)
-
-    @property
-    def pitch_class_pairs(self):
-        return pairwise(self.pitch_classes)
-
-    @property
-    def note_pairs(self):
-        # return pairwise(self.notes)
-        return [NotePair(n1, n2) for n1, n2 in pairwise(self.notes)]
+    # @property
+    # def pitch_classes(self):
+    #     duplum_pcs = self.df[("duplum", "pitch_class")]
+    #     if any(duplum_pcs.isnull()):
+    #         raise RuntimeError("Some duplum notes in organum phrase are null: {}".format(duplum_pcs))
+    #     return [PC(pc_name) for pc_name in duplum_pcs]
+    #
+    # @property
+    # def notes(self):
+    #     duplum_notes = self.df[("duplum", "note")]
+    #     if any(duplum_notes.isnull()):
+    #         raise RuntimeError("Some duplum notes in organum phrase are null: {}".format(duplum_notes))
+    #     return list(duplum_notes)
+    #
+    # @property
+    # def pitch_class_pairs(self):
+    #     return pairwise(self.pitch_classes)
+    #
+    # @property
+    # def note_pairs(self):
+    #     # return pairwise(self.notes)
+    #     return [NotePair(n1, n2) for n1, n2 in pairwise(self.notes)]
 
     def get_note_pairs_with_interval(self, interval_name):
         return [note_pair for note_pair in self.note_pairs if note_pair.interval.name == interval_name]
