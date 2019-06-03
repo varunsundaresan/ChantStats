@@ -6,7 +6,7 @@ from .note_pair import NotePair
 __all__ = ["MelodicOutline", "has_framing_interval", "check_step_size"]
 
 
-def calculate_melodic_outline_candidates(notes, note_pairs):
+def calculate_melodic_outline_candidates(notes, note_pairs, before_idx=None):
     """
     Parameters
     ----------
@@ -31,6 +31,10 @@ def calculate_melodic_outline_candidates(notes, note_pairs):
         mo_slices = list(zip(offsets_with_dir_changes, offsets_with_dir_changes[1:]))
         mo_slices = [(0, offsets_with_dir_changes[0])] + mo_slices + [(offsets_with_dir_changes[-1], len(notes) + 1)]
         mo_slices = [slice(i, j + 1) for (i, j) in mo_slices]
+        if before_idx:
+            # breakpoint()
+            # print(f"Limiting melodic outline candidates to those before {before_idx}")
+            mo_slices = [x for x in mo_slices if x.stop <= before_idx]
         mo_candidates = [notes[sl] for sl in mo_slices]
     return mo_candidates
 

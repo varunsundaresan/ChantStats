@@ -34,16 +34,19 @@ class OrganumPhrase:
         if any(s_duplum_notes.isnull()):
             raise RuntimeError("Some duplum notes in organum phrase are null: {}".format(s_duplum_notes))
         self.duplum_notes = list(s_duplum_notes)
+        self.duplum_note_pairs = [NotePair(n1, n2) for n1, n2 in pairwise(self.duplum_notes)]
 
         self.has_voice_crossing = any([n < self.note_of_final for n in self.duplum_notes])
         s_voice_crossing = self.df[("duplum", "note")] < self.note_of_final
         if s_voice_crossing.any():
-            self.idx_of_first_voice_crossing = s_voice_crossing.where(s_voice_crossing == True).dropna().index[0]
+            self.offset_of_first_voice_crossing = s_voice_crossing.where(s_voice_crossing == True).dropna().index[0]
+            self.idx_of_first_voice_crossing = s_voice_crossing.index.get_loc(self.offset_of_first_voice_crossing)
         else:
             # self.idx_of_first_voice_crossing = len(s_voice_crossing)
-            self.idx_of_first_voice_crossing = s_voice_crossing.index[-1] + 1
+            self.offset_of_first_voice_crossing = s_voice_crossing.index[-1] + 1
+            self.idx_of_first_voice_crossing = len(s_voice_crossing)
 
-        self.notes = list(s_duplum_notes[s_duplum_notes.index < self.idx_of_first_voice_crossing])
+        self.notes = list(s_duplum_notes[s_duplum_notes.index < self.offset_of_first_voice_crossing])
         self.pitch_classes = [PC.from_note(n) for n in self.notes]
         self.note_pairs = [NotePair(n1, n2) for n1, n2 in pairwise(self.notes)]
         self.mode_degrees = [ModeDegree.from_note_pair(note=n, base_note=self.note_of_final) for n in self.notes]
@@ -60,7 +63,10 @@ class OrganumPhrase:
         # self.lowest_note = min(self.notes)
         # self.ambitus = calculate_ambitus(self)
 
-        self._melodic_outline_candidates = calculate_melodic_outline_candidates(self.notes, self.note_pairs)
+        # self._melodic_outline_candidates = calculate_melodic_outline_candidates(self.notes, self.note_pairs)
+        self._melodic_outline_candidates = calculate_melodic_outline_candidates(
+            self.duplum_notes, self.duplum_note_pairs, before_idx=self.idx_of_first_voice_crossing
+        )
 
         if not df["common", "phrase"].isnull().any():
             # FIXME: the only reason the phrase numbers can be null here is because we use this class
