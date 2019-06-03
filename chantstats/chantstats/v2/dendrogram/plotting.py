@@ -92,19 +92,18 @@ def plot_multiple_pandas_series_as_stacked_bar_chart_MULTIPLE_ROWS(
     title,
     bar_width,
     sort_freqs_ascending=True,
-    max_num_bars_per_row=24,
+    num_bars_per_row=24,
     height_per_axes=2.5,
     xlabel=None,
     ylabel=None,
     figwidth=22,
 ):
-    series_chunks = list(chunks(series, max_num_bars_per_row))
-    xticklabels_chunks = list(chunks(xticklabels, max_num_bars_per_row))
+    series_chunks = list(chunks(series, num_bars_per_row))
+    xticklabels_chunks = list(chunks(xticklabels, num_bars_per_row))
     num_chunks = len(series_chunks)
 
     fig, axes = plt.subplots(nrows=num_chunks, figsize=(figwidth, num_chunks * height_per_axes))
     for s_chunk, l_chunk, ax in zip(series_chunks, xticklabels_chunks, axes):
-        print("Plotting one row...")
         plot_multiple_pandas_series_as_stacked_bar_chart(
             s_chunk,
             xticklabels=l_chunk,
@@ -115,7 +114,7 @@ def plot_multiple_pandas_series_as_stacked_bar_chart_MULTIPLE_ROWS(
             sort_freqs_ascending=sort_freqs_ascending,
             xlabel=xlabel,
             ylabel=ylabel,
-            pad_to_num_bars=max_num_bars_per_row,
+            pad_to_num_bars=num_bars_per_row,
         )
 
     fig.subplots_adjust(hspace=0.35)
