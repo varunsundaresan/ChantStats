@@ -195,7 +195,14 @@ def plot_multiple_pandas_series_as_stacked_bar_chart(
 
 
 def plot_pc_freq_distributions(
-    dendrogram_nodes, *, result_descriptor, color_palette, bar_width=0.6, sort_freqs_ascending=True, figsize=(22, 4)
+    dendrogram_nodes,
+    *,
+    result_descriptor,
+    color_palette,
+    bar_width=0.6,
+    sort_freqs_ascending=True,
+    num_bars_per_row=24,
+    figsize=(22, 4),
 ):
     """
     Create a stacked bar chart from the PC frequency distributions of the given dendrogram nodes.
@@ -228,6 +235,7 @@ def plot_pc_freq_distributions(
         sort_freqs_ascending=sort_freqs_ascending,
         figwidth=figwidth,
         height_per_axes=height_per_axes,
+        num_bars_per_row=num_bars_per_row,
     )
     return fig
 
