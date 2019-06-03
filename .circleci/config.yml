@@ -1,15 +1,5 @@
 version: 2.1
 
-workflows:
-  run_build_pipeline:
-    jobs:
-      - calculate_sequence_and_resp_chant_results
-      - calculate_organum_results
-      - zip_results:
-          requires:
-            - calculate_sequence_and_resp_chant_results
-            - calculate_organum_results
-
 jobs:
   calculate_sequence_and_resp_chant_results:
     docker:
@@ -129,3 +119,14 @@ jobs:
       - store_artifacts:
           path: /tmp/analysis_results
           destination: analysis_results
+
+workflows:
+  version: 2
+  run_build_pipeline:
+    jobs:
+      - calculate_sequence_and_resp_chant_results
+      - calculate_organum_results
+      - zip_results:
+          requires:
+            - calculate_sequence_and_resp_chant_results
+            - calculate_organum_results
