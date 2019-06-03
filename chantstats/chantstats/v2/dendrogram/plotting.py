@@ -73,7 +73,18 @@ def plot_single_pandas_series_as_stacked_bar(values, *, ax, xpos, color_palette,
 
 
 def plot_multiple_pandas_series_as_stacked_bar_chart(
-    series, *, xticklabels, ax, color_palette, title, bar_width, sort_freqs_ascending=True
+    series,
+    *,
+    xticklabels,
+    ax,
+    color_palette,
+    title,
+    bar_width,
+    sort_freqs_ascending=True,
+    xlabel=None,
+    xlabel_labelpad=15,
+    ylabel=None,
+    ylabel_rotation="vertical",
 ):
     """
     Plot a collection of pandas series as a stacked bar chart (with one stacked bar per series).
@@ -82,8 +93,10 @@ def plot_multiple_pandas_series_as_stacked_bar_chart(
     ----------
     series : list of pandas.Series
         The values to plot. Note that each of these must add up to 100.0 (because they represent relative frequency values).
+    xlabel, ylabel : str
+        The x/y-axis label.
     xticklabels : list of str
-        The x-axis labels for the resulting stacked bars.
+        The x-axis tick labels for the resulting stacked bars.
     ax : AxesSubplot
         The matplotlib axes to which to add the stacked bar chart.
     color_palette : list
@@ -108,6 +121,8 @@ def plot_multiple_pandas_series_as_stacked_bar_chart(
         )
     ax.set_xticklabels(xticklabels)
     # ax.set_xticklabels(xlabels, rotation=90)
+    ax.set_xlabel(xlabel, labelpad=xlabel_labelpad)
+    ax.set_ylabel(ylabel, rotation=ylabel_rotation)
 
     # Add legend
     assert len(set([tuple(s.index) for s in series])) == 1  # ensure all series objects share the same index
@@ -145,6 +160,8 @@ def plot_pc_freq_distributions(
     fig, ax = plt.subplots(figsize=figsize)
     plot_multiple_pandas_series_as_stacked_bar_chart(
         series,
+        xlabel="Clusters",
+        ylabel="Probability of occurrence (in percent)",
         xticklabels=xlabels,
         ax=ax,
         color_palette=color_palette,
@@ -152,8 +169,6 @@ def plot_pc_freq_distributions(
         bar_width=bar_width,
         sort_freqs_ascending=sort_freqs_ascending,
     )
-    ax.set_xlabel("Clusters", labelpad=15)
-    ax.set_ylabel("Probability of occurrence (in percent)", rotation="vertical")
     plt.close(fig)
 
     return fig
@@ -186,6 +201,7 @@ def plot_tendency_distributions(
 
     plot_multiple_pandas_series_as_stacked_bar_chart(
         series,
+        ylabel="Probability of occurrence (in percent)",
         xticklabels=xlabels,
         ax=ax,
         color_palette=color_palette,
@@ -193,7 +209,6 @@ def plot_tendency_distributions(
         bar_width=bar_width,
         sort_freqs_ascending=sort_freqs_ascending,
     )
-    ax.set_ylabel("Probability of occurrence (in percent)", rotation="vertical")
     return fig
 
 
@@ -221,6 +236,7 @@ def plot_tendency_distribution_NEW(
 
     plot_multiple_pandas_series_as_stacked_bar_chart(
         series,
+        ylabel="Probability of occurrence (in percent)",
         xticklabels=xlabels,
         ax=ax,
         color_palette=color_palette,
@@ -228,5 +244,4 @@ def plot_tendency_distribution_NEW(
         bar_width=bar_width,
         sort_freqs_ascending=sort_freqs_ascending,
     )
-    ax.set_ylabel("Probability of occurrence (in percent)", rotation="vertical")
     return fig
