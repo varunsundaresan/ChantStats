@@ -205,7 +205,9 @@ def plot_pc_freq_distributions(
         if node.num_leaves > 1:
             return f"#{node.cluster_id}\n({node.num_leaves} leaves)"
         else:
-            return f"Leaf node:\n{node.descr}"
+            # return f"Leaf node:\n{node.descr}"
+            # return f"Leaf node #{node.cluster_id}"
+            return f"Leaf #{node.cluster_id}"
 
     series = [n.avg_distribution for n in dendrogram_nodes]
     xlabels = [make_xlabel_for_cluster_node(n) for n in dendrogram_nodes]
