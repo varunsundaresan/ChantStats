@@ -124,7 +124,7 @@ def plot_multiple_pandas_series_as_stacked_bar_chart_MULTIPLE_ROWS(
             pad_to_num_bars=num_bars_per_row,
         )
 
-    fig.subplots_adjust(hspace=0.35)
+    fig.subplots_adjust(hspace=0.4)
     plt.close(fig)
     return fig
 
