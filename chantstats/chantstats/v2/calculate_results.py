@@ -48,6 +48,7 @@ def calculate_results(
     sampling_seed,
     min_num_phrases_per_monomodal_section=3,
     min_num_notes_per_monomodal_section=80,
+    min_num_notes_per_organum_phrase=12,
     modes=None,
     units=None,
     modal_category_keys=None,
@@ -62,6 +63,7 @@ def calculate_results(
             mode,
             min_num_phrases_per_monomodal_section=min_num_phrases_per_monomodal_section,
             min_num_notes_per_monomodal_section=min_num_notes_per_monomodal_section,
+            min_num_notes_per_organum_phrase=min_num_notes_per_organum_phrase,
         )
         analysis_inputs_subsample = get_subsample(analysis_inputs, sampling_fraction, seed=sampling_seed)
 
