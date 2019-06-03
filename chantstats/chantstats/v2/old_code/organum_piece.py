@@ -186,12 +186,26 @@ def calculate_dataframe_from_music21_stream(stream, filename, descr_stub):
     # Fill phrase numbers
     #
     df[("common", "phrase")] = None
+
+    ### OLD CODE. This relies on OrganumPieceSection, which is not great.
+    # phrase_num = 0
+    # for _, df_grp in group_by_contiguous_values(df, ("common", "texture")):
+    #     sec = OrganumPieceSection(df_grp, filename, descr_stub, note_of_chant_final)
+    #     for phrase in sec.phrases:
+    #         phrase_num += 1
+    #         df.loc[phrase.df.index, ("common", "phrase")] = phrase_num
+
+    ### NEW CODE: self-contained and cleaner
     phrase_num = 0
-    for _, df_grp in group_by_contiguous_values(df, ("common", "texture")):
-        sec = OrganumPieceSection(df_grp, filename, descr_stub, note_of_chant_final)
-        for phrase in sec.phrases:
+    for _, df_texture in group_by_contiguous_values(df, ("common", "texture")):
+        if df_texture["common", "texture"].unique() != ["organum_purum"]:
+            continue
+        tenor_ffilled = df_texture["tenor"].ffill().dropna()
+        for i, df_phrase in group_by_contiguous_values(df_texture, tenor_ffilled["note"]):
             phrase_num += 1
-            df.loc[phrase.df.index, ("common", "phrase")] = phrase_num
+            # print(f"Filling in phrase: {phrase_num}")
+            # print(f"   {df_phrase.index[0]}-{df_phrase.index[-1]}")
+            df.loc[df_phrase.index, ("common", "phrase")] = phrase_num
 
     #
     # Calculate stanzas
