@@ -26,7 +26,11 @@ def group_by_contiguous_values(df, col):
     return df.groupby(value_groups)
 
 
-def pairwise(it):
-    it1, it2 = tee(it)
-    next(it2)
-    return list(zip(it1, it2))
+# def pairwise(it):
+#     it1, it2 = tee(it)
+#     next(it2)
+#     return list(zip(it1, it2))
+
+
+def pairwise(seq):
+    return list(zip(seq, seq[1:]))
