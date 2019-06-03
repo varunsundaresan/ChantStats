@@ -23,7 +23,7 @@ class OrganumPurumDuplumPart:
         self.pc_pairs = sum([s.pc_pairs for s in self.sections], [])
         self.mode_degree_pairs = sum([s.mode_degree_pairs for s in self.sections], [])
         self._melodic_outline_candidates = calculate_melodic_outline_candidates_for_phrase(self)
-        self.ambitus = calculate_ambitus(self)
+        # self.ambitus = calculate_ambitus(self)
 
     def __repr__(self):
         return "<OrganumPurumDuplumPart of piece: '{}'>".format(self.piece.descr_stub)

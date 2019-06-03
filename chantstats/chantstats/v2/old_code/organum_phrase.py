@@ -37,7 +37,7 @@ class OrganumPhrase:
         self.mode_degree_pairs = list(zip(self.mode_degrees, self.mode_degrees[1:]))
         self.lowest_note = min(self.notes)
 
-        self.ambitus = calculate_ambitus(self)
+        # self.ambitus = calculate_ambitus(self)
 
         if not df["common", "phrase"].isnull().any():
             # FIXME: the only reason the phrase numbers can be null here is because we use this class
