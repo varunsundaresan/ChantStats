@@ -62,7 +62,7 @@ jobs:
       - persist_to_workspace:
           root: /tmp/analysis_results
           path:
-            - *
+            - p_cutoff_0.40
 
   calculate_organum_results:
     docker:
@@ -104,7 +104,7 @@ jobs:
       - persist_to_workspace:
           root: /tmp/analysis_results
           path:
-            - *
+            - p_cutoff_0.40
 
   zip_results:
       - run: cd /tmp/analysis_results/ && zip -r $ZIP_FILE_NAME $RESULTS_FOLDER_NAME
