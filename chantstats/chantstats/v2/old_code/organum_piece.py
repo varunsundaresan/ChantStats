@@ -397,3 +397,9 @@ class OrganumPhrases:
         min_num_notes_per_organum_phrase=12,
     ):
         return [p for p in self.phrases if len(p.notes) >= min_num_notes_per_organum_phrase]
+
+    def get_occurring_mode_degrees(self):
+        mds = set()
+        for phrase in self.phrases:
+            mds.update(phrase.mode_degrees)
+        return mds
