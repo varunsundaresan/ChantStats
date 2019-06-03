@@ -11,8 +11,18 @@ class RepertoireAndGenreType(EnumWithDescription):
         ("chant", "responsorial_chants"),
         ("Chant: ", "Resp.: "),
     )
-    ORGANUM_PIECES = ("organum_pieces", "Organum Pieces", ("organum", "pieces"), ("Organum Pieces: ", ""))
-    ORGANUM_PHRASES = ("organum_phrases", "Organum Phrases", ("organum", "phrases"), ("Organum Phrases: ", ""))
+    ORGANUM_PIECES = (
+        "organum_pieces",
+        "Organum Pieces",
+        ("organum", "organa_by_chant_final"),
+        ("Organum: ", "Organa by Final: "),
+    )
+    ORGANUM_PHRASES = (
+        "organum_phrases",
+        "Organum Phrases",
+        ("organum", "organum_phrases_by_tenor_pc"),
+        ("Organum: ", "Org. Phrases by Tenor PC: "),
+    )
 
     def __new__(cls, name, desc, output_path_stubs, plot_title_descr, **kwargs):
         obj = str.__new__(cls, name)
