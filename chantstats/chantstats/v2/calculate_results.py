@@ -60,6 +60,10 @@ def calculate_results(
 
     results = {}
     for mode in modes:
+        if analysis == "tendency" and mode != "final":
+            # Tendency results are only needed for mode="final"
+            continue
+
         analysis_inputs = pieces.get_analysis_inputs(
             mode,
             min_num_phrases_per_monomodal_section=min_num_phrases_per_monomodal_section,
