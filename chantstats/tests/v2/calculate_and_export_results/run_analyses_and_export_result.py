@@ -18,6 +18,12 @@ def run_analyses_and_export_results(rep_and_genre, *, output_root_dir, analyses=
     pieces = load_pieces(rep_and_genre, cfg)
     # analyses = analyses or ["pc_freqs", "tendency", "L_and_M__L5_u_M5", "L_and_M__L4_u_M4"]
     analyses = analyses or ["pc_freqs"]
+    if rep_and_genre in ("plainchant_sequences", "responsorial_chants"):
+        modes = ["final", "final_and_ambitus"]
+    elif rep_and_genre in ("organum_pieces", "organum_phrases"):
+        modes = ["final"]
+    else:
+        raise ValueError(f"Invalid mode: '{mode}'")
 
     for analysis in analyses:
         logger.info(f"Calculating results for analysis '{analysis}'")
@@ -28,6 +34,7 @@ def run_analyses_and_export_results(rep_and_genre, *, output_root_dir, analyses=
             sampling_seed=sampling_seed,
             min_num_phrases_per_monomodal_section=min_num_phrases_per_monomodal_section,
             min_num_notes_per_monomodal_section=min_num_notes_per_monomodal_section,
+            modes=modes,
         )
 
         logger.info(f"Exporting results for analysis '{analysis}'")
