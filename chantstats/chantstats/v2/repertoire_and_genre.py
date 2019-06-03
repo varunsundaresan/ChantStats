@@ -4,11 +4,11 @@ __all__ = ["RepertoireAndGenreType"]
 
 
 class RepertoireAndGenreType(EnumWithDescription):
-    PLAINCHANT_SEQUENCES = ("plainchant_sequences", "Sequences", ("chant", "sequences"), ("Chant: ", "Seq.: "))
+    PLAINCHANT_SEQUENCES = ("plainchant_sequences", "Sequences", ("chant", "1_sequences"), ("Chant: ", "Seq.: "))
     RESPONSORIAL_CHANTS = (
         "responsorial_chants",
         "Responsorial Chants",
-        ("chant", "responsorial_chants"),
+        ("chant", "2_responsorial_chants"),
         ("Chant: ", "Resp.: "),
     )
     ORGANUM_PIECES = (
