@@ -51,7 +51,7 @@ jobs:
 
       - persist_to_workspace:
           root: /tmp/analysis_results
-          path:
+          paths:
             - p_cutoff_0.40
 
   calculate_organum_results:
@@ -93,7 +93,7 @@ jobs:
 
       - persist_to_workspace:
           root: /tmp/analysis_results
-          path:
+          paths:
             - p_cutoff_0.40
 
   zip_results:
