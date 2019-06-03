@@ -73,7 +73,7 @@ def plot_single_pandas_series_as_stacked_bar(values, *, ax, xpos, color_palette,
 
 
 def plot_multiple_pandas_series_as_stacked_bar_chart(
-    series, *, xlabels, ax, color_palette, title, bar_width, sort_freqs_ascending=True
+    series, *, xticklabels, ax, color_palette, title, bar_width, sort_freqs_ascending=True
 ):
     """
     Plot a collection of pandas series as a stacked bar chart (with one stacked bar per series).
@@ -82,7 +82,7 @@ def plot_multiple_pandas_series_as_stacked_bar_chart(
     ----------
     series : list of pandas.Series
         The values to plot. Note that each of these must add up to 100.0 (because they represent relative frequency values).
-    xlabels : list of str
+    xticklabels : list of str
         The x-axis labels for the resulting stacked bars.
     ax : AxesSubplot
         The matplotlib axes to which to add the stacked bar chart.
@@ -94,7 +94,7 @@ def plot_multiple_pandas_series_as_stacked_bar_chart(
         If True, sort the relative frequency values in ascending order before assembling
         them into the stacked bar (default: True).
     """
-    prepare_axes_for_stacked_bar_chart(ax, num_bars=len(xlabels))
+    prepare_axes_for_stacked_bar_chart(ax, num_bars=len(xticklabels))
 
     # Plot stacked bars and associated x-axis labels
     for idx, s in enumerate(series):
@@ -106,7 +106,7 @@ def plot_multiple_pandas_series_as_stacked_bar_chart(
             bar_width=bar_width,
             sort_freqs_ascending=sort_freqs_ascending,
         )
-    ax.set_xticklabels(xlabels)
+    ax.set_xticklabels(xticklabels)
     # ax.set_xticklabels(xlabels, rotation=90)
 
     # Add legend
@@ -145,7 +145,7 @@ def plot_pc_freq_distributions(
     fig, ax = plt.subplots(figsize=figsize)
     plot_multiple_pandas_series_as_stacked_bar_chart(
         series,
-        xlabels=xlabels,
+        xticklabels=xlabels,
         ax=ax,
         color_palette=color_palette,
         title=title,
@@ -186,7 +186,7 @@ def plot_tendency_distributions(
 
     plot_multiple_pandas_series_as_stacked_bar_chart(
         series,
-        xlabels=xlabels,
+        xticklabels=xlabels,
         ax=ax,
         color_palette=color_palette,
         title=title,
@@ -221,7 +221,7 @@ def plot_tendency_distribution_NEW(
 
     plot_multiple_pandas_series_as_stacked_bar_chart(
         series,
-        xlabels=xlabels,
+        xticklabels=xlabels,
         ax=ax,
         color_palette=color_palette,
         title=title,
