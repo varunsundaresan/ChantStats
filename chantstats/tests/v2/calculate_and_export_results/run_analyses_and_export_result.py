@@ -23,7 +23,7 @@ def run_analyses_and_export_results(rep_and_genre, *, output_root_dir, analyses=
     elif rep_and_genre in ("organum_pieces", "organum_phrases"):
         modes = ["final"]
     else:
-        raise ValueError(f"Invalid mode: '{mode}'")
+        raise ValueError(f"Invalid rep_and_genre: '{rep_and_genre}'")
 
     for analysis in analyses:
         logger.info(f"Calculating results for analysis '{analysis}'")
