@@ -28,7 +28,7 @@ def export_empty_figure(output_root_dir, result_descriptor):
     return fig
 
 
-def export_stacked_bar_chart_for_pc_freqs(nodes_below_cutoff, output_root_dir, result_descriptor):
+def export_stacked_bar_chart_for_pc_freqs_OLD(nodes_below_cutoff, output_root_dir, result_descriptor):
     assert len(nodes_below_cutoff) > 0
     color_palette = get_color_palette_for_unit(result_descriptor.unit)
     fig = plot_pc_freq_distributions(
@@ -40,6 +40,20 @@ def export_stacked_bar_chart_for_pc_freqs(nodes_below_cutoff, output_root_dir, r
     )
     fig.savefig(outfilename)
     plt.close(fig)
+
+
+def export_stacked_bar_chart_for_pc_freqs(nodes_below_cutoff, output_root_dir, result_descriptor):
+    assert len(nodes_below_cutoff) > 0
+    color_palette = get_color_palette_for_unit(result_descriptor.unit)
+    figs = plot_pc_freq_distributions(
+        nodes_below_cutoff, result_descriptor=result_descriptor, color_palette=color_palette
+    )
+    num_figs = len(figs)
+    for i, fig in enumerate(figs):
+        outfilename = result_descriptor.get_full_output_path(
+            output_root_dir, filename_prefix="stacked_bar_chart", filename_suffix="__{i:02d}_of_{num_figs:02d}"
+        )
+        fig.savefig(outfilename)
 
 
 def export_stacked_bar_chart_for_tendency(nodes_below_cutoff, output_root_dir, result_descriptor, height_per_axes=2.5):

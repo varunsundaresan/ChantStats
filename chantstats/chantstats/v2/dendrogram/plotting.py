@@ -129,6 +129,51 @@ def plot_multiple_pandas_series_as_stacked_bar_chart_MULTIPLE_ROWS(
     return fig
 
 
+def plot_multiple_pandas_series_as_stacked_bar_chart_MULTIPLE_ROWS_AS_SEPARATE_FIGURES(
+    series,
+    *,
+    xticklabels,
+    color_palette,
+    title,
+    bar_width,
+    sort_freqs_ascending=True,
+    num_bars_per_row=16,
+    xlabel=None,
+    ylabel=None,
+    figsize=(22, 4),
+):
+    series_chunks = list(chunks(series, num_bars_per_row))
+    xticklabels_chunks = list(chunks(xticklabels, num_bars_per_row))
+    num_chunks = len(series_chunks)
+
+    output_figs = []
+
+    for i, (s_chunk, l_chunk, ax) in enumerate(zip(series_chunks, xticklabels_chunks, axes)):
+        fig, ax = plt.subplots(figsize=figsize)
+        if num_chunks > 1:
+            title_subplot = f"{title} (plot {i} of {num_chunks})"
+        else:
+            title_subplot = title
+
+        plot_multiple_pandas_series_as_stacked_bar_chart(
+            s_chunk,
+            xticklabels=l_chunk,
+            ax=ax,
+            color_palette=color_palette,
+            title=title_subplot,
+            bar_width=bar_width,
+            sort_freqs_ascending=sort_freqs_ascending,
+            xlabel=xlabel,
+            ylabel=ylabel,
+            pad_to_num_bars=num_bars_per_row,
+        )
+        fig.tight_layout()
+        plt.close(fig)
+        output_figs.append(fig)
+
+    return output_figs
+
+
 def plot_multiple_pandas_series_as_stacked_bar_chart(
     series,
     *,
@@ -225,11 +270,7 @@ def plot_pc_freq_distributions(
     xlabels = [make_xlabel_for_cluster_node(n) for n in dendrogram_nodes]
     title = result_descriptor.plot_title
 
-    figwidth = figsize[0]
-    ax_height = figsize[1]
-    height_per_axes = ax_height + 0.5
-
-    fig = plot_multiple_pandas_series_as_stacked_bar_chart_MULTIPLE_ROWS(
+    figs = plot_multiple_pandas_series_as_stacked_bar_chart_MULTIPLE_ROWS_AS_SEPARATE_FIGURES(
         series,
         xlabel="Clusters",
         ylabel="Probability of occurrence (in percent)",
@@ -238,11 +279,10 @@ def plot_pc_freq_distributions(
         title=title,
         bar_width=bar_width,
         sort_freqs_ascending=sort_freqs_ascending,
-        figwidth=figwidth,
-        height_per_axes=height_per_axes,
+        figsize=figsize,
         num_bars_per_row=num_bars_per_row,
     )
-    return fig
+    return figs
 
 
 # TODO: can we use exactly the same function here?!?
