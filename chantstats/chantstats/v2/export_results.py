@@ -28,18 +28,18 @@ def export_empty_figure(output_root_dir, result_descriptor):
     return fig
 
 
-def export_stacked_bar_chart_for_pc_freqs_OLD(nodes_below_cutoff, output_root_dir, result_descriptor):
-    assert len(nodes_below_cutoff) > 0
-    color_palette = get_color_palette_for_unit(result_descriptor.unit)
-    fig = plot_pc_freq_distributions(
-        nodes_below_cutoff, result_descriptor=result_descriptor, color_palette=color_palette
-    )
-    fig.tight_layout()
-    outfilename = result_descriptor.get_full_output_path(
-        output_root_dir, filename_prefix="stacked_bar_chart", filename_suffix=""
-    )
-    fig.savefig(outfilename)
-    plt.close(fig)
+# def export_stacked_bar_chart_for_pc_freqs_OLD(nodes_below_cutoff, output_root_dir, result_descriptor):
+#     assert len(nodes_below_cutoff) > 0
+#     color_palette = get_color_palette_for_unit(result_descriptor.unit)
+#     fig = plot_pc_freq_distributions(
+#         nodes_below_cutoff, result_descriptor=result_descriptor, color_palette=color_palette
+#     )
+#     fig.tight_layout()
+#     outfilename = result_descriptor.get_full_output_path(
+#         output_root_dir, filename_prefix="stacked_bar_chart", filename_suffix=""
+#     )
+#     fig.savefig(outfilename)
+#     plt.close(fig)
 
 
 def export_stacked_bar_chart_for_pc_freqs(nodes_below_cutoff, output_root_dir, result_descriptor):
@@ -51,7 +51,7 @@ def export_stacked_bar_chart_for_pc_freqs(nodes_below_cutoff, output_root_dir, r
     num_figs = len(figs)
     for i, fig in enumerate(figs):
         outfilename = result_descriptor.get_full_output_path(
-            output_root_dir, filename_prefix="stacked_bar_chart", filename_suffix="__{i:02d}_of_{num_figs:02d}"
+            output_root_dir, filename_prefix="stacked_bar_chart", filename_suffix=f"__{i:02d}_of_{num_figs:02d}"
         )
         fig.savefig(outfilename)
 
@@ -102,14 +102,28 @@ def export_stacked_bar_chart_for_modal_category_tendency(distribution, output_ro
 def export_stacked_bar_chart_for_leaps_and_melodic_outlines(nodes_below_cutoff, output_root_dir, result_descriptor):
     assert len(nodes_below_cutoff) > 0
     color_palette = get_color_palette_for_unit(result_descriptor.unit)
-    fig = plot_LMO_freq_distributions(
+    figs = plot_LMO_freq_distributions(
         nodes_below_cutoff, result_descriptor=result_descriptor, color_palette=color_palette
     )
-    outfilename = result_descriptor.get_full_output_path(
-        output_root_dir, filename_prefix="stacked_bar_chart", filename_suffix=""
-    )
-    fig.savefig(outfilename)
-    plt.close(fig)
+    num_figs = len(figs)
+    for i, fig in enumerate(figs):
+        outfilename = result_descriptor.get_full_output_path(
+            output_root_dir, filename_prefix="stacked_bar_chart", filename_suffix=f"__{i:02d}_of_{num_figs:02d}"
+        )
+        fig.savefig(outfilename)
+
+
+# def export_stacked_bar_chart_for_leaps_and_melodic_outlines_OLD(nodes_below_cutoff, output_root_dir, result_descriptor):
+#     assert len(nodes_below_cutoff) > 0
+#     color_palette = get_color_palette_for_unit(result_descriptor.unit)
+#     fig = plot_LMO_freq_distributions(
+#         nodes_below_cutoff, result_descriptor=result_descriptor, color_palette=color_palette
+#     )
+#     outfilename = result_descriptor.get_full_output_path(
+#         output_root_dir, filename_prefix="stacked_bar_chart", filename_suffix=""
+#     )
+#     fig.savefig(outfilename)
+#     plt.close(fig)
 
 
 def export_results(results, output_root_dir, p_cutoff=0.4, include_leaf_nodes_in_clusters=True, overwrite=False):
