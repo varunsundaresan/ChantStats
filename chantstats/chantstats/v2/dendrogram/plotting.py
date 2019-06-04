@@ -148,7 +148,7 @@ def plot_multiple_pandas_series_as_stacked_bar_chart_MULTIPLE_ROWS_AS_SEPARATE_F
 
     output_figs = []
 
-    for i, (s_chunk, l_chunk, ax) in enumerate(zip(series_chunks, xticklabels_chunks, axes)):
+    for i, (s_chunk, l_chunk) in enumerate(zip(series_chunks, xticklabels_chunks)):
         fig, ax = plt.subplots(figsize=figsize)
         if num_chunks > 1:
             title_subplot = f"{title} (plot {i} of {num_chunks})"
