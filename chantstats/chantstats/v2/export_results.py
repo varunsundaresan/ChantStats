@@ -49,9 +49,9 @@ def export_stacked_bar_chart_for_pc_freqs(nodes_below_cutoff, output_root_dir, r
         nodes_below_cutoff, result_descriptor=result_descriptor, color_palette=color_palette
     )
     num_figs = len(figs)
-    for i, fig in enumerate(figs):
+    for i, fig in enumerate(figs, start=1):
         outfilename = result_descriptor.get_full_output_path(
-            output_root_dir, filename_prefix="stacked_bar_chart", filename_suffix=f"__{i+1:02d}_of_{num_figs:02d}"
+            output_root_dir, filename_prefix="stacked_bar_chart", filename_suffix=f"__{i:02d}_of_{num_figs:02d}"
         )
         fig.savefig(outfilename)
 
@@ -106,9 +106,9 @@ def export_stacked_bar_chart_for_leaps_and_melodic_outlines(nodes_below_cutoff, 
         nodes_below_cutoff, result_descriptor=result_descriptor, color_palette=color_palette
     )
     num_figs = len(figs)
-    for i, fig in enumerate(figs):
+    for i, fig in enumerate(figs, start=1):
         outfilename = result_descriptor.get_full_output_path(
-            output_root_dir, filename_prefix="stacked_bar_chart", filename_suffix=f"__{i+1:02d}_of_{num_figs:02d}"
+            output_root_dir, filename_prefix="stacked_bar_chart", filename_suffix=f"__{i:02d}_of_{num_figs:02d}"
         )
         fig.savefig(outfilename)
 
