@@ -109,6 +109,11 @@ class Dendrogram:
                 n.right.parent = n
         self.root_node.parent = None
 
+        # inspect dataframe
+        print(df.head())
+        print(df.describe())
+        print(df.columns)
+
     def get_nodes_below_cutoff(self, p_cutoff, *, include_leaf_nodes):
         proper_cluster_condition = lambda node: True if include_leaf_nodes else not node.is_leaf
 
