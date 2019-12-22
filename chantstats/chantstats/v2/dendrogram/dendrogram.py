@@ -112,7 +112,7 @@ class Dendrogram:
         # inspect dataframe
         print("printing df...")
         print(df.head())
-        print(df.describe())
+        print(df.describe(include = 'all'))
         print(df.columns)
         print(df)
 
