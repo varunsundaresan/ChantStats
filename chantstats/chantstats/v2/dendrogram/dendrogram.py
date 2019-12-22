@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
+import pandas as pd
 import palettable
 import scipy.stats
 from scipy.cluster.hierarchy import dendrogram, linkage, set_link_color_palette, to_tree
@@ -112,7 +113,8 @@ class Dendrogram:
         # inspect dataframe
         print("printing df...")
         print(df.head())
-        print(df.describe(include = 'all'))
+        with pd.option_context('display.max_columns', 40):
+            print(df.describe(include = 'all'))
         print(df.columns)
         print(df)
 
