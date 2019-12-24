@@ -112,10 +112,9 @@ class Dendrogram:
 
         # inspect dataframe
         print("printing df...")
-        print(df.head())
         with pd.option_context('display.max_columns', 40):
             print(df.describe(include = 'all'))
-        print(df.columns)
+            print(df.mean())
         print(df)
 
     def get_nodes_below_cutoff(self, p_cutoff, *, include_leaf_nodes):
