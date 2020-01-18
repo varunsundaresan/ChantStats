@@ -78,6 +78,7 @@ def calculate_dendrogram(modal_category, *, analysis_name, unit):
 
 
 def calculate_results(
+    print "Varun - checkpoint1"
     repertoire_and_genre, analysis_name, cfg, pieces=None, min_length_monomodal_sections=3, modes=None, units=None
 ):
     results = {}
