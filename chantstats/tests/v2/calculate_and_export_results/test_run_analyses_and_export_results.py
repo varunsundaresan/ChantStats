@@ -10,6 +10,7 @@ from .run_analyses_and_export_result import run_analyses_and_export_results
 
 @pytest.mark.slow
 def test_folder_structure_for_exported_results(tmpdir, diff_reporter):
+    print "Varun - checkpoint 2"
     output_root_dir = str(tmpdir)
     logger.info(f"Using output root dir: '{output_root_dir}'")
 
